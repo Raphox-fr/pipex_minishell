@@ -63,6 +63,5 @@ int fill_var(t_split *split, char *command, t_variable **var, int nb_var)
 	if (!split->word)
 		return (-1);
 	ft_strlcpy(split->word, var[k]->value, ft_strlen(var[k]->value));
-	end:
 	return (0);
 }

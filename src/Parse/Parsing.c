@@ -68,12 +68,6 @@ static int	fill_info(char *command, int word, t_split *split)
 		}
 		itr_word++;
 	}
-	i = 0;
-	while (i < word - itr_var * 2)
-	{
-		printf("word : %s\n",split[i].word);
-		i++;
-	}
 	return (0);
 }
 

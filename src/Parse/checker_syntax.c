@@ -13,17 +13,19 @@ static int	occ_quote(char *buff)
 
 static int	quote_check(char *word, t_erreur *err, int i, const int nb_word)
 {
-	if ((ft_strlen(word) <= 2) && (((i + 1) == nb_word) || i == 0))
+	err->c = word[0];
+	printf("word : %s\ni : %d\n", word, i);
+	if ((ft_strlen(word) <= 2))
 	{
-		if ((i == 0) || (word[0] == word[1]))
-			err->error_code = SYNTAX;
-		if ((i + 1) == nb_word)
+		if ((i == 0) || (i + 1) == nb_word)
+		{
 			err->error_code = STX_NL;
-		return (-1);
+			err->c = word[0];
+			return (-1);
+		}
 	}
-	else if (occ_quote(word) >= 2)
+	else if (occ_quote(word) > 2)
 	{
-		err->c = word[0];
 		err->error_code = D_SYNTAX;
 		return (-1);
 	}

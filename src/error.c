@@ -13,7 +13,7 @@ void	print_parsing_error(t_erreur err)
 		ft_putendl_fd("Allocation failed", 2);
 		return ;
 	}
-	ft_putstr_fd("bash: syntax error near\nunexpected token `", ERROR_FD);
+	ft_putstr_fd("bash: syntax error near unexpected token `", ERROR_FD);
 	if (err.error_code == STX_NL)
 		ft_putstr_fd("newline", ERROR_FD);
 	else if (err.error_code == SYNTAX)
