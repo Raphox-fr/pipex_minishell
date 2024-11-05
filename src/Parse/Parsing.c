@@ -91,6 +91,7 @@ t_data_rule	*parsing(char *command, t_erreur *err)
 	split = ft_calloc(sizeof(t_split), ((word_count - nb_var) + 1));
 	if (!split || (fill_info(command, word_count, split) < 0))
 		return (NULL);
+	printf("jusqu'ici\n");
 	err->error_code = STX_NL;
 	if (syntax_check(split, word_count - nb_var, err))
 		return (NULL);
