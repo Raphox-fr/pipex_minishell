@@ -11,16 +11,19 @@ static int	occ_quote(char *buff)
 	return (i);
 }
 
-static int	quote_check(char *word, t_erreur *err, int i, const int nb_word)
+static int	quote_check(char *word, t_erreur *err, int i, const int nb_word, int sw)
 {
 	err->c = word[0];
-	printf("word : %s\ni : %d\n", word, i);
 	if ((ft_strlen(word) <= 2))
 	{
-		if ((i == 0) || (i + 1) == nb_word)
+		if (sw)
+		{
+			err->error_code = SYNTAX;
+			return (-1);
+		}
+		else if ((((i == 0) && nb_word != 1)|| (i + 1) == nb_word) && !sw)
 		{
 			err->error_code = STX_NL;
-			err->c = word[0];
 			return (-1);
 		}
 	}
@@ -83,20 +86,21 @@ int	syntax_check(t_split *split, const int nb_word, t_erreur *err)
 	while (i < nb_word)
 	{
 		sep = split[i].word[0];
-		if (sep == '|' || sep == ';' || sep == '<' || sep == '>')
+		if (sep == '|' || sep == ';' || sep == '<' || sep == '>' || sep == '&')
 		{
-			if (sw || ((sep == '|' || sep == ';')))
+			if (sep == '|' || sep == ';' || sep == '&')
 			{
 				err->c = sep;
 				err->error_code = SYNTAX;
 				if (occurence(split[i].word) >= 2)
 					err->error_code = D_SYNTAX;
-				if (i == 0 || (nb_word - 1) == i)
+				if (sw || i == 0 || (nb_word - 1) == i)
 					return (-1);
 			}
 			else if (sep == '>' || sep == '<')
 			{
-				if (quote_check(split[i].word, err, i, nb_word) == -1)
+				printf("ici\n");
+				if (quote_check(split[i].word, err, i, nb_word, sw) == -1)
 					return (-1);
 			}
 			sw = 1;
