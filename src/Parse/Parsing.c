@@ -59,6 +59,8 @@ static int	fill_info(char *command, int word, t_split *split)
 		}
 		else
 		{
+			if (command[i] == '\"' || command[i] == '\'')
+				add_quote(&split, command + i, &var, itr_var);
 			if (ft_strnchr(command + i, '$', split[k].len_word) >= 0)
 				fill_var(&split[k], command + i, &var, itr_var);
 			else
@@ -91,7 +93,6 @@ t_data_rule	*parsing(char *command, t_erreur *err)
 	split = ft_calloc(sizeof(t_split), ((word_count - nb_var) + 1));
 	if (!split || (fill_info(command, word_count, split) < 0))
 		return (NULL);
-	printf("jusqu'ici\n");
 	err->error_code = STX_NL;
 	if (syntax_check(split, word_count - nb_var, err))
 		return (NULL);

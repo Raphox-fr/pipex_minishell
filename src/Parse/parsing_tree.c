@@ -121,7 +121,6 @@ static int fill_request(t_split *split, t_data_rule *request, int count_word, in
 t_data_rule		*parsing_tree(t_split *split, const int count_word)
 {
 	t_data_rule *out;
-	int i = 0;
 	int k = 0;
 
 	out = ft_calloc(sizeof(t_data_rule), nb_command(split, count_word));
@@ -132,29 +131,6 @@ t_data_rule		*parsing_tree(t_split *split, const int count_word)
 	if (fill_request(split, &out[k], count_word, 0) == -1) {
 		free(out);
 		return NULL;
-	}
-	if (1)
-	{
-		while (k < nb_command(split, count_word)) {
-			i = 0;
-			printf("-----------------\n");
-			printf("count_word : %d\n", count_word);
-			printf("command : %s\n", out[k].command);
-			printf("nb_arg : %d\n", out[k].nbr_args);
-			if (out[k].arguments)
-			{
-				while (out[k].arguments[i]) {
-					printf("arg[%d] : %s\n", i, out[k].arguments[i]);
-					i++;
-				}
-			}
-			printf("out : %s\n", out[k].out);
-			printf("input : %s\n", out[k].input);
-			printf("oper : %c\n", out[k].oper);
-			printf("pipe : %B\n", out[k].pipe);
-			k++;
-		}
-		printf("-----------------\n");
 	}
 	return (out);
 }

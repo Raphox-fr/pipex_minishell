@@ -54,7 +54,7 @@ int r_node(t_split *split, int i);
 int	r_value(char *command, int i, t_token *token);
 int	syntax_check(t_split *split, const int nb_word, struct s_erreur *err);
 int occurence(char *str);
-void	killer_request(struct s_data_rule **request);
+void	killer_request(struct s_data_rule *request);
 
 enum {RESET, SPACES, OPER, QUOTE, D_QUOTE};
 enum {OTHER, VARIABLE, INPUT, RDIR, D_RDIR, N_OPER, PIPE};

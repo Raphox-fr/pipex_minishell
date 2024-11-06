@@ -83,7 +83,6 @@ int	syntax_check(t_split *split, const int nb_word, t_erreur *err)
 
 	i = 0;
 	sw = 0;
-	printf("bein oui du con forcement je passe la\n");
 	while (i < nb_word)
 	{
 		sep = split[i].word[0];
@@ -92,7 +91,7 @@ int	syntax_check(t_split *split, const int nb_word, t_erreur *err)
 			if (sep == '|' || sep == ';' || sep == '&') {
 				err->c = sep;
 				err->error_code = SYNTAX;
-				if (occurence(split[i].word) > 2)
+				if (sw)
 				{
 					err->error_code = D_SYNTAX;
 					return (-1);
@@ -102,7 +101,6 @@ int	syntax_check(t_split *split, const int nb_word, t_erreur *err)
 			}
 			else if (sep == '>' || sep == '<')
 			{
-				printf("ici\n");
 				if (quote_check(split[i].word, err, i, nb_word, sw) == -1)
 					return (-1);
 			}
