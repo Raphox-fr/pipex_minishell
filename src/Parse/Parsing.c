@@ -21,41 +21,6 @@ int	ft_strnchr(char *str, char to_find, const int len)
 	return (-1);
 }
 
-void	add_quote(t_split *split, char *command, t_variable **var, int nb_var)
-{
-	int i;
-	int k;
-
-	i = 0;
-	k = 0;
-	if (command[0] == '\'')
-	{
-		if (ft_strnchr(command, '$', split->len_word) >= 0)
-		{
-			while (command[i] && command[i] != '$')
-				i++;
-			while (k < nb_var)
-			{
-				if (ft_strncmp(command + i, var[k]->name, ft_strlen(var[k]->name)) != 0)
-					break;
-				k++;
-			}
-			if (k != nb_var)
-			{
-				split->word = ft_calloc((ft_strlen(command) - ft_strcspn(command + i, " ") + ft_strlen(var[k]->value)), sizeof(char));
-				ft_strlcpy(split->word, command, i);
-				ft_strlcpy(split->word + i, var[k]->value, ft_strlen(var[k]->value));
-				ft_strlcpy(split->word + i + ft_strlen(var[k]->value), command + i, split->len_word - i);
-			}
-		}
-		else
-		{
-			ft_calloc(sizeof(char), split->len_word + 1);
-			ft_strlcpy(split->word, command, split->len_word + 1);
-		}
-	}
-}
-
 void add_word(t_split *word, char *command, const int word_len)
 {
 	/*printf("------------\n");
@@ -95,7 +60,7 @@ static int	fill_info(char *command, int word, t_split *split)
 		else
 		{
 			if (command[i] == '\"' || command[i] == '\'')
-				add_quote(&split[k], command + i, &var, itr_var);
+				add_quote(&split[k], command + i, var, itr_var);
 			else if (ft_strnchr(command + i, '$', split[k].len_word) >= 0)
 				fill_var(&split[k], command + i, &var, itr_var);
 			else

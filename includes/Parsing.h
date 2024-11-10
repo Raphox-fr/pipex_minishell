@@ -34,14 +34,17 @@ typedef struct	s_split
 }				t_split;
 
 int add_var(t_variable *var, char *command, int len);
+void	add_quote(t_split *split, char *command, t_variable *var, int nb_var);
 int braquet_check(char *str, t_erreur *err);
 int	check_rdir(char *buff, int len);
 char	*delete_space(char *command);
 int evidence(char *command, t_erreur *err);
+int ft_nbr_option(const t_split *split, const int nb_node);
 int	ft_isspace(char c);
 int	ft_isend(const char c);
 int fill_var(t_split *split, char *command, t_variable **var, int nb_var);
 int find_var(char *command);
+t_variable *give_var(t_variable *var, const char *command, const int len_word, const int nb_var);
 int	is_oper(char c);
 int	nb_words(char *command);
 int	state_finish(t_token *token);
@@ -55,6 +58,8 @@ int	r_value(char *command, int i, t_token *token);
 int	syntax_check(t_split *split, const int nb_word, struct s_erreur *err);
 int occurence(char *str);
 void	killer_request(struct s_data_rule *request);
+
+int test_var(char *dest, const char *command, t_variable *var, const int nb_var);
 
 enum {RESET, SPACES, OPER, QUOTE, D_QUOTE};
 enum {OTHER, VARIABLE, INPUT, RDIR, D_RDIR, N_OPER, PIPE};

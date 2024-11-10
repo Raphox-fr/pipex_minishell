@@ -1,5 +1,21 @@
 #include "../../includes/Parsing.h"
 
+t_variable *give_var(t_variable *var, const char *command, const int len_word, const int nb_var)
+{
+	int k;
+
+	k = 0;
+	while (k < nb_var)
+	{
+		if (ft_strncmp(var[k].name, command, len_word))
+			break ;
+		k++;
+	}
+	if (k == nb_var)
+		return (NULL);
+	return (&var[k]);
+}
+
 int find_var(char *command)
 {
 	int	i;
@@ -33,8 +49,30 @@ int add_var(t_variable *var, char *command, int len)
 	k = i;
 	while (i <= len && command[i] != ' ')
 		i++;
-	var->value = ft_calloc(sizeof(char), i - k + 2);
-	ft_strlcpy(var->value, command + k, (i - k) + 2);
+	var->value = ft_calloc(sizeof(char), i - k + 1);
+	ft_strlcpy(var->value, command + k, (i - k) + 1);
+	return (1);
+}
+
+int test_var(char *dest, const char *command, t_variable *var, const int nb_var)
+{
+	int i;
+
+	i = 0;
+	if (command[0] != '$')
+		return (0);
+	command++;
+	while (i < nb_var)
+	{
+		if (ft_strncmp(command, var[i].name, ft_strlen(var[i].name)) == 0)
+			break ;
+		i++;
+	}
+	if (i == nb_var)
+		return (0);
+	if (ft_strncmp(command, var[i].name, ft_strlen(var[i].name)) != 0)
+		return (-1);
+	ft_strlcpy(dest, var[i].value, ft_strlen(var[i].value));
 	return (1);
 }
 

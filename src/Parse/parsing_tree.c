@@ -39,6 +39,22 @@ static int add_pipe(t_data_rule *request, t_split *split, int count_word)
 	return (0);
 }
 
+static int add_opt_request(t_data_rule *request, t_split *split, const int nb_opt)
+{
+	int i;
+
+	i = 0;
+	request->options = ft_calloc(sizeof(char *), nb_opt + 1);
+	if (!request->options)
+		return (-1);
+	while (i < nb_opt)
+	{
+		request->options[i] = split[i].word;
+		i++;
+	}
+	return (1);
+}
+
 static int	converte_rdir(t_data_rule *request, t_split *split)
 {
 	int rdir;
@@ -73,7 +89,7 @@ static int add_arg_request(t_data_rule *request, t_split  *split, int nb_node)
 	if (!split)
 		return (-1);
 	request->arguments = ft_calloc(sizeof(char *), nb_node + 1);
-	while (itr_arg < nb_node)
+	while (itr_arg < nb_node - 1)
 	{
 		request->arguments[itr_arg] = split[itr_arg].word;
 		itr_arg++;
@@ -92,6 +108,7 @@ static int add_input_request(t_data_rule *request, t_split *split)
 static int fill_request(t_split *split, t_data_rule *request, int count_word, int k)
 {
 	int nb_node;
+	int nb_opt;
 
 	nb_node = 0;
 	if (count_word <= 0)
@@ -100,9 +117,12 @@ static int fill_request(t_split *split, t_data_rule *request, int count_word, in
 	if (nb_node == -1)
 		return (-1);
 	add_command(&request[k], split);
+	nb_opt = ft_nbr_option(split + 1, nb_node);
+	if (nb_opt)
+		add_opt_request(&request[k], split + 1, nb_opt);
 	request[k].pipe = false;
-	if (nb_node > 1)
-		request[k].nbr_args = add_arg_request(&request[k], split + 1, nb_node);
+	if (nb_node > 1 + nb_opt)
+		request[k].nbr_args = add_arg_request(&request[k], split + nb_opt + 1, nb_node);
 	if (count_word > nb_node && converte_rdir(&request[k], &split[nb_node]))
 	{
 		nb_node++;

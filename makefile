@@ -41,6 +41,7 @@ SRC =		main.c \
 			Parse/Parsing.c \
 			Parse/parsing_tree.c \
 			Parse/parsing_tree_tool.c \
+			Parse/quote.c \
 			Parse/set_value.c \
 			Parse/variable.c \
 			Parse/free.c \
@@ -76,6 +77,9 @@ $(OBJDIR)%.o: $(SRCDIR)%.c
 
 $(NAME): libft $(OBJS)
 	@$(CC) $(CCFLAG) $(INCFLAG) $(OBJS) libft.a -lreadline -o $@
+
+val: all
+	valgrind ./$(NAME)
 
 clean:
 	@rm -rf $(OBJDIR)

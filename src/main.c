@@ -13,9 +13,18 @@ static void print_request(t_data_rule *request)
 		printf("-----------------\n");
 		printf("command : %s\n", request[k].command);
 		printf("nb_arg : %d\n", request[k].nbr_args);
+		if (request[k].options)
+		{
+			while (request[k].options[i])
+			{
+				printf("option[%d] : %s\n", i, request[k].options[i]);
+				i++;
+			}
+		}
 		if (request[k].arguments)
 		{
-			while (request[k].arguments[i]) {
+			while (request[k].arguments[i])
+			{
 				printf("arg[%d] : %s\n", i, request[k].arguments[i]);
 				i++;
 			}

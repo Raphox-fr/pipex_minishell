@@ -59,9 +59,31 @@ int r_node(t_split *split, int nb_node)
 	if (node_finish(split[nb_node].word, split[nb_node].len_word))
 		return (nb_node);
 	node_type = check_rdir(split->word, split->len_word);
-	nb_node++;
 	if (node_type == OTHER)
+	{
+		nb_node++;
 		return (r_node(split, nb_node));
+	}
 	else if (node_type == RDIR)
 		return (r_node(split, nb_node));
+}
+
+int ft_nbr_option(const t_split *split, const int nb_node)
+{
+	int nb_opt;
+	int i;
+
+	i = 0;
+	nb_opt = 0;
+	if (!split)
+		return (0);
+	while (i < nb_node - 1)
+	{
+		if (split[i].word[0] == '-')
+			nb_opt++;
+		if (split[i].word[0] != '-')
+			break ;
+		i++;
+	}
+	return (nb_opt);
 }

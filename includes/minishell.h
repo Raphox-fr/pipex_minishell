@@ -28,7 +28,7 @@ typedef struct 	s_data_rule
 {
 	// char	**envv;
 	char	*command;
-	char *options;
+	char **options;
 	char 		**arguments;
 	int 	nbr_args;
 	char	*dir_path;
