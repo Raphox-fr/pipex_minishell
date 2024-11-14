@@ -24,6 +24,14 @@ void	killer_request(t_data_rule *request)
 				}
 				free(request[k].arguments);
 			}
+			if (request[k].nb_rdir != 0)
+			{
+				i = 0;
+				while(request[k].nb_rdir != 0)
+					free(request[k].out[i++]);
+				free(request[k].out);
+				free(request[k].oper);
+			}
 			k++;
 		}
 	}

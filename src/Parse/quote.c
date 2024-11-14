@@ -60,44 +60,15 @@ static void is_double_quote(t_split *split, char *command)
 	split->word = ft_calloc(sizeof(char), split->len_word);
 	if (!split->word)
 		return ;
-	ft_strlcpy(split->word, command + 1, split->len_word);
+	ft_strlcpy(split->word, command + 1, split->len_word - 1);
 }
 
 static void is_simple_quote(t_split *split, char *command, t_variable *var, int nb_var)
 {
-	int itr_command;
-	int itr_word;
-	int i;
-	t_variable *temp_var;
-
-	itr_command = 1;
-	itr_word = 0;
-	printf("\n-----------------\n");
-	printf("size alloc : %d\n", size_alloc_s_quote(split, command, var, nb_var));
-	split->word = ft_calloc(sizeof(char), size_alloc_s_quote(split, command, var, nb_var) + 1);
+	split->word = ft_calloc(sizeof(char), split->len_word);
 	if (!split->word)
 		return ;
-	i = -1;
-	while (itr_word < split->len_word)
-	{
-		printf("itr_word : %d\n", itr_word);
-		while (command[i] && command[i] != '$')
-			i++;
-		if (command[i] == '$')
-			itr_command++;
-		ft_strlcpy(split->word + itr_word, command + itr_command, i);
-		if (command[i] == '$')
-		{
-
-			temp_var = give_var(var, command + i, split->len_word, nb_var);
-			ft_strlcpy(split->word + itr_word + i, temp_var->value, ft_strlen(temp_var->value));
-			itr_command += ft_strlen(var->name);
-			itr_word += ft_strlen(var->value);
-		}
-		itr_word += i;
-		itr_command += i;
-	}
-	printf("\n-----------------\n");
+	ft_strlcpy(split->word, command + 1, split->len_word - 1);
 }
 
 void	add_quote(t_split *split, char *command, t_variable *var, int nb_var)
