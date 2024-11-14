@@ -7,31 +7,47 @@ static void print_request(t_data_rule *request)
 
 	i = 0;
 	k = 0;
-	while (k < request->nb_command)
-	{
+	while (k < request->nb_command) {
 		i = 0;
 		printf("-----------------\n");
 		printf("command : %s\n", request[k].command);
 		printf("nb_arg : %d\n", request[k].nbr_args);
+		if (request[k].arguments)
+		{
+			while(i < request[k].nbr_args)
+			{
+				printf("arg[%d] : %s\n", i, request[k].arguments[i]);
+				i++;
+			}
+		}
 		if (request[k].options)
 		{
+			i = 0;
 			while (request[k].options[i])
 			{
 				printf("option[%d] : %s\n", i, request[k].options[i]);
 				i++;
 			}
 		}
-		if (request[k].arguments)
+		printf("input : %s\n", request[k].input);
+		if (request[k].out)
 		{
-			while (request[k].arguments[i])
+			i = 0;
+			while(request[k].out[i])
 			{
-				printf("arg[%d] : %s\n", i, request[k].arguments[i]);
+				printf("output : %s\n", request[k].out[i]);
 				i++;
 			}
 		}
-		printf("input : %s\n", request[k].input);
-		printf("output : %s\n", request[k].out);
-		printf("oper : %c\n", request[k].oper);
+		if (request[k].oper)
+		{
+			i = 0;
+			while (request[k].oper[i])
+			{
+				printf("oper : %c\n", request[k].oper[i]);
+				i++;
+			}
+		}
 		printf("pipe : %B\n", request[k].pipe);
 		k++;
 	}
@@ -59,8 +75,8 @@ int main(int argc, char **argv, char **envp)
 				print_parsing_error(err);
 			if (request)
 				print_request(request);
-			killer_request(request);
-			free(rule);
+			/*killer_request(request);
+			free(rule);*/
 		}
 	}
 	rl_clear_history();

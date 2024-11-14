@@ -9,7 +9,7 @@ END = \e[0m
 
 
 ### NAME ###
-NAME = Minishell
+NAME = minishell
 
 ### INC ###
 DIRINC = ./includes/
@@ -38,6 +38,7 @@ SRC =		main.c \
 			Parse/checker_syntax.c \
             Parse/checker_syntax_tool.c \
 			Parse/find_name_later.c \
+			Parse/fill_parsing_tree.c \
 			Parse/Parsing.c \
 			Parse/parsing_tree.c \
 			Parse/parsing_tree_tool.c \

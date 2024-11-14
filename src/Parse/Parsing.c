@@ -90,7 +90,7 @@ t_data_rule	*parsing(char *command, t_erreur *err)
 	if (word_count < 0 || braquet_check(command, err) == -1)
 		return (NULL);
 	err->error_code = STX_ALLOC;
-	split = ft_calloc(sizeof(t_split), ((word_count - nb_var) + 1));
+	split = ft_calloc(sizeof(t_split), ((word_count - nb_var) + 2));
 	if (!split || (fill_info(command, word_count, split) < 0))
 		return (NULL);
 	err->error_code = STX_NL;

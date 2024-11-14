@@ -17,8 +17,6 @@
 #include "../../includes/Parsing.h"
 #include "Parsing.h"
 
-static int	add_arg_request(t_data_rule *request, t_split  *split, int nb_node);
-
 static int add_command(t_data_rule *request, t_split *split)
 {
 	if (!split)
@@ -31,7 +29,7 @@ static int add_pipe(t_data_rule *request, t_split *split, int count_word)
 {
 	if (count_word <= 0 || !split)
 		return (0);
-	if (ft_strncmp(split->word, "|", split->len_word) == 0)
+	if (split->word && ft_strncmp(split->word, "|", split->len_word) == 0)
 	{
 		request->pipe = true;
 		return (1);
@@ -58,51 +56,41 @@ static int add_opt_request(t_data_rule *request, t_split *split, const int nb_op
 static int	converte_rdir(t_data_rule *request, t_split *split)
 {
 	int rdir;
+	int	itr;
+	int itr_oper;
+	int nb_rdir;
 
-	rdir = check_rdir(split->word, split->len_word);
-	if (rdir != OTHER && rdir != PIPE)
+	itr = 0;
+	itr_oper = 0;
+	nb_rdir = 0;
+	while (split[itr].word != NULL && ft_strncmp(split[itr].word, "|", split[itr].len_word) != 0)
 	{
-		if (rdir == D_RDIR)
-			request->oper = 'r';
-		if (rdir == RDIR)
-			request->oper = '>';
-		if (rdir == INPUT)
-			request->oper = '<';
-		return (1);
+		rdir = check_rdir(split[itr].word, split[itr].len_word);
+		if (rdir != OTHER && rdir != PIPE)
+			nb_rdir++;
+		itr++;
 	}
-	return (0);
-}
-
-static int add_out_request(t_data_rule *request, t_split *split)
-{
-	if (!split)
-		return (0);
-	request->out = split->word;
-	return (1);
-}
-
-static int add_arg_request(t_data_rule *request, t_split  *split, int nb_node)
-{
-	int itr_arg;
-
-	itr_arg = 0;
-	if (!split)
+	request->nb_rdir = nb_rdir;
+	request->oper = ft_calloc(sizeof(char *), nb_rdir + 1);
+	if (!request->oper)
 		return (-1);
-	request->arguments = ft_calloc(sizeof(char *), nb_node + 1);
-	while (itr_arg < nb_node - 1)
+	itr = 0;
+	while (split[itr].word != NULL && ft_strncmp(split[itr].word, "|", split[itr].len_word))
 	{
-		request->arguments[itr_arg] = split[itr_arg].word;
-		itr_arg++;
+		rdir = check_rdir(split[itr].word, split->len_word);
+		if (rdir != OTHER && rdir != PIPE)
+		{
+			if (rdir == D_RDIR)
+				request->oper[itr_oper] = 'r';
+			if (rdir == RDIR)
+				request->oper[itr_oper] = '>';
+			if (rdir == INPUT)
+				request->oper[itr_oper] = '<';
+			itr_oper++;
+		}
+		itr++;
 	}
-	return (itr_arg - 1);
-}
-
-static int add_input_request(t_data_rule *request, t_split *split)
-{
-	if (!split)
-		return (0);
-	request->input = split->word;
-	return (1);
+	return (nb_rdir);
 }
 
 static int fill_request(t_split *split, t_data_rule *request, int count_word, int k)
@@ -123,17 +111,14 @@ static int fill_request(t_split *split, t_data_rule *request, int count_word, in
 	request[k].pipe = false;
 	if (nb_node > 1 + nb_opt)
 		request[k].nbr_args = add_arg_request(&request[k], split + nb_opt + 1, nb_node);
+	printf("count_word arg : %d\nnb_node arg : %d\n", count_word, nb_node);
+
 	if (count_word > nb_node && converte_rdir(&request[k], &split[nb_node]))
-	{
-		nb_node++;
-		if (request->oper == '<' && nb_node < count_word)
-			add_input_request(&request[k], split + nb_node);
-		if ((request->oper == '>' || request->oper == 'r') && nb_node < count_word)
-			add_out_request(&request[k], split + nb_node);
-		nb_node++;
-	}
-	if (add_pipe(&request[k], split + nb_node, count_word) && nb_node < count_word)
-		nb_node++;
+		nb_node += add_rdir(&request[k], split + nb_node, count_word);
+	printf("nb_node rdir : %d\n", nb_node);
+	if ( nb_node < count_word)
+		nb_node += add_pipe(&request[k], split + nb_node, count_word);
+	printf("nb_node pipe : %d\n", nb_node);
 	count_word -= nb_node;
 	return (fill_request(split + nb_node, request, count_word, k + 1));
 }

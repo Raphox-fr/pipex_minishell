@@ -4,7 +4,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include<stdio.h>
+# include <stdio.h>
 # include <unistd.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -12,36 +12,19 @@
 # include <sys/stat.h>
 # include <sys/errno.h>
 # include <sys/wait.h>
+
 # include "libft.h"
 # include "stdbool.h"
 # include "Parsing.h"
 # include "parsing_error.h"
+# include "struct_shell.h"
 
 # define PROMPT "Minishell-> "
-#ifndef DEBUG
-# define DEBUG 0
-#endif
 
 // extern int genvu;
 
-typedef struct 	s_data_rule
-{
-	// char	**envv;
-	char	*command;
-	char **options;
-	char 		**arguments;
-	int 	nbr_args;
-	char	*dir_path;
-	char	*out; // il faut free
-	char	*input;
-	char 	oper; // r = >>
-	bool 	pipe;
-	int 	nb_command;
-}				t_data_rule;
-
 // Main.c
-t_data_rule		*parsing(char *command, t_erreur *err); // verification du token et decoupage dans la structure
-char			*lexing(char *brut_rules); // transformation de commande en token
+
 // BUILTINS.C ------------------------------------------------------------------------------
 
 void exec_builtins(t_data_rule struc, char **genv);
