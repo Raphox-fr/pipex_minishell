@@ -36,7 +36,7 @@ int add_arg_request(t_data_rule *request, t_split  *split, int nb_node)
 		request->arguments[itr_arg] = split[itr_arg].word;
 		itr_arg++;
 	}
-	return (itr_arg - 1);
+	return (itr_arg);
 }
 
 int add_rdir(t_data_rule *request, t_split *split, const int count_word)
@@ -57,7 +57,7 @@ int add_rdir(t_data_rule *request, t_split *split, const int count_word)
 	while (split[itr].word != NULL && ft_strncmp(split[count_output].word, "|", split[count_output].len_word) != 0)
 	{
 		printf("split[%d] : %s\n", itr, split[itr].word);
-		if ((request->oper[itr_oper]) == '<')
+		if ((request->oper[itr_oper]) == '<' || request->oper[itr_oper] == 'h')
 		{
 			itr++;
 			add_input_request(request, split + itr);

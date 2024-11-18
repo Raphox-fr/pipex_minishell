@@ -23,10 +23,6 @@ int	ft_strnchr(char *str, char to_find, const int len)
 
 void add_word(t_split *word, char *command, const int word_len)
 {
-	/*printf("------------\n");
-	printf("%d\n", word_len);
-	printf("%s\n", command);
-	printf("------------\n");*/
 	word->word = ft_calloc(sizeof(char), word_len + 1);
 	if (!word->word)
 		return ;
@@ -97,6 +93,5 @@ t_data_rule	*parsing(char *command, t_erreur *err)
 	if (syntax_check(split, word_count - nb_var, err))
 		return (NULL);
 	request = parsing_tree(split, word_count - nb_var);
-	free(split);
 	return (request);
 }

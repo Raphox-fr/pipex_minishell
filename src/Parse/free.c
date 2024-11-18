@@ -1,9 +1,35 @@
 #include "minishell.h"
 #include "../../includes/Parsing.h"
 
+void	killer_split(t_split *split, int nb_split)
+{
+	int itr;
+
+	itr = 0;
+	if (!split)
+		return ;
+	while (itr < nb_split)
+	{
+		free(split[itr].word);
+		itr++;
+	}
+	free(split);
+}
+
+static void killer_array(char **buff, const int len)
+{
+	int itr;
+
+	itr = 0;
+	while (itr < len)
+	{
+		free(buff[itr]);
+		itr++;
+	}
+}
+
 void	killer_request(t_data_rule *request)
 {
-	int i;
 	int k;
 	int nb_command;
 
@@ -14,22 +40,15 @@ void	killer_request(t_data_rule *request)
 	if (request[k].pipe)
 	{
 		while (k < nb_command) {
-			i = 0;
 			free((request[k]).command);
 			if (request[k].nbr_args != 0)
 			{
-				while (i < request[k].nbr_args) {
-					free(request[k].arguments[i]);
-					i++;
-				}
+				killer_array(request[k].arguments, request[k].nbr_args);
 				free(request[k].arguments);
 			}
 			if (request[k].nb_rdir != 0)
 			{
-				i = 0;
-				while(request[k].nb_rdir != 0)
-					free(request[k].out[i++]);
-				free(request[k].out);
+				killer_array(request[k].out, request[k].nb_rdir);
 				free(request[k].oper);
 			}
 			k++;

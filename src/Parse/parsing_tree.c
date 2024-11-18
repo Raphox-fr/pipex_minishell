@@ -84,6 +84,8 @@ static int	converte_rdir(t_data_rule *request, t_split *split)
 				request->oper[itr_oper] = 'r';
 			if (rdir == RDIR)
 				request->oper[itr_oper] = '>';
+			if (rdir == D_INPUT)
+				request->oper[itr_oper] = 'h';
 			if (rdir == INPUT)
 				request->oper[itr_oper] = '<';
 			itr_oper++;
@@ -133,5 +135,6 @@ t_data_rule		*parsing_tree(t_split *split, const int count_word)
 		free(out);
 		return NULL;
 	}
+	//killer_split(split, count_word);
 	return (out);
 }

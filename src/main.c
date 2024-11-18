@@ -69,6 +69,10 @@ static void signal_treatment(int sig)
 		rl_redisplay();
 		printf("   \b\b");
 	}
+	else if (sig == EOF)
+	{
+		exit (3);
+	}
 }
 
 int main(int argc, char **argv, char **envp)
@@ -81,16 +85,20 @@ int main(int argc, char **argv, char **envp)
 
 	signal(SIGINT, signal_treatment);
 	signal(SIGQUIT, signal_treatment);
-	while (1)
+	while (42)
 	{
 		err.error_code = -1;
 		request = NULL;
 		rule = NULL;
 		rule = readline(PROMPT);
+		if (*rule == EOF)
+			exit(3);
 		if (rule != NULL)
 		{
 			if (ft_strncmp(rule, "exit", 4) == 0)
 			{
+
+				rl_clear_history();
 				exit(1);
 			}
 			add_history(rule);
@@ -99,11 +107,9 @@ int main(int argc, char **argv, char **envp)
 				print_parsing_error(err);
 			if (request)
 				print_request(request);
-			/*killer_request(request);
-			free(rule);*/
+			free(rule);
 		}
 	}
-	rl_clear_history();
 	return 0;
 }
 /*=======

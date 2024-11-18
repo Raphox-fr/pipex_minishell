@@ -57,10 +57,11 @@ int			r_value(char *command, int i, t_token *token);
 int			syntax_check(t_split *split, const int nb_word, struct s_erreur *err);
 int 		occurence(char *str);
 void		killer_request(struct s_data_rule *request);
+void	killer_split(t_split *split, int nb_split);
 
 int test_var(char *dest, const char *command, t_variable *var, const int nb_var);
 
 enum {RESET, SPACES, OPER, QUOTE, D_QUOTE};
-enum {OTHER, VARIABLE, INPUT, RDIR, D_RDIR, N_OPER, PIPE};
+enum {OTHER, VARIABLE, INPUT, D_INPUT, RDIR, D_RDIR, N_OPER, PIPE};
 
 #endif //MINISHELL_42_LEXING_H
