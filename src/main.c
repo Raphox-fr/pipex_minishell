@@ -54,6 +54,23 @@ static void print_request(t_data_rule *request)
 	printf("-----------------\n");
 }
 
+static void signal_treatment(int sig)
+{
+	if (sig == SIGINT)
+	{
+		printf("\n");
+		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
+	}
+	else if (sig == SIGQUIT)
+	{
+		rl_on_new_line();
+		rl_redisplay();
+		printf("   \b\b");
+	}
+}
+
 int main(int argc, char **argv, char **envp)
 {
 	char	*rule;
@@ -62,13 +79,20 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 
+	signal(SIGINT, signal_treatment);
+	signal(SIGQUIT, signal_treatment);
 	while (1)
 	{
 		err.error_code = -1;
 		request = NULL;
 		rule = NULL;
 		rule = readline(PROMPT);
-		if (rule != NULL) {
+		if (rule != NULL)
+		{
+			if (ft_strncmp(rule, "exit", 4) == 0)
+			{
+				exit(1);
+			}
 			add_history(rule);
 			request = parsing(rule, &err);
 			if (!request)
