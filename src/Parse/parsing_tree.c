@@ -25,7 +25,7 @@ static int add_command(t_data_rule *request, t_split *split)
 	return (0);
 }
 
-static int add_pipe(t_data_rule *request, t_split *split, int count_word)
+static int add_pipe(t_data_rule *request, t_split *split, const int count_word)
 {
 	if (count_word <= 0 || !split)
 		return (0);
@@ -75,7 +75,7 @@ static int	converte_rdir(t_data_rule *request, t_split *split)
 	if (!request->oper)
 		return (-1);
 	itr = 0;
-	while (split[itr].word != NULL && ft_strncmp(split[itr].word, "|", split[itr].len_word))
+	while (split[itr].word != NULL && ft_strncmp(split[itr].word, "|", split[itr].len_word) && ft_strncmp(split[itr].word, ";", split[itr].len_word))
 	{
 		rdir = check_rdir(split[itr].word, split->len_word);
 		if (rdir != OTHER && rdir != PIPE)
@@ -115,8 +115,10 @@ static int fill_request(t_split *split, t_data_rule *request, int count_word, in
 		request[k].nbr_args = add_arg_request(&request[k], split + nb_opt + 1, nb_node);
 	if (count_word > nb_node && converte_rdir(&request[k], &split[nb_node]))
 		nb_node += add_rdir(&request[k], split + nb_node, count_word);
-	if ( nb_node < count_word)
+	if (nb_node < count_word)
 		nb_node += add_pipe(&request[k], split + nb_node, count_word);
+	if (nb_node < count_word)
+		nb_node += add_semicolon(split + nb_node);
 	count_word -= nb_node;
 	return (fill_request(split + nb_node, request, count_word, k + 1));
 }

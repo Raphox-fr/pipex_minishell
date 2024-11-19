@@ -4,6 +4,14 @@
 #include "../../includes/minishell.h"
 #include "../../includes/Parsing.h"
 
+int add_semicolon(t_split *split)
+{
+	printf("");
+	if (split->word && ft_strncmp(split->word, ";", split->len_word))
+		return (1);
+	return (0);
+}
+
 static int	add_out_request(t_data_rule *request, t_split *split, int itr_oper)
 {
 	printf("in add out split : %s\n", split[0].word);
@@ -50,13 +58,11 @@ int add_rdir(t_data_rule *request, t_split *split, const int count_word)
 	itr = 0;
 	if (!split)
 		return (0);
-	printf("split[%d] : %s\n", itr, split[1].word);
 	request->out = ft_calloc(sizeof(char *), request->nb_rdir + 1);
 	if (!request->out)
 		return (0);
 	while (split[itr].word != NULL && ft_strncmp(split[count_output].word, "|", split[count_output].len_word) != 0)
 	{
-		printf("split[%d] : %s\n", itr, split[itr].word);
 		if ((request->oper[itr_oper]) == '<' || request->oper[itr_oper] == 'h')
 		{
 			itr++;

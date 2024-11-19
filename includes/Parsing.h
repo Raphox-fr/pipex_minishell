@@ -33,6 +33,7 @@ int 		add_arg_request(t_data_rule *request, t_split  *split, int nb_node);
 int 		add_rdir(t_data_rule *request, t_split *split, const int count_word);
 int 		add_var(t_variable *var, char *command, int len);
 void		add_quote(t_split *split, char *command, t_variable *var, int nb_var);
+int			add_semicolon(t_split *split);
 int			braquet_check(char *str, t_erreur *err);
 int			check_rdir(char *buff, int len);
 char		*delete_space(char *command);

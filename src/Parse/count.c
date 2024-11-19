@@ -46,9 +46,10 @@ int	nb_command(t_split *split, int count_word)
 	k = 0;
 	while (k < count_word)
 	{
-		if (ft_strncmp(split[k].word, "|", 1) == 0)
+		if ((ft_strncmp(split[k].word, "|", 1) == 0) || (ft_strncmp(split[k].word, ";", split[k].len_word) == 0))
 			count++;
 		k++;
 	}
+	printf("nb_command : %d\n", count);
 	return (count);
 }

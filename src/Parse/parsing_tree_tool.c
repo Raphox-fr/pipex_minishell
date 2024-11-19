@@ -8,7 +8,7 @@ static int 	node_finish(char *buff, int len)
 {
 	if (!buff || buff == NULL)
 		return (1);
-	if (ft_strncmp(buff, "|", len) == 0 || check_rdir(buff, len) != OTHER)
+	if (ft_strncmp(buff, "|", len) == 0 || ft_strncmp(buff, ";" ,len) == 0 || check_rdir(buff, len) != OTHER)
 		return (1);
 	return (0);
 }
