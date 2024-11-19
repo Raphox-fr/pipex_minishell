@@ -6,8 +6,7 @@
 
 int add_semicolon(t_split *split)
 {
-	printf("");
-	if (split->word && ft_strncmp(split->word, ";", split->len_word))
+	if (split->word && ft_strncmp(split->word, ";", split->len_word) == 0)
 		return (1);
 	return (0);
 }

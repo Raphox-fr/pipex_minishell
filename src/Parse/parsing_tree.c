@@ -104,6 +104,7 @@ static int fill_request(t_split *split, t_data_rule *request, int count_word, in
 	if (count_word <= 0)
 		return (0);
 	nb_node = r_node(split, 0);
+	printf("start nb_node : %d\n", nb_node);
 	if (nb_node == -1)
 		return (-1);
 	add_command(&request[k], split);
@@ -120,6 +121,7 @@ static int fill_request(t_split *split, t_data_rule *request, int count_word, in
 	if (nb_node < count_word)
 		nb_node += add_semicolon(split + nb_node);
 	count_word -= nb_node;
+	printf("end nb_node : %d\n", nb_node);
 	return (fill_request(split + nb_node, request, count_word, k + 1));
 }
 
