@@ -67,7 +67,7 @@ all:$(NAME)
 
 libft:
 	@if [ ! -f "libft.a" ]; then \
-		make -C $(LIBFTDIR) all ;\
+		make -s -C $(LIBFTDIR) all ;\
 		cp $(LIBFTDIR)libft.a ./; \
 	fi;
 

@@ -115,7 +115,7 @@ static int fill_request(t_split *split, t_data_rule *request, int count_word, in
 	if (nb_node > 1 + nb_opt)
 		request[k].nbr_args = add_arg_request(&request[k], split + nb_opt + 1, nb_node);
 	if (count_word > nb_node && converte_rdir(&request[k], &split[nb_node]))
-		nb_node += add_rdir(&request[k], split + nb_node, count_word);
+		nb_node += add_rdir(&request[k], split + nb_node);
 	if (nb_node < count_word)
 		nb_node += add_pipe(&request[k], split + nb_node, count_word);
 	if (nb_node < count_word)

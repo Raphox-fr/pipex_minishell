@@ -91,7 +91,7 @@ int main(int argc, char **argv, char **envp)
 		request = NULL;
 		rule = NULL;
 		rule = readline(PROMPT);
-		if (*rule == EOF)
+		if (rule == NULL)
 			exit(3);
 		if (rule != NULL)
 		{
@@ -99,6 +99,7 @@ int main(int argc, char **argv, char **envp)
 			{
 
 				rl_clear_history();
+				free(rule);
 				exit(1);
 			}
 			add_history(rule);

@@ -46,7 +46,7 @@ int add_arg_request(t_data_rule *request, t_split  *split, int nb_node)
 	return (itr_arg);
 }
 
-int add_rdir(t_data_rule *request, t_split *split, const int count_word)
+int add_rdir(t_data_rule *request, t_split *split)
 {
 	int count_output;
 	int itr_oper;
