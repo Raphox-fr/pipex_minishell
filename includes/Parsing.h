@@ -30,18 +30,25 @@ typedef struct	s_split
 }				t_split;
 
 int 		add_arg_request(t_data_rule *request, t_split  *split, int nb_node);
+int			add_command(t_data_rule *request, t_split *split);
 int 		add_rdir(t_data_rule *request, t_split *split);
 int 		add_var(t_variable *var, char *command, int len);
-void		add_quote(t_split *split, char *command, t_variable *var, int nb_var);
+int			add_pipe(t_data_rule *request, t_split *split, const int count_word);
+void		add_quote(t_split *split, char *command);
+int			add_opt_request(t_data_rule *request, t_split *split, const int nb_opt);
 int			add_semicolon(t_split *split);
 int			braquet_check(char *str, t_erreur *err);
 int			check_rdir(char *buff, int len);
 char		*delete_space(char *command);
 int			evidence(char *command, t_erreur *err);
+int			empty_braquet(char *str);
 int			ft_nbr_option(const t_split *split, const int nb_node);
+int			ft_nb_rdir(t_split *split);
 int			ft_isspace(char c);
 int			ft_isend(const char c);
+void	fill_conv_rdir(t_data_rule *request, const int rdir, const int itr_oper);
 int 		fill_var(t_split *split, char *command, t_variable **var, int nb_var);
+void		fill_rdir(t_data_rule *request, t_split *split, int itr, int itr_oper);
 int			find_var(char *command);
 t_variable	*give_var(t_variable *var, const char *command, const int len_word, const int nb_var);
 int			is_oper(char c);
@@ -50,13 +57,13 @@ int			state_finish(t_token *token);
 int			state_in_view(const char *command, const int i);
 int			len_of_word(char *command, int i);
 int			nb_command(t_split *split, int count_word);
+int 		node_finish(char *buff, int len);
 int 		request_count(t_split *split, int count_word);
 struct s_data_rule		*parsing(char *command, t_erreur *err); // verification du token et decoupage dans la structure
 struct s_data_rule	*parsing_tree(t_split *split, const int count_word);
 int 		r_node(t_split *split, int i);
 int			r_value(char *command, int i, t_token *token);
 int			syntax_check(t_split *split, const int nb_word, struct s_erreur *err);
-int 		occurence(char *str);
 void		killer_request(struct s_data_rule *request);
 void	killer_split(t_split *split, int nb_split);
 

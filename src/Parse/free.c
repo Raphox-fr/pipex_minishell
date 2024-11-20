@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 13:09:05 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 13:13:24 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 #include "../../includes/Parsing.h"
 
 void	killer_split(t_split *split, int nb_split)
 {
-	int itr;
+	int	itr;
 
 	itr = 0;
 	if (!split)
@@ -16,9 +28,9 @@ void	killer_split(t_split *split, int nb_split)
 	free(split);
 }
 
-static void killer_array(char **buff, const int len)
+static void	killer_array(char **buff, const int len)
 {
-	int itr;
+	int	itr;
 
 	itr = 0;
 	while (itr < len)
@@ -30,8 +42,8 @@ static void killer_array(char **buff, const int len)
 
 void	killer_request(t_data_rule *request)
 {
-	int k;
-	int nb_command;
+	int	k;
+	int	nb_command;
 
 	k = 0;
 	if (!(request))
@@ -39,7 +51,8 @@ void	killer_request(t_data_rule *request)
 	nb_command = request[0].nb_command;
 	if (request[k].pipe)
 	{
-		while (k < nb_command) {
+		while (k < nb_command)
+		{
 			free((request[k]).command);
 			if (request[k].nbr_args != 0)
 			{

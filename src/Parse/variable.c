@@ -1,8 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   variable.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 15:39:14 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 15:42:36 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/Parsing.h"
 
-t_variable *give_var(t_variable *var, const char *command, const int len_word, const int nb_var)
+t_variable	*give_var(t_variable *var, const char *command,
+			const int len_word, const int nb_var)
 {
-	int k;
+	int	k;
 
 	k = 0;
 	while (k < nb_var)
@@ -16,10 +29,10 @@ t_variable *give_var(t_variable *var, const char *command, const int len_word, c
 	return (&var[k]);
 }
 
-int find_var(char *command)
+int	find_var(char *command)
 {
-	int	i;
-	int count_var;
+	int		i;
+	int		count_var;
 
 	i = 0;
 	count_var = 0;
@@ -32,14 +45,14 @@ int find_var(char *command)
 	return (count_var);
 }
 
-int add_var(t_variable *var, char *command, int len)
+int	add_var(t_variable *var, char *command, int len)
 {
-	int i;
+	int	i;
 	int	k;
 
 	i = 0;
 	k = 0;
-	while(i < len && command[i] != '=')
+	while (i < len && command[i] != '=')
 		i++;
 	if (!command[i])
 		return (0);
@@ -54,9 +67,9 @@ int add_var(t_variable *var, char *command, int len)
 	return (1);
 }
 
-int test_var(char *dest, const char *command, t_variable *var, const int nb_var)
+int	test_var(char *dest, const char *command, t_variable *var, const int nb_var)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (command[0] != '$')
@@ -76,10 +89,10 @@ int test_var(char *dest, const char *command, t_variable *var, const int nb_var)
 	return (1);
 }
 
-int fill_var(t_split *split, char *command, t_variable **var, int nb_var)
+int	fill_var(t_split *split, char *command, t_variable **var, int nb_var)
 {
 	int	i;
-	int k;
+	int	k;
 
 	i = 0;
 	k = 0;
@@ -90,7 +103,7 @@ int fill_var(t_split *split, char *command, t_variable **var, int nb_var)
 	while (k < nb_var)
 	{
 		if (ft_strncmp(command + i, var[k]->name, ft_strlen(var[k]->name)) == 0)
-			break;
+			break ;
 		k++;
 	}
 	if (k == nb_var)

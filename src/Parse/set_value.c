@@ -1,6 +1,15 @@
-//
-// Created by umbra on 9/23/24.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   set_value.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 15:37:39 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 15:39:07 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/Parsing.h"
 
 static int	is_d_quote(char *command, int i, t_token *token)
@@ -21,7 +30,7 @@ static int	is_d_quote(char *command, int i, t_token *token)
 
 static int	is_quote(char *command, int i, t_token *token)
 {
-	int k;
+	int	k;
 
 	k = i;
 	while (command[i] && command[i] != '\'')
@@ -46,14 +55,13 @@ static int	is_r_oper(char *command, int i, t_token *token)
 
 static int	is_space(char *command, int i, t_token *token)
 {
-	int k;
+	int	k;
 
 	k = i;
 	while (command[i] && !ft_isend(command[i]))
 		i++;
-	if (token->len_word == 0) {
+	if (token->len_word == 0)
 		token->len_word = i - k;
-	}
 	return (r_value(command, i, token));
 }
 

@@ -1,13 +1,21 @@
-//
-// Created by umbra on 9/13/24.
-//
-#include "../../includes/minishell.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 13:13:38 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 14:15:40 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/Parsing.h"
 #include "../../includes/parsing_error.h"
 
 int	ft_strnchr(char *str, char to_find, const int len)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!str)
@@ -21,7 +29,7 @@ int	ft_strnchr(char *str, char to_find, const int len)
 	return (-1);
 }
 
-void add_word(t_split *word, char *command, const int word_len)
+void	add_word(t_split *word, char *command, const int word_len)
 {
 	word->word = ft_calloc(sizeof(char), word_len + 1);
 	if (!word->word)
@@ -32,38 +40,23 @@ void add_word(t_split *word, char *command, const int word_len)
 static int	fill_info(char *command, int word, t_split *split)
 {
 	int		k;
-	int 	i;
-	int 	itr_var;
+	int		i;
 	int		itr_word;
-	t_variable 	*var;
 
 	k = 0;
 	i = 0;
-	itr_var = 0;
 	itr_word = 0;
-	var = NULL;
-	if (find_var(command))
-		var = ft_calloc(sizeof(t_variable), find_var(command) + 1);
 	while (itr_word < word)
 	{
 		while (ft_isspace(command[i]))
 			i++;
 		split[k].len_word = len_of_word(command, i);
-		if (ft_strnchr(command + i, '=', split[k].len_word) >= 0) {
-			itr_var += add_var(&var[itr_var], command + i, split[k].len_word);
-			i = split[k].len_word + i;
-		}
+		if (command[i] == '\"' || command[i] == '\'')
+			add_quote(&split[k], command + i);
 		else
-		{
-			if (command[i] == '\"' || command[i] == '\'')
-				add_quote(&split[k], command + i, var, itr_var);
-			else if (ft_strnchr(command + i, '$', split[k].len_word) >= 0)
-				fill_var(&split[k], command + i, &var, itr_var);
-			else
-				add_word(&split[k], command + i, split[k].len_word);
-			i = split[k].len_word + i;
-			k++;
-		}
+			add_word(&split[k], command + i, split[k].len_word);
+		i = split[k].len_word + i;
+		k++;
 		itr_word++;
 	}
 	return (0);
@@ -71,10 +64,10 @@ static int	fill_info(char *command, int word, t_split *split)
 
 t_data_rule	*parsing(char *command, t_erreur *err)
 {
-	t_data_rule *request;
-	t_split		*split;
-	int			word_count;
-	int 		nb_var;
+	t_data_rule		*request;
+	t_split			*split;
+	int				word_count;
+	int				nb_var;
 
 	split = NULL;
 	command = delete_space(command);

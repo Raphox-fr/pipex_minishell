@@ -1,38 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fill_parsing_tree.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 12:25:52 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 13:05:52 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 //
 // Created by umbra on 11/12/24
 
 #include "../../includes/minishell.h"
 #include "../../includes/Parsing.h"
 
-int add_semicolon(t_split *split)
+int	add_semicolon(t_split *split)
 {
 	if (split->word && ft_strncmp(split->word, ";", split->len_word) == 0)
 		return (1);
 	return (0);
 }
 
-static int	add_out_request(t_data_rule *request, t_split *split, int itr_oper)
+int	add_arg_request(t_data_rule *request, t_split *split, int nb_node)
 {
-	printf("in add out split : %s\n", split[0].word);
-	if (split->word != NULL)
-	{
-		request->out[itr_oper] = split->word;
-		return (2);
-	}
-	return (0);
-}
-
-static int	add_input_request(t_data_rule *request, t_split *split)
-{
-	if (!split)
-		return (0);
-	request->input = split->word;
-	return (1);
-}
-
-int add_arg_request(t_data_rule *request, t_split  *split, int nb_node)
-{
-	int itr_arg;
+	int	itr_arg;
 
 	itr_arg = 0;
 	if (!split)
@@ -46,13 +39,12 @@ int add_arg_request(t_data_rule *request, t_split  *split, int nb_node)
 	return (itr_arg);
 }
 
-int add_rdir(t_data_rule *request, t_split *split)
+int	add_rdir(t_data_rule *request, t_split *split)
 {
-	int count_output;
-	int itr_oper;
-	int itr;
+	int	rdir;
+	int	itr_oper;
+	int	itr;
 
-	count_output = 0;
 	itr_oper = 0;
 	itr = 0;
 	if (!split)
@@ -60,19 +52,14 @@ int add_rdir(t_data_rule *request, t_split *split)
 	request->out = ft_calloc(sizeof(char *), request->nb_rdir + 1);
 	if (!request->out)
 		return (0);
-	while (split[itr].word != NULL && ft_strncmp(split[count_output].word, "|", split[count_output].len_word) != 0)
+	while (split[itr].word != NULL
+		&& node_finish(split[itr].word, split[itr].len_word))
 	{
-		if ((request->oper[itr_oper]) == '<' || request->oper[itr_oper] == 'h')
+		rdir = check_rdir(split[itr].word, split[itr].len_word);
+		if (rdir != PIPE && rdir != OTHER)
 		{
+			fill_rdir(request, split, itr, itr_oper);
 			itr++;
-			add_input_request(request, split + itr);
-			add_out_request(request, split + itr, itr_oper);
-			itr_oper++;
-		}
-		else if ((request->oper[itr_oper] == '>' || request->oper[itr_oper] == 'r'))
-		{
-			itr++;
-			add_out_request(request, split + itr, itr_oper);
 			itr_oper++;
 		}
 		itr++;

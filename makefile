@@ -39,8 +39,11 @@ SRC =		main.c \
             Parse/checker_syntax_tool.c \
 			Parse/find_name_later.c \
 			Parse/fill_parsing_tree.c \
+			Parse/fill_parsing_tree_1.c \
 			Parse/Parsing.c \
+			Parse/Parsing_tool.c \
 			Parse/parsing_tree.c \
+			Parse/Parsing_tree_tool_1.c \
 			Parse/parsing_tree_tool.c \
 			Parse/quote.c \
 			Parse/set_value.c \

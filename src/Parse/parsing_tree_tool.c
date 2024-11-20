@@ -1,14 +1,24 @@
-//
-// Created by umbra on 10/3/24.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_tree_tool.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 15:25:22 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 15:32:47 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/Parsing.h"
 #include "../../includes/minishell.h"
 
-static int 	node_finish(char *buff, int len)
+int	node_finish(char *buff, int len)
 {
 	if (!buff || buff == NULL)
 		return (1);
-	if (ft_strncmp(buff, "|", len) == 0 || ft_strncmp(buff, ";" ,len) == 0 || check_rdir(buff, len) != OTHER)
+	if (ft_strncmp(buff, "|", len) == 0 || ft_strncmp(buff, ";", len) == 0 \
+		|| check_rdir(buff, len) != OTHER)
 		return (1);
 	return (0);
 }
@@ -19,7 +29,7 @@ int	check_rdir(char *buff, int len)
 		return (RDIR);
 	if (ft_strncmp(buff, "<", len) == 0)
 		return (INPUT);
-	if (ft_strncmp(buff, ">>", len) == 0) // remplacer par une boucle comme ca si c4est plus de 2 error
+	if (ft_strncmp(buff, ">>", len) == 0)
 		return (D_RDIR);
 	if (ft_strncmp(buff, "<<", len) == 0)
 		return (D_INPUT);
@@ -29,31 +39,9 @@ int	check_rdir(char *buff, int len)
 		return (OTHER);
 }
 
-int check_first(const t_split *split, int i)
+int	r_node(t_split *split, int nb_node)
 {
-	int k;
-	int quote;
-
-	k = 0;
-	quote = 0;
-	while (split[i].word[k])
-	{
-		if (split[i].word[k] == '\"')
-		{
-			if (quote == 0)
-				quote = 1;
-			else
-				quote = 0;
-		}
-		if (split[i].word[k] == '=' && quote)
-			return (VARIABLE);
-	}
-	return (OTHER);
-}
-
-int r_node(t_split *split, int nb_node)
-{
-	int node_type;
+	int	node_type;
 
 	node_type = 0;
 	if (split[nb_node].word == NULL)
@@ -70,10 +58,10 @@ int r_node(t_split *split, int nb_node)
 		return (r_node(split, nb_node));
 }
 
-int ft_nbr_option(const t_split *split, const int nb_node)
+int	ft_nbr_option(const t_split *split, const int nb_node)
 {
-	int nb_opt;
-	int i;
+	int	nb_opt;
+	int	i;
 
 	i = 0;
 	nb_opt = 0;
@@ -88,4 +76,23 @@ int ft_nbr_option(const t_split *split, const int nb_node)
 		i++;
 	}
 	return (nb_opt);
+}
+
+int	ft_nb_rdir(t_split *split)
+{
+	int	itr;
+	int	rdir;
+	int	nb_rdir;
+
+	itr = 0;
+	nb_rdir = 0;
+	while (split[itr].word != NULL
+		&& ft_strncmp(split[itr].word, "|", split[itr].len_word) != 0)
+	{
+		rdir = check_rdir(split[itr].word, split[itr].len_word);
+		if (rdir != OTHER && rdir != PIPE)
+			nb_rdir++;
+		itr++;
+	}
+	return (nb_rdir);
 }

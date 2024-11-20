@@ -1,8 +1,16 @@
-//
-// Created by umbra on 9/23/24.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   count.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 12:24:07 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 12:25:40 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-# include "../../includes/Parsing.h"
+#include "../../includes/Parsing.h"
 
 int	state_in_view(const char *command, const int i)
 {
@@ -28,7 +36,7 @@ int	len_of_word(char *command, int i)
 
 int	nb_words(char *command)
 {
-	t_token token;
+	t_token	token;
 
 	token.len_word = -1;
 	token.nb_word = 0;
@@ -39,14 +47,15 @@ int	nb_words(char *command)
 
 int	nb_command(t_split *split, int count_word)
 {
-	int count;
-	int k;
+	int	count;
+	int	k;
 
 	count = 1;
 	k = 0;
 	while (k < count_word)
 	{
-		if ((ft_strncmp(split[k].word, "|", 1) == 0) || (ft_strncmp(split[k].word, ";", split[k].len_word) == 0))
+		if ((ft_strncmp(split[k].word, "|", 1) == 0)
+			|| (ft_strncmp(split[k].word, ";", split[k].len_word) == 0))
 			count++;
 		k++;
 	}

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_name_later.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 13:08:12 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 13:08:48 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/Parsing.h"
 
 int	ft_isspace(char c)
@@ -37,8 +49,4 @@ char	*delete_space(char *command)
 int	state_finish(t_token *token)
 {
 	return (token->nb_word);
-	/*if (token->state != OPER || token->sep == '=' || token->sep == ';')
-		return (token->nb_word);
-	return (-1);*/
 }
-

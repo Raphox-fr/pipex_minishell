@@ -10,6 +10,7 @@
 
 typedef struct	s_erreur
 {
+	int	sw;
 	int error_code;
 	char c;
 }				t_erreur;

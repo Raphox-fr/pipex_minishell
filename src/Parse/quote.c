@@ -1,12 +1,21 @@
-//
-// Created by umbra on 11/7/24.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   quote.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/20 15:33:22 by thodos-s          #+#    #+#             */
+/*   Updated: 2024/11/20 15:37:19 by thodos-s         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../includes/minishell.h"
 #include "../../includes/Parsing.h"
 
-static int find_var_in_quote(const char *buff, int len)
+static int	find_var_in_quote(const char *buff, int len)
 {
-	int i;
+	int				i;
 	unsigned int	var_count;
 
 	i = 0;
@@ -20,42 +29,7 @@ static int find_var_in_quote(const char *buff, int len)
 	return (var_count);
 }
 
-static int size_alloc_s_quote(const t_split *split, const char *command, t_variable *var, const int nb_var)
-{
-	int i;
-	int k;
-	int size_var;
-	int size_name_var;
-
-	i = 0;
-	k = 0;
-	size_var = 0;
-	size_name_var = 0;
-	if (find_var_in_quote(command, split->len_word))
-	{
-		while (command[i] && i < split->len_word)
-		{
-			while (command[i] != '$' && i < split->len_word)
-				i++;
-			if (command[i] == '$' && command[i] && i != split->len_word)
-			{
-				i++;
-				while (k < nb_var) {
-					if (ft_strncmp(command + i, var[k].name, ft_strlen(var[k].name)) == 0)
-						break;
-					k++;
-				}
-				if (k == nb_var)
-					break;
-				size_var += ft_strlen(var[k].value);
-				size_name_var += ft_strlen(var[k].name);
-			}
-		}
-	}
-	return (((split->len_word - (size_name_var + 1)) + size_var - 2)); // +1 pour le $ et -2 pour les quote
-}
-
-static void is_double_quote(t_split *split, char *command)
+static void	is_double_quote(t_split *split, char *command)
 {
 	split->word = ft_calloc(sizeof(char), split->len_word);
 	if (!split->word)
@@ -63,7 +37,7 @@ static void is_double_quote(t_split *split, char *command)
 	ft_strlcpy(split->word, command + 1, split->len_word - 1);
 }
 
-static void is_simple_quote(t_split *split, char *command, t_variable *var, int nb_var)
+static void	is_simple_quote(t_split *split, char *command)
 {
 	split->word = ft_calloc(sizeof(char), split->len_word);
 	if (!split->word)
@@ -71,12 +45,12 @@ static void is_simple_quote(t_split *split, char *command, t_variable *var, int 
 	ft_strlcpy(split->word, command + 1, split->len_word - 1);
 }
 
-void	add_quote(t_split *split, char *command, t_variable *var, int nb_var)
+void	add_quote(t_split *split, char *command)
 {
 	if (!command)
 		return ;
 	if (command[0] == '\'')
-		is_simple_quote(split, command, var, nb_var);
+		is_simple_quote(split, command);
 	else if (command[0] == '\"')
 		is_double_quote(split, command);
 }
