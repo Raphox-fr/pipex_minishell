@@ -6,12 +6,17 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 22:45:55 by raphox            #+#    #+#             */
-/*   Updated: 2024/10/19 17:54:41 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:40:26 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include "../includes/libft.h"
+#include "minishell.h"
+
+void	handle_free(char **envp)
+{
+	free_env(envp);
+	envp = NULL;
+}
 
 void	free_env(char **env)
 {
@@ -20,10 +25,12 @@ void	free_env(char **env)
 	i = 0;
 	if (env == NULL)
 		return ;
-	while (env[i])
+	while (env != NULL && env[i] != NULL)
 	{
 		free(env[i]);
 		i++;
 	}
-	free(env);
+	if (env != NULL)
+		free(env);
+	// env = NULL;
 }

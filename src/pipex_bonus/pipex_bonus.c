@@ -5,104 +5,162 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/07/23 16:45:57 by raphox            #+#    #+#             */
-/*   Updated: 2024/10/21 15:07:28 by raphox           ###   ########.fr       */
+/*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
+/*   Updated: 2024/11/23 15:07:25 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
-#include "../includes/minishell.h"
-#include "../includes/libft.h"
-
-//------------------------------------------------------------------------------
+#include "minishell.h"
 
 
-
-void close_pipes(int *pipes)
+void execute(t_data_rule data, char **envp, int *p_fd)
 {
-    close(pipes[0]);
-    close(pipes[1]);
+	char *chemin;
+	char *pathname;
+			// write(2, "coucou", 6);
+    char **cmd = build_command(data);
+
+	
+	chemin = "/usr/bin/";
+	pathname = ft_strjoin(chemin, cmd[0], 0);
+	
+	close(p_fd[0]);
+    close(p_fd[1]);
+
+    if (!cmd[0])
+    {
+		free_env(cmd);
+		free(pathname);
+		free_env(envp);
+		envp = NULL;
+    }
+	
+    if (data.oper != NULL)
+    {
+        handle_redirection(data);
+    }
+
+	if (check_if_in_builtins(data, envp) == 1)
+	{
+		exec_builtins(data, envp);
+		free_env(cmd);
+		free(pathname);
+		free_env(envp);
+		envp = NULL;
+		
+		exit(EXIT_SUCCESS);
+	}
+	else if (check_if_in_builtins(data, envp) == -1)
+	{
+		free_env(cmd);
+		free(pathname);
+		free_env(envp);
+		envp = NULL;
+		exit(EXIT_SUCCESS);
+	}
+	else if (execve(pathname, cmd, envp) == -1)
+	{
+		free_env(cmd);
+		free(pathname);
+
+		free_env(envp);
+		envp = NULL;
+
+		perror("execve");
+		exit(EXIT_FAILURE);
+    }
+	exit(EXIT_SUCCESS);
 }
 
-void handle_child_process(char *cmd, char **env, int *input_fd, int *p_fd, int is_last_cmd)
+void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd)
 {
-    if (input_fd != NULL)
+    if (input_fd != NULL && *input_fd != -1)
     {
         dup2(*input_fd, STDIN_FILENO);
         close(*input_fd);
     }
-    if (!is_last_cmd)
+
+    if (!is_last_cmd) // pas la derniere commande // est different de 0 je crois
     {
         close(p_fd[0]);
         dup2(p_fd[1], STDOUT_FILENO);
-    }
-    close(p_fd[1]);
-    execute(cmd, env);
+        close(p_fd[1]);
+	}
+    execute(data, env, p_fd);
 }
 
-void handle_parent_process(int *input_fd, int *p_fd, int is_last_cmd)
+void second_process(int *input_fd, int *p_fd, int is_last_cmd)
 {
-    if (input_fd != NULL)
+    if (input_fd != NULL && *input_fd != -1)
+    {
         close(*input_fd);
-    if (!is_last_cmd)
+    }
+    if (!is_last_cmd) // pas la derniere commande // est different de 0 je crois
     {
         close(p_fd[1]);
         *input_fd = p_fd[0];
     }
     else
     {
-        close_pipes(p_fd);
+        close(p_fd[0]);
+        close(p_fd[1]);
     }
 }
 
-void do_pipe(char *cmd, char **env, int *input_fd, int is_last_cmd)
+void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd)
 {
     pid_t pid;
     int p_fd[2];
 
     if (pipe(p_fd) == -1)
-        exit(0);
-    pid = fork();
+    {
+        exit(1);
+    }
+
+    pid = fork(); // dedoublement du code
     if (pid == -1)
-        exit(0);
+    {
+        exit(1);
+    }
     if (pid == 0)
     {
-        handle_child_process(cmd, env, input_fd, p_fd, is_last_cmd);
+		execution_process(data, env, input_fd, p_fd, is_last_cmd); // enfant
     }
-    else
+    else // pid different de 0
     {
-        handle_parent_process(input_fd, p_fd, is_last_cmd);
+        second_process(input_fd, p_fd, is_last_cmd); // parents
     }
+	
 }
 
-void wait_for_children(void)
+char **pipex(t_data_rule *data, int num_commands, char **envv)
 {
-    int status;
+    int input_fd = -1;
+    int i = 0;
 
-    while (wait(&status) > 0)
-        ;
-}
-
-int pipex(int ac, char **av, char **envp)
-{
-    int index;
-    int input_fd;
-
-    input_fd = -1;
-    if (ac < 3)
+	
+    while (i < num_commands)
     {
-        write(2, "Usage: ./pipex cmd1 cmd2 ... cmdn\n", 35);
-        return (1);
+        int is_last_command;
+
+        if (i == num_commands - 1)
+            is_last_command = 1;
+        else
+            is_last_command = 0;
+		
+
+		if (check_if_in_builtins(data[i], envv) == -1 && data[i].pipe == false)
+		{
+			envv = exec_builtins(data[i], envv);
+		}
+        do_pipe(data[i], envv, &input_fd, is_last_command);
+        i++;
     }
-    index = 1;
-    while (index < ac - 1)
-    {
-        do_pipe(av[index], envp, &input_fd, 0);
-        index++;
-    }
-    do_pipe(av[ac - 1], envp, &input_fd, 1);
     wait_for_children();
-    return (0);
+    return (envv);
 }
+
+
+
 
 

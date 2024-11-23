@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   count.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thodos-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:24:07 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/20 12:25:40 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/11/21 17:51:41 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,5 @@ int	nb_command(t_split *split, int count_word)
 			count++;
 		k++;
 	}
-	printf("nb_command : %d\n", count);
 	return (count);
 }

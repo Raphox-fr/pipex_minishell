@@ -6,16 +6,14 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:10:56 by raphox            #+#    #+#             */
-/*   Updated: 2024/10/13 17:25:10 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:40:16 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-// #include "../includes/Lexing.h"
-#include "../includes/libft.h"
+#include "minishell.h"
 
 
-void echo(char *command, char *option, const char **arguments)
+void echo(char *command, char *option, char **arguments)
 {
     int i;
     char *result;
@@ -41,7 +39,7 @@ void echo(char *command, char *option, const char **arguments)
 }
 
 
-void display_echo(char *command, char *option, const char **arguments, char *result)
+void display_echo(char *command, char *option, char **arguments, char *result)
 {
 	if (command != NULL && option == NULL && arguments == 0)
 	{
@@ -51,8 +49,11 @@ void display_echo(char *command, char *option, const char **arguments, char *res
 	else if (command != NULL && option != NULL && option[0] == '-' && option[1] == 'n' && option[2] == '\0' && arguments == 0)
 		return ;
 	else if (command != NULL && option == NULL)
-		printf("%s\n", result);
+	{
+		write(1, result, ft_strlen(result)); // back slash a mettre 
+		write(1, "\n", 1); // back slash a mettre
+	}
 	else if (command != NULL && option != NULL && option[0] == '-' && option[1] == 'n')
-		printf("%s", result); //pas de saut ligne avec -n
+		write(1, result, ft_strlen(result)); // pas de saut de ligne avec -n
 	return ;
 }

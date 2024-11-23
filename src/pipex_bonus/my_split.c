@@ -1,21 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   split.c                                            :+:      :+:    :+:   */
+/*   my_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/23 17:56:25 by raphox            #+#    #+#             */
-/*   Updated: 2024/10/18 10:23:20 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:38:04 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex_bonus.h"
+#include "minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
-#include "../includes/minishell.h"
-#include "../includes/libft.h"
-
 
 int	count_words(char *str, char c)
 {
@@ -81,7 +78,7 @@ static void	ft_free(char **strs, int i)
 	free(strs);
 }
 
-char	**ft_split_pipex(char *s, char c)
+char	**ft_my_split(char *s, char c)
 {
 	int		i;
 	int		j;

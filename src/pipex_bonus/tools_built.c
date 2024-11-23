@@ -1,25 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tools.c                                            :+:      :+:    :+:   */
+/*   tools_built.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 22:49:10 by raphox            #+#    #+#             */
-/*   Updated: 2024/10/13 22:53:04 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:41:14 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/minishell.h"
-#include "../includes/libft.h"
+#include "minishell.h"
 
 void display_x_variables(char **result)
 {
+
+	int fd[2];
+	pipe(fd);
+
+	char buffer[100000];
+	size_t	bytes_read;
+	
 	int i;
 	i = 0;
 	
 	while (result[i] != NULL)
-			printf("declare -x %s\n", result[i++]);
+	{
+		write(fd[1], "declare -x ", 11);
+		write(fd[1], result[i], ft_strlen(result[i]));
+		write(fd[1], "\n", 1);
+		i++;
+	}
+	bytes_read = read(fd[0], buffer, sizeof(buffer));
+	write(1, buffer, bytes_read);
+	close(fd[0]);
+	close(fd[1]);	
 }
 int	find_in_envv(char **envv, char *var)
 {
@@ -30,7 +45,7 @@ int	find_in_envv(char **envv, char *var)
 		return (-1);
 	while (envv[i] != NULL)
 	{
-		if (strncmp(envv[i], var, strlen(var)) == 0 && envv[i][strlen(var)] == '=')
+		if (strncmp(envv[i], var, strlen(var)) == 0)
 		{
 			return (i);
 		}
@@ -49,7 +64,7 @@ void	swap(char **a, char **b)
 }
 
 
-int	compare_strings(const char *str1, const char *str2)
+int	compare_strings(char *str1, char *str2)
 {
 	int	i;
 

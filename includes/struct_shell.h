@@ -22,4 +22,5 @@ typedef struct	s_data_rule
 	int 	nb_command;
 }				t_data_rule;
 
+
 #endif //MINISHELL_42_STRUCT_SHELL_H
