@@ -6,7 +6,7 @@
 #    By: raphox <raphox@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 15:01:28 by raphox            #+#    #+#              #
-#    Updated: 2024/11/21 17:35:34 by raphox           ###   ########.fr        #
+#    Updated: 2024/11/25 17:42:25 by raphox           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ OBJS			=	${SRCS:.c=.o}
 
 CC			=	cc
 
-CFLAGS		=	-Wall -Werror -Wextra -g3
+CFLAGS		=	-Wall -Werror -Wextra -g3 -g
 
 LIBFT_DIR	=	../lib/libft
 

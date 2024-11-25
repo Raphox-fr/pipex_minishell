@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:53:16 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/21 17:40:22 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/23 16:05:33 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void display_env(char **envv)
 	int fd[2];
 	pipe(fd);
 
-	char buffer[100000];
+	char buffer[10000];
 	size_t	bytes_read;
 	
 	int i;

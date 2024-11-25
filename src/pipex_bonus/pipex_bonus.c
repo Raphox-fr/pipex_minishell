@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/23 15:07:25 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/25 18:02:20 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 {
 	char *chemin;
 	char *pathname;
-			// write(2, "coucou", 6);
     char **cmd = build_command(data);
-
 	
 	chemin = "/usr/bin/";
 	pathname = ft_strjoin(chemin, cmd[0], 0);
@@ -147,7 +145,6 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
             is_last_command = 1;
         else
             is_last_command = 0;
-		
 
 		if (check_if_in_builtins(data[i], envv) == -1 && data[i].pipe == false)
 		{

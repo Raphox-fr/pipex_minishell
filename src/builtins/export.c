@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/23 12:28:32 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/21 17:40:29 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/25 15:31:07 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ char	**export(char *command, char **arguments, char **envv)
 	{
 		bubble_sort(result);
 		display_x_variables(result);
+
 	}
 	else
 	{

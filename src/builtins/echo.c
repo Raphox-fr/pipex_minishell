@@ -6,14 +6,14 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:10:56 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/21 17:40:16 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/25 18:14:06 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-void echo(char *command, char *option, char **arguments)
+void echo(char *command, char **option, char **arguments)
 {
     int i;
     char *result;
@@ -34,7 +34,7 @@ void echo(char *command, char *option, char **arguments)
             i++;
         }
     }
-	display_echo(command, option, arguments, result);
+	display_echo(command, option[0], arguments, result);
     free(result);
 }
 

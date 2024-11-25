@@ -84,14 +84,15 @@ char	**ft_my_split(char *s, char c);
 
 // BUILTINS . C ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-char **exec_builtins(t_data_rule struc, char **envp);
+
+char **exec_builtins(t_data_rule struc, char **envv);
 int check_if_in_builtins(t_data_rule struc, char **envp);
 
 //Echo
 char **cd(char *command, char **arguments, char **envp);
 
 //Echo
-void echo(char *command, char *option, char **arguments);
+void echo(char *command, char **option, char **arguments);
 void display_echo(char *command, char *option, char **arguments, char *result);
 
 //Env
