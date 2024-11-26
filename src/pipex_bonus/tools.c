@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:38:34 by rafaria           #+#    #+#             */
-/*   Updated: 2024/11/26 15:35:28 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:38:25 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,35 +119,61 @@ void wait_for_children(void)
         // attends
     }
 }
-
-
-char	*find_path(char *cmd, char **envv)
+void free_split(char **strs)
 {
-	int		i;
-	char	*path;
-	char	*part_path;
-	char	**paths;
+    int i = 0;
 
-	i = 0;
-	while (ft_strnstr(envv[i], "PATH", 4) == 0)
-		i++;
-	paths = ft_split(envv[i] + 5, ':');
-	i = 0;
-	while (paths[i])
-	{
-		part_path = ft_strjoin(paths[i], "/", 0);
-		path = ft_strjoin(part_path, cmd, 0);
-		free(part_path);
-		if (access(path, F_OK & X_OK) == 0)
-			return (path);
-		free(path);
-		i++;
-	}
-	i = 0;
-	// while (paths[i])
-	// 	free(paths[i]);
-	// free(paths);
-	return (NULL);
+    while (strs[i])
+    {
+        free(strs[i]);
+        i++;
+    }
+    free(strs);
 }
+
+char *find_path_in_paths(char **paths, char *cmd)
+{
+    int i;
+    char *path;
+    char *part_path;
+
+    i = 0;
+    while (paths[i])
+    {
+        part_path = ft_strjoin(paths[i], "/", 0);
+        if (!part_path)
+            return (NULL);
+        path = ft_strjoin(part_path, cmd, 0);
+        free(part_path);
+        if (!path)
+            return (NULL);
+        if (access(path, F_OK | X_OK) == 0)
+            return (path);
+        free(path);
+        i++;
+    }
+    return (NULL);
+}
+
+char *find_path(char *cmd, char **envv)
+{
+    int i;
+    char **paths;
+    char *path;
+
+    i = 0;
+    while (envv[i] && ft_strnstr(envv[i], "PATH", 4) == 0)
+        i++;
+    if (!envv[i])
+        return (NULL);
+    paths = ft_split(envv[i] + 5, ':');
+    if (!paths)
+        return (NULL);
+    path = find_path_in_paths(paths, cmd);
+    free_split(paths);
+    return (path);
+}
+
+
 
 

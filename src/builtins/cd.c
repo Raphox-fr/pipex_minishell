@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:30:17 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/21 17:40:13 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:34:30 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ char **cd(char *command, char **arguments, char **envp)
 	if (command != 0 && arguments == NULL) // > cd (fait mais inutile, car pas demander)
 	{
 		//OLD PWD
-		write(2, "CHJKDCHJCK", 10);
 		pin = find_in_envv(envp, "PWD");
 		index = find_in_envv(envp, "OLDPWD");
 		buffer = ft_strjoin("OLDPWD=", envp[pin] + 4, 0);

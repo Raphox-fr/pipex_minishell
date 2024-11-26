@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/26 16:08:49 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:37:44 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
     }
 
 	
-	if (pathname == NULL)
+	if (pathname == NULL && check_if_in_builtins(data, envp) == 0)
 	{
 		write(2, cmd[0], ft_strlen(cmd[0]));
 		write(2, ":", 1);

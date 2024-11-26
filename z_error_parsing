@@ -1,0 +1,24 @@
+MARCHE parsing
+Minishell-> echo -nhola
+-----------------
+command : echo
+nbr_arg : 0
+option[0] : -nhola
+dir_path: (null)
+input : (null)
+nb_rdir : 0
+pipe : 0
+nb_command : 1
+------------------------------------------
+
+
+valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./minishell
+
+{
+   readline_memory_leak
+   Memcheck:Leak
+   ...
+   fun:readline
+   fun:add_history
+   ...
+}
