@@ -19,7 +19,7 @@ static void print_request(t_data_rule *request)
 
 	i = 0;
 	k = 0;
-	while (k < 3) {
+	while (k < request[0].nb_command) {
 		i = 0;
 		printf("-----------------\n");
 		printf("command : %s\n", request[k].command);
@@ -36,6 +36,7 @@ static void print_request(t_data_rule *request)
 		
 		if (request[k].arguments)
 		{
+			i = 0;
 			while(i < request[k].nbr_args)
 			{
 				printf("arg[%d] : %s\n", i, request[k].arguments[i]);
@@ -43,8 +44,8 @@ static void print_request(t_data_rule *request)
 			}
 		}
 
-		printf("dir_path: %s\n", request[k].dir_path);
-		if (request[k].out)
+		//printf("dir_path: %s\n", request[k].dir_path);
+		if (request[k].out && i < request[k].nb_rdir)
 		{
 			i = 0;
 			while(request[k].out[i])
@@ -56,7 +57,7 @@ static void print_request(t_data_rule *request)
 		printf("input : %s\n", request[k].input);
 		printf("nb_rdir : %d\n", request[k].nb_rdir);
 		
-		if (request[k].oper)
+		if (request[k].oper && i <= request[k].nb_rdir)
 		{
 			i = 0;
 			while (request[k].oper[i])
@@ -145,13 +146,11 @@ int main(int argc, char **argv, char **envp)
 			}
 			add_history(rule);
 			request = parsing(rule, &err);
-			count_cmd = count_data(request);
-	
-
-			envv = pipex(request, count_cmd, envv);
-			
 			if (!request)
 				print_parsing_error(err);
+			print_request(request);
+			count_cmd = request->nb_command;
+			envv = pipex(request, count_cmd, envv);
 			free(rule);
 		}
 	}
