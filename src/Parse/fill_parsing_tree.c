@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   fill_parsing_tree.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:25:52 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/20 13:05:52 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:29:51 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,15 @@ int	add_semicolon(t_split *split)
 	return (0);
 }
 
-int	add_arg_request(t_data_rule *request, t_split *split, int nb_node)
+int	add_arg_request(t_data_rule *request, t_split *split, const int nb_opt, const int nb_node)
 {
 	int	itr_arg;
 
 	itr_arg = 0;
 	if (!split)
 		return (-1);
-	request->arguments = ft_calloc(sizeof(char *), nb_node + 1);
-	while (itr_arg < nb_node - 1)
+	request->arguments = ft_calloc(sizeof(char *), (nb_node - nb_opt) + 1);
+	while (itr_arg < (nb_node - nb_opt - 1))
 	{
 		request->arguments[itr_arg] = split[itr_arg].word;
 		itr_arg++;

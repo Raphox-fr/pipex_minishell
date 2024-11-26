@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:52:34 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/25 21:16:25 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/26 16:27:22 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,11 +196,11 @@ int main(int argc, char **argv, char **envp)
 			}
 			add_history(rule);
 			request = parsing(rule, &err);
-			// print_request(request);
-			envv = pipex(request, request->nb_command, envv);
-			
 			if (!request)
 				print_parsing_error(err);
+			print_request(request);
+			count_cmd = request->nb_command;
+			envv = pipex(request, count_cmd, envv);
 			free(rule);
 	
 		}

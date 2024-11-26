@@ -29,7 +29,7 @@ typedef struct	s_split
 	int 	state;
 }				t_split;
 
-int 		add_arg_request(t_data_rule *request, t_split  *split, int nb_node);
+int	add_arg_request(t_data_rule *request, t_split *split, const int nb_opt, const int nb_node);
 int			add_command(t_data_rule *request, t_split *split);
 int 		add_rdir(t_data_rule *request, t_split *split);
 int 		add_var(t_variable *var, char *command, int len);

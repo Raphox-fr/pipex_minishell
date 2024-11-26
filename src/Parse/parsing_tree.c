@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_tree.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
+/*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:04:30 by umbra             #+#    #+#             */
-/*   Updated: 2024/11/20 15:19:01 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:29:31 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int	fill_request(t_split *split, t_data_rule *request, \
 	request[k].pipe = false;
 	if (nb_node > 1 + nb_opt)
 		request[k].nbr_args = add_arg_request(&request[k], \
-				split + nb_opt + 1, nb_node);
+				split + nb_opt + 1, nb_opt, nb_node);
 	if (count_word > nb_node && converte_rdir(&request[k], &split[nb_node]))
 		nb_node += add_rdir(&request[k], split + nb_node);
 	if (nb_node < count_word)
