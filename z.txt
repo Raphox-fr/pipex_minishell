@@ -1,0 +1,8 @@
+includes
+lib
+libft.a
+makefile
+minishell
+obj
+src
+z.txt

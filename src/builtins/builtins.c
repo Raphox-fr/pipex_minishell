@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/24 16:29:11 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/25 18:06:48 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/25 18:56:21 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ char **exec_builtins(t_data_rule struc, char **envv)
 	{
 		display_env(envv);
 		// display_x_variables(envv);
-		write(2, "env bien execute", 16);
+		// write(2, "env bien execute", 16);
 		// valgrind valid
 		return (envv);
 	}
 	else if (ft_strncmp(struc.command, "export", ft_strlen(struc.command)) == 0) // modidfy env
 	{	
-		write(2, "export bine executer", 20);
+		// write(2, "export bine executer", 20);
 		envv = export(struc.command, struc.arguments, envv);
 		// display_env(envv);
 		return (envv);

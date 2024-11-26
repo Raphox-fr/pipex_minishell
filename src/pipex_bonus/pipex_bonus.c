@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/25 18:02:20 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/25 21:24:04 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 	chemin = "/usr/bin/";
 	pathname = ft_strjoin(chemin, cmd[0], 0);
 	
-	close(p_fd[0]);
-    close(p_fd[1]);
+	// close(p_fd[0]);
+    // close(p_fd[1]);
 
     if (!cmd[0])
     {
@@ -45,7 +45,6 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		free(pathname);
 		free_env(envp);
 		envp = NULL;
-		
 		exit(EXIT_SUCCESS);
 	}
 	else if (check_if_in_builtins(data, envp) == -1)
@@ -58,6 +57,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 	}
 	else if (execve(pathname, cmd, envp) == -1)
 	{
+
 		free_env(cmd);
 		free(pathname);
 

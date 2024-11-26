@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:38:34 by rafaria           #+#    #+#             */
-/*   Updated: 2024/11/21 17:38:39 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/25 21:21:28 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void handle_heredoc(char *delimiter)
     if (pipe(pipe_fds) == -1)
     {
         perror("Erreur lors de la création du pipe");
-        exit(EXIT_FAILURE);
     }
     while (1)
     {
@@ -29,7 +28,6 @@ void handle_heredoc(char *delimiter)
         if (!line)
         {
             printf("CTRL D PRESSED \n");
-			exit(1);
         }
         if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
         {
@@ -52,6 +50,11 @@ void handle_redirection(t_data_rule data)
 	int i;
 
 	i = 0;
+	
+	if (data.oper[i] != 0)
+		i = 0;
+	else
+		return ;
 
 	while (data.out[i] != NULL)
 	{
@@ -61,7 +64,6 @@ void handle_redirection(t_data_rule data)
         	if (fd == -1)
         	{
             	perror("Erreur entree ");
-            	exit(EXIT_FAILURE);
         	}
         	dup2(fd, STDIN_FILENO);
         	close(fd);
@@ -89,7 +91,6 @@ void handle_exit_redirections(char oper, char *output)
         if (fd == -1)
         {
             perror("Erreur sortie");
-            exit(EXIT_FAILURE);
         }
         dup2(fd, STDOUT_FILENO);
         close(fd);
@@ -100,72 +101,12 @@ void handle_exit_redirections(char oper, char *output)
         if (fd == -1)
         {
             perror("Erreur ouverture sortie");
-            exit(EXIT_FAILURE);
         }
         dup2(fd, STDOUT_FILENO);
         close(fd);
     }
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
