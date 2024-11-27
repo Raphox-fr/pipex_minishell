@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/25 21:24:04 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:37:44 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,13 @@
 
 void execute(t_data_rule data, char **envp, int *p_fd)
 {
-	char *chemin;
 	char *pathname;
     char **cmd = build_command(data);
-	
-	chemin = "/usr/bin/";
-	pathname = ft_strjoin(chemin, cmd[0], 0);
-	
-	// close(p_fd[0]);
-    // close(p_fd[1]);
+
+	pathname = find_path(cmd[0], envp);
+	close(p_fd[0]);
+    close(p_fd[1]);
+
 
     if (!cmd[0])
     {
@@ -31,7 +29,22 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		free(pathname);
 		free_env(envp);
 		envp = NULL;
+		exit(EXIT_FAILURE);
     }
+
+	
+	if (pathname == NULL && check_if_in_builtins(data, envp) == 0)
+	{
+		write(2, cmd[0], ft_strlen(cmd[0]));
+		write(2, ":", 1);
+		write(2, " command not found\n", 19);
+		free_env(cmd);
+		free(pathname);
+		free_env(envp);
+		envp = NULL;
+		exit(EXIT_FAILURE);
+	}
+	
 	
     if (data.oper != NULL)
     {
@@ -40,6 +53,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 
 	if (check_if_in_builtins(data, envp) == 1)
 	{
+		// write(1, "coucou", 6); 
 		exec_builtins(data, envp);
 		free_env(cmd);
 		free(pathname);
@@ -136,6 +150,8 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
     int input_fd = -1;
     int i = 0;
 
+	if (num_commands == 0)
+		return (envv);
 	
     while (i < num_commands)
     {

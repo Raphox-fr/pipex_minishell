@@ -69,12 +69,11 @@ char    **build_command(t_data_rule data);
 
 // TOOLS . C ---------------------------------------------------------------------------------------------
 
-void error(int i, char *str);
-void    free_command(char **cmd);
 void wait_for_children(void);
 void handle_heredoc(char *delimiter);
 void handle_redirection(t_data_rule data);
 void handle_exit_redirections(char oper, char *output);
+char	*find_path(char *cmd, char **envv);
 
 
 // SPLIT . C ---------------------------------------------------------------------------------------------
@@ -93,7 +92,7 @@ char **cd(char *command, char **arguments, char **envp);
 
 //Echo
 void echo(char *command, char **option, char **arguments);
-void display_echo(char *command, char *option, char **arguments, char *result);
+void display_echo(char *command, char **option, char **arguments, char *result);
 
 //Env
 void display_env(char **envp); // env
@@ -117,6 +116,8 @@ int check_var(char *str, int i, char **envv);
 // ERROR . C
 void	free_env(char **env);
 void	handle_free(char **envp);
+void error(int i, char *str);
+void    free_command(char **cmd);
 
 //TOOLS BUILT. C ------------------------------------------------------------------------------------------
 

@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:52:34 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/25 21:16:25 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:42:09 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static void print_request(t_data_rule *request)
 
 		k++;
 	}
-	printf("-----------------\n");
+	printf("------------------------------------------\n");
 }
 	// t_data_rule ls;
 	// char *tab_ls[0];
@@ -111,57 +111,6 @@ static void signal_treatment(int sig)
 		exit (3);
 	}
 }
-// export "var23=COUCOU"
-
-	// 				t_data_rule ls;
-	// char *tab_options[3] = {"-l", 0, 0};
-	// char tab_oper_ls[4] = {'r', '>', 'r', 0};
-	// char *tab_out_ls[4] = {"x.txt", "y.txt", "z.txt", NULL};
-    // ls.command = "ls";
-    // ls.options = tab_options;
-    // ls.arguments = NULL;
-	// ls.input = NULL;
-	// ls.out = NULL ;
-	// // ls.out = tab_out_ls;
-	// ls.oper = NULL;
-	// // ls.oper = tab_oper_ls;
-	// ls.nbr_args = 0;
-    // ls.dir_path = NULL;
-    // ls.pipe = false;
-
-	// t_data_rule cat;
-	// char *tab_options_cat[3] = {"-l", 0, 0};
-	// char tab_oper_cast[4] = {'r', '>', 'r', 0};
-	// char *tab_out_cast[4] = {"x.txt", "y.txt", "z.txt", NULL};
-    // cat.command = "cat";
-    // cat.options = NULL;
-    // cat.arguments = NULL;
-	// cat.input = NULL;
-	// cat.out = NULL ;
-	// // cat.out = tab_out_cat;
-	// cat.oper = NULL;
-	// // cat.oper = tab_oper_cat;
-	// cat.nbr_args = 0;
-    // cat.dir_path = NULL;
-    // cat.pipe = true;
-
-	// 		t_data_rule fin;
-	// // char *tab_options_export[3] = {"-l", 0, 0};
-	// // char tab_oper_cast[4] = {'r', '>', 'r', 0};
-	// // char *tab_out_cast[4] = {"x.txt", "y.txt", "z.txt", NULL};
-    // fin.command = NULL;
-    // fin.options = NULL;
-    // fin.arguments = NULL;
-	// fin.input = NULL;
-	// fin.out = NULL ;
-	// // fin.out = tab_out_fin;
-	// fin.oper = NULL;
-	// // fin.oper = tab_oper_fin;
-	// fin.nbr_args = 0;
-    // fin.dir_path = NULL;
-    // fin.pipe = false;
-    // t_data_rule cmd_ls_grep[4] = {cat, cat, ls, fin};
-			// envv = pipex(cmd_ls_grep, 3, envv);
 
 
 int main(int argc, char **argv, char **envp)
@@ -190,7 +139,7 @@ int main(int argc, char **argv, char **envp)
 			if (ft_strncmp(rule, "exit", 4) == 0)
 			{
 				rl_clear_history();
-				free(envv);
+				free_env(envv);
 				free(rule);
 				exit(1);
 			}
@@ -202,14 +151,46 @@ int main(int argc, char **argv, char **envp)
 			{
 				print_request(request);
 				envv = pipex(request, request->nb_command, envv);
-				free(rule);
 			}
+			free(rule);
 		}
 	}
-	free(envv);
+	free_env(envv);
 	return 0;
 }
+	// t_data_rule export;
+	// char *tab_export[2] = {"var1=bonjourourour", NULL};
+	// export.command = "export";
+    // export.options = NULL;
+    // export.arguments = tab_export;
+	// export.input = NULL;
+	// export.out = tab_export;
+	// export.oper = NULL;
+	// export.nbr_args = 1;
+    // export.dir_path = NULL;
+	// export.nb_command = 0;
+    // export.pipe = false;
 
+	// char **cmd;
+	// cmd = build_command(export);
+
+	// int i;
+	// i = 0;
+
+	// while (cmd[i])
+	// {
+	// 	printf("%s\n", cmd[i]);
+	// 	i++;
+	// }
+	
+	// free_env(envv);
+	// free_command(cmd);
+	// return (0);
+
+	// rule = find_path("la", envv);
+	// printf("%s", rule);
+	// free_env(envv);
+	// free(rule);
 // cat | cat | ls
 
 
