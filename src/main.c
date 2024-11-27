@@ -19,6 +19,8 @@ static void print_request(t_data_rule *request)
 
 	i = 0;
 	k = 0;
+	if (!request)
+		return ;
 	while (k < request[0].nb_command) {
 		i = 0;
 		printf("-----------------\n");
@@ -44,11 +46,10 @@ static void print_request(t_data_rule *request)
 			}
 		}
 
-		//printf("dir_path: %s\n", request[k].dir_path);
-		if (request[k].out && i < request[k].nb_rdir)
+		if (request[k].out)
 		{
 			i = 0;
-			while(request[k].out[i])
+			while(request[k].out[i] && i < request[k].nb_rdir)
 			{
 				printf("output : %s\n", request[k].out[i]);
 				i++;
@@ -176,7 +177,6 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, signal_treatment);
 	signal(SIGQUIT, signal_treatment);
 	envv = ft_strdup_env(envp);
-
 	while (42)
 	{
 		err.error_code = -1;
@@ -196,19 +196,14 @@ int main(int argc, char **argv, char **envp)
 			}
 			add_history(rule);
 			request = parsing(rule, &err);
-<<<<<<< HEAD
-			// print_request(request);
-			envv = pipex(request, request->nb_command, envv);
-			
-=======
->>>>>>> corr_nb_arg
 			if (!request)
 				print_parsing_error(err);
-			print_request(request);
-			count_cmd = request->nb_command;
-			envv = pipex(request, count_cmd, envv);
-			free(rule);
-	
+			else
+			{
+				print_request(request);
+				envv = pipex(request, request->nb_command, envv);
+				free(rule);
+			}
 		}
 	}
 	free(envv);

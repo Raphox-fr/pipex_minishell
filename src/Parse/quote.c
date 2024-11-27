@@ -34,7 +34,7 @@ static void	is_double_quote(t_split *split, char *command)
 	split->word = ft_calloc(sizeof(char), split->len_word);
 	if (!split->word)
 		return ;
-	ft_strlcpy(split->word, command + 1, split->len_word - 1);
+	ft_strlcpy(split->word, command, split->len_word - 1);
 }
 
 static void	is_simple_quote(t_split *split, char *command)
@@ -42,7 +42,7 @@ static void	is_simple_quote(t_split *split, char *command)
 	split->word = ft_calloc(sizeof(char), split->len_word);
 	if (!split->word)
 		return ;
-	ft_strlcpy(split->word, command + 1, split->len_word - 1);
+	ft_strlcpy(split->word, command, split->len_word - 1);
 }
 
 void	add_quote(t_split *split, char *command)
