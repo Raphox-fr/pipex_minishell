@@ -22,3 +22,24 @@ valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./
    fun:add_history
    ...
 }
+
+{
+    _readline_
+        Memcheck:Leak
+        match-leak-kinds: all
+        ...
+        fun:readline
+}
+{
+    _add_history_
+        Memcheck:Leak
+        match-leak-kinds: all
+        ...
+        fun:add_history
+} 
+{
+    bin2
+    Memcheck:Leak
+    ...
+    obj:/usr/bin/*
+}

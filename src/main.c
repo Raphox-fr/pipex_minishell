@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:52:34 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/27 00:42:09 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/27 18:01:05 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,16 +148,21 @@ int main(int argc, char **argv, char **envp)
 			request = parsing(rule, &err);
 			if (!request)
 				print_parsing_error(err);
-			print_request(request);
+			// print_request(request);
 			count_cmd = request->nb_command;
 			envv = pipex(request, count_cmd, envv);
 			free(rule);
-	
 		}
 	}
 	free_env(envv);
 	return 0;
 }
+
+// S occuper du no such fill or directory de cd
+
+// cd ../../Documents/GNL/gnlTester/
+
+
 	// t_data_rule export;
 	// char *tab_export[2] = {"var1=bonjourourour", NULL};
 	// export.command = "export";
