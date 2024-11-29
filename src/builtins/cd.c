@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:30:17 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/27 17:31:54 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/28 15:51:27 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char **cd(char *command, char **arguments, char **envp)
     {
         getcwd(new_pwd, sizeof(new_pwd));
         resolved_path = resolve_path(new_pwd, arguments[0]);
+		
         chdir(resolved_path);
         free(resolved_path);
     }

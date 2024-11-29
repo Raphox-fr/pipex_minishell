@@ -11,7 +11,9 @@ pipe : 0
 nb_command : 1
 ------------------------------------------
 
+valgrind --leak-check=full --show-leak-kinds=all --trace-children=yes --track-fds=yes --suppressions=readline.supp ./minishell
 
+ valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./minishell
 valgrind --leak-check=full --show-leak-kinds=all --suppressions=readline.supp ./minishell
 
 {

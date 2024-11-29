@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:52:34 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/27 18:01:05 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/29 00:31:15 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ static void print_request(t_data_rule *request)
 
 	i = 0;
 	k = 0;
-	while (k < request->nb_command) 
-	{
+	if (!request)
+		return ;
+	while (k < request[0].nb_command) {
 		i = 0;
 		printf("-----------------\n");
 		printf("command : %s\n", request[k].command);
@@ -37,6 +38,7 @@ static void print_request(t_data_rule *request)
 		
 		if (request[k].arguments)
 		{
+			i = 0;
 			while(i < request[k].nbr_args)
 			{
 				printf("arg[%d] : %s\n", i, request[k].arguments[i]);
@@ -44,20 +46,19 @@ static void print_request(t_data_rule *request)
 			}
 		}
 
-		printf("dir_path: %s\n", request[k].dir_path);
 		if (request[k].out)
 		{
 			i = 0;
-			while(request[k].out[i])
+			while(request[k].out[i] && i < request[k].nb_rdir)
 			{
-				printf("output : %s\n", request[k].out[i]);
+				printf("out : %s\n", request[k].out[i]);
 				i++;
 			}
 		}
 		printf("input : %s\n", request[k].input);
 		printf("nb_rdir : %d\n", request[k].nb_rdir);
 		
-		if (request[k].oper)
+		if (request[k].oper && i <= request[k].nb_rdir)
 		{
 			i = 0;
 			while (request[k].oper[i])
@@ -72,6 +73,8 @@ static void print_request(t_data_rule *request)
 		k++;
 	}
 	printf("------------------------------------------\n");
+	printf("------------------------------------------\n");
+
 }
 	// t_data_rule ls;
 	// char *tab_ls[0];
@@ -97,6 +100,7 @@ static void signal_treatment(int sig)
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
+		write(2, "A", 1);
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
@@ -123,10 +127,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argv;
 
 	signal(SIGINT, signal_treatment);
-	signal(SIGQUIT, signal_treatment);
 	envv = ft_strdup_env(envp);
-
-
 	while (42)
 	{
 		err.error_code = -1;
@@ -134,23 +135,33 @@ int main(int argc, char **argv, char **envp)
 		rule = NULL;
 		rule = readline(PROMPT);
 		if (rule == NULL)
+		{
+			rl_clear_history();
+			free_env(envv);
+			free(rule);
+			signal(SIGQUIT, signal_treatment);
 			exit(3);
+		}
 		if (rule != NULL)
 		{
+			
 			if (ft_strncmp(rule, "exit", 4) == 0)
 			{
 				rl_clear_history();
 				free_env(envv);
 				free(rule);
+				signal(SIGQUIT, signal_treatment);
 				exit(1);
 			}
 			add_history(rule);
 			request = parsing(rule, &err);
 			if (!request)
 				print_parsing_error(err);
-			// print_request(request);
-			count_cmd = request->nb_command;
-			envv = pipex(request, count_cmd, envv);
+			else
+			{
+				print_request(request);
+				envv = pipex(request, request->nb_command, envv);
+			}
 			free(rule);
 		}
 	}

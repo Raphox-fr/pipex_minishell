@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/26 19:37:44 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/28 16:03:15 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
     close(p_fd[1]);
 
 
-    if (!cmd[0])
+    if (cmd[0] == NULL)
     {
 		free_env(cmd);
 		free(pathname);
@@ -172,6 +172,8 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
     wait_for_children();
     return (envv);
 }
+
+
 
 
 
