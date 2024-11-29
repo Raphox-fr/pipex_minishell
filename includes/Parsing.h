@@ -52,7 +52,7 @@ int			len_of_word(char *command, int i);
 int			nb_command(t_split *split, int count_word);
 int 		node_finish(char *buff, int len);
 int 		request_count(t_split *split, int count_word);
-struct s_data_rule		*parsing(t_data_rule *request, char *command, t_erreur *err); // verification du token et decoupage dans la structure
+struct s_data_rule		*parsing(char *command, t_var *var, t_erreur *err); // verification du token et decoupage dans la structure
 struct s_data_rule	*parsing_tree(t_split *split, const int count_word);
 int 		r_node(t_split *split, int i);
 int			r_value(char *command, int i, t_token *token);

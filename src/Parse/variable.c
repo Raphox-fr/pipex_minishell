@@ -87,7 +87,7 @@ int	add_var(t_var *var, char *command, int len)
 	temp_var->name = ft_calloc(sizeof(char), i + 1);
 	if (!temp_var->name)
 		return (-1);
-	ft_strlcpy(var->name, command, i + 1);
+	ft_strlcpy(temp_var->name, command, i + 1);
 	i++;
 	k = i;
 	while (i <= len && command[i] != ' ')
@@ -95,7 +95,7 @@ int	add_var(t_var *var, char *command, int len)
 	temp_var->value = ft_calloc(sizeof(char), i - k + 1);
 	if (!temp_var->value)
 		return (-1);
-	ft_strlcpy(var->value, command + k, (i - k) + 1);
+	ft_strlcpy(temp_var->value, command + k, (i - k) + 1);
 	add_back(&var, temp_var);
 	return (1);
 }

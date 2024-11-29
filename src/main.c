@@ -45,19 +45,18 @@ static void print_request(t_data_rule *request)
 				i++;
 			}
 		}
-
 		if (request[k].out)
 		{
 			i = 0;
 			while(request[k].out[i] && i < request[k].nb_rdir)
 			{
+				printf("nb_dir : %d\n", request[k].nb_rdir);
 				printf("output : %s\n", request[k].out[i]);
 				i++;
 			}
 		}
 		printf("input : %s\n", request[k].input);
 		printf("nb_rdir : %d\n", request[k].nb_rdir);
-		
 		if (request[k].oper && i <= request[k].nb_rdir)
 		{
 			i = 0;
@@ -119,13 +118,14 @@ int main(int argc, char **argv, char **envp)
 	t_erreur	err;
 	t_data_rule *request;
 	char **envv;
+	t_var	*var;
 	(void)argc;
 	(void)argv;
 
 	signal(SIGINT, signal_treatment);
 	signal(SIGQUIT, signal_treatment);
 	envv = ft_strdup_env(envp);
-	request = NULL;
+	var = NULL;
 	while (42)
 	{
 		err.error_code = -1;
@@ -143,7 +143,7 @@ int main(int argc, char **argv, char **envp)
 				exit(1);
 			}
 			add_history(rule);
-			parsing(request ,rule, &err);
+			request = parsing(rule, var, &err);
 			if (!request)
 				print_parsing_error(err);
 			else

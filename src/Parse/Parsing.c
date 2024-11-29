@@ -31,6 +31,7 @@ int	ft_strnchr(char *str, char to_find, const int len)
 
 void	add_word(t_split *word, char *command, const int word_len, t_var *var)
 {
+	printf("hey\n");
 	if (!command)
 		return ;
 	if (command[0] == '$')
@@ -42,7 +43,7 @@ void	add_word(t_split *word, char *command, const int word_len, t_var *var)
 	ft_strlcpy(word->word, command, word_len + 1);
 }
 
-static int	fill_info(char *command, const int word, t_data_rule *request, t_split *split)
+static int	fill_info(char *command, const int word, t_var *var, t_split *split)
 {
 	int		k;
 	int		i;
@@ -57,11 +58,11 @@ static int	fill_info(char *command, const int word, t_data_rule *request, t_spli
 			i++;
 		split[k].len_word = len_of_word(command, i);
 		if (find_var(command + i))
-			add_var(request->var, command, split[k].len_word);
+			add_var(var, command, split[k].len_word);
 		if (command[i] == '\"' || command[i] == '\'')
 			add_quote(&split[k], command + i);
 		else
-			add_word(&split[k], command + i, split[k].len_word, request->var);
+			add_word(&split[k], command + i, split[k].len_word, var);
 		i = split[k].len_word + i;
 		k++;
 		itr_word++;
@@ -73,13 +74,15 @@ static int	fill_info(char *command, const int word, t_data_rule *request, t_spli
 
 }
 
-t_data_rule	*parsing(t_data_rule *request ,char *command, t_erreur *err)
+t_data_rule	*parsing(char *command, t_var *var, t_erreur *err)
 {
+	t_data_rule		*request;
 	t_split			*split;
 	int				word_count;
 	int				nb_var;
 
 	split = NULL;
+	request = NULL;
 	command = delete_space(command);
 	if (ft_strlen(command) == 0)
 		return (NULL);
@@ -91,7 +94,7 @@ t_data_rule	*parsing(t_data_rule *request ,char *command, t_erreur *err)
 		return (NULL);
 	err->error_code = STX_ALLOC;
 	split = ft_calloc(sizeof(t_split), ((word_count - nb_var) + 1));
-	if (!split || (fill_info(command, word_count, request, split) < 0))
+	if (!split || (fill_info(command, word_count, var, split) < 0))
 		return (NULL);
 	err->error_code = STX_NL;
 	if (syntax_check(split, word_count - nb_var, err))
