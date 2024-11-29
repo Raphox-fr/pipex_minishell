@@ -115,7 +115,6 @@ static void signal_treatment(int sig)
 
 int main(int argc, char **argv, char **envp)
 {
-	int count_cmd;
 	char	*rule;
 	t_erreur	err;
 	t_data_rule *request;
@@ -126,10 +125,10 @@ int main(int argc, char **argv, char **envp)
 	signal(SIGINT, signal_treatment);
 	signal(SIGQUIT, signal_treatment);
 	envv = ft_strdup_env(envp);
+	request = NULL;
 	while (42)
 	{
 		err.error_code = -1;
-		request = NULL;
 		rule = NULL;
 		rule = readline(PROMPT);
 		if (rule == NULL)
@@ -144,7 +143,7 @@ int main(int argc, char **argv, char **envp)
 				exit(1);
 			}
 			add_history(rule);
-			request = parsing(rule, &err);
+			parsing(request ,rule, &err);
 			if (!request)
 				print_parsing_error(err);
 			else
