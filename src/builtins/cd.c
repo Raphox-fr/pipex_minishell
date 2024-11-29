@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:30:17 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/28 15:51:27 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/29 20:36:55 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,21 @@ char **cd(char *command, char **arguments, char **envp)
     char new_pwd[1024];
     char *resolved_path;
     char *home;
+	DIR *dir;
 
-    getcwd(old_pwd, sizeof(old_pwd));
+
+	if (arguments != NULL)
+	{
+		dir = opendir(arguments[0]);
+		if (dir == NULL)
+		{
+			display_error("cd", NULL, errno, arguments);
+			closedir(dir);
+			return(envp);
+		}
+	}
+	
+	getcwd(old_pwd, sizeof(old_pwd));
 
     if (command != NULL && arguments == NULL) // cd sans arguments (retourne au home directory)
     {
@@ -47,8 +60,7 @@ char **cd(char *command, char **arguments, char **envp)
     else if (command != NULL && arguments != NULL && arguments[0][0] != '/') // cd avec chemin relatif
     {
         getcwd(new_pwd, sizeof(new_pwd));
-        resolved_path = resolve_path(new_pwd, arguments[0]);
-		
+        resolved_path = resolve_path(new_pwd, arguments[0]);		
         chdir(resolved_path);
         free(resolved_path);
     }
@@ -79,7 +91,7 @@ char *resolve_path(const char *cwd, const char *relative_path)
 
     resolved_path = custom_realpath(path); // chemin realpath 
 	
-	printf("%s\n", resolved_path);
+	// printf("%s\n", resolved_path);
     
 	free(path);
 

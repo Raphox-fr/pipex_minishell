@@ -23,6 +23,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <sys/types.h>
+# include <dirent.h>
 # include <sys/stat.h>
 # include <sys/errno.h>
 # include <sys/wait.h>
@@ -114,6 +115,10 @@ int check_var(char *str, int i, char **envv);
 
 
 // ERROR . C
+void display_error(char *cmd, char *mess, int errno_code, char **args);
+void display_args(char **args);
+
+
 void	free_env(char **env);
 void	handle_free(char **envp);
 void error(int i, char *str);

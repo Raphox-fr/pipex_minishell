@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/22 16:10:56 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/26 13:13:52 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/29 20:53:17 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void echo(char *command, char **option, char **arguments)
     }
 	display_echo(command, option, arguments, result);
     free(result);
+	
 }
 
 
