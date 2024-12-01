@@ -26,14 +26,15 @@ typedef struct	s_split
 int 		add_arg_request(t_data_rule *request, t_split  *split, const int nb_opt, const int nb_node);
 int			add_command(t_data_rule *request, t_split *split);
 int 		add_rdir(t_data_rule *request, t_split *split);
-int 		add_var(t_var *var, char *command, int len);
+int 		add_var(t_var **var, char *command, int len);
 int			add_pipe(t_data_rule *request, t_split *split, const int count_word);
-void		add_quote(t_split *split, char *command);
+void		add_quote(t_split *split, char *command, int *index);
 int			add_opt_request(t_data_rule *request, t_split *split, const int nb_opt);
 int			add_semicolon(t_split *split);
 int			braquet_check(char *str, t_erreur *err);
 int			check_rdir(char *buff, int len);
 char		*delete_space(char *command);
+char 		*delete_inutile_quote(char *command);
 int			evidence(char *command, t_erreur *err);
 int			empty_braquet(char *str);
 int			ft_nbr_option(const t_split *split, const int nb_node);
@@ -52,7 +53,7 @@ int			len_of_word(char *command, int i);
 int			nb_command(t_split *split, int count_word);
 int 		node_finish(char *buff, int len);
 int 		request_count(t_split *split, int count_word);
-struct s_data_rule		*parsing(char *command, t_var *var, t_erreur *err); // verification du token et decoupage dans la structure
+struct s_data_rule		*parsing(char *command, t_var **var, t_erreur *err); // verification du token et decoupage dans la structure
 struct s_data_rule	*parsing_tree(t_split *split, const int count_word);
 int 		r_node(t_split *split, int i);
 int			r_value(char *command, int i, t_token *token);

@@ -23,8 +23,12 @@ int	var_count(char *command)
 	quote = false;
 	while (command[itr])
 	{
-		if (command[itr] == '=' && quote == false)
-			nb_var++;
+		while (command[itr] && (ft_isalpha(command[itr]) || command[itr] == '='))
+		{
+				if (command[itr] == '=' && quote == false)
+					nb_var++;
+				itr++;
+		}
 		if (command[itr] == '\"')
 		{
 			if (quote == false)
@@ -34,6 +38,7 @@ int	var_count(char *command)
 		}
 		itr++;
 	}
+	printf("%d\n", nb_var);
 	return (nb_var);
 }
 
@@ -56,20 +61,42 @@ void	add_back(t_var **var, t_var *elem)
 int	find_var(char *command)
 {
 	int		i;
-	int		count_var;
+	bool	dq;
 
 	i = 0;
-	count_var = 0;
+	dq = false;
 	while (command[i])
 	{
-		if (command[i] == '=')
-			count_var++;
+		if (command[i] == '\"' && dq == false)
+			dq = true;
+		else if (command[i] == '\"' && dq == true)
+			dq = false;
+		if (!ft_isalpha(command[i]) && command[i] != '=')
+			return (0);
+		if (command[i] == '=' && dq == false)
+			return (1);
 		i++;
 	}
-	return (count_var);
+	return (0);
 }
 
-int	add_var(t_var *var, char *command, int len)
+static void print_var(t_var *var)
+{
+	t_var	*temp;
+
+	temp = var;
+	printf("---------------\n");
+	printf("var : \n");
+	while (temp != NULL)
+	{
+		printf("name : %s\n", temp->name);
+		printf("value : %s\n", temp->value);
+		temp = temp->next;
+	}
+	printf("---------------\n");
+}
+
+int	add_var(t_var **var, char *command, int len)
 {
 	int	i;
 	int	k;
@@ -96,7 +123,7 @@ int	add_var(t_var *var, char *command, int len)
 	if (!temp_var->value)
 		return (-1);
 	ft_strlcpy(temp_var->value, command + k, (i - k) + 1);
-	add_back(&var, temp_var);
+	add_back(var, temp_var);
 	return (1);
 }
 
@@ -109,18 +136,20 @@ int	fill_var(t_split *split, char *command, t_var **var)
 		i++;
 	if (command[i] == '$')
 		i++;
-	while ((*var)->next != NULL)
+	if ((*var) == NULL)
+		return (0);
+	while ((*var) != NULL)
 	{
 		if (ft_strncmp(command + i, (*var)->name, split->len_word) == 0)
 			break ;
 		(*var) = (*var)->next;
 	}
-	if (ft_strncmp(command + i, (*var)->name, split->len_word) != 0)
-		return (-1);
-	split->word = ft_calloc(sizeof(char), ft_strlen((*var)->value));
+	if (*var == NULL)
+		return (0);
+	split->word = ft_calloc(sizeof(char), ft_strlen((*var)->value) + 1);
 	if (!split->word)
 		return (-1);
-	ft_strlcpy(split->word, (*var)->value, ft_strlen((*var)->value));
+	ft_strlcpy(split->word, (*var)->value, ft_strlen((*var)->value) + 1);
 	split->len_word = ft_strlen((*var)->value);
-	return (0);
+	return (1);
 }

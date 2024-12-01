@@ -45,12 +45,18 @@ static void	is_simple_quote(t_split *split, char *command)
 	ft_strlcpy(split->word, command, split->len_word);
 }
 
-void	add_quote(t_split *split, char *command)
+void	add_quote(t_split *split, char *command, int *index)
 {
 	if (!command)
 		return ;
+	if (command[0] == command[1])
+	{
+		(*index) += 2;
+		return ;
+	}
 	if (command[0] == '\'')
 		is_simple_quote(split, command);
 	else if (command[0] == '\"')
 		is_double_quote(split, command);
+	(*index)++;
 }

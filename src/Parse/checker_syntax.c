@@ -86,8 +86,6 @@ int	oper_check(t_erreur *err, char *word, const int i, const int nb_word)
 		return (-1);
 	while (word[occ] == err->c)
 		occ++;
-	printf("word : %s\n", word);
-	printf("occ : %d\n", occ);
 	if (occ >= 2)
 	{
 		err->error_code = D_SYNTAX;

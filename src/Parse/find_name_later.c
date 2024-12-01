@@ -50,3 +50,24 @@ int	state_finish(t_token *token)
 {
 	return (token->nb_word);
 }
+
+char 	*delete_inutile_quote(char *command)
+{
+	int i;
+
+	i = 0;
+	while (command[i])
+	{
+		if ((command[i] == '\'' || command [i] == '\"') && command[i + 1])
+		{
+			if (command[i] == command[i + 1])
+			{
+				command[i] = ' ';
+				command[i + 1] = ' ';
+			}
+		}
+		i++;
+	}
+	return (command);
+}
+

@@ -68,7 +68,6 @@ static void print_request(t_data_rule *request)
 		}
 		printf("pipe : %B\n", request[k].pipe);
 		printf("nb_command : %d\n", request[k].nb_command);
-
 		k++;
 	}
 	printf("------------------------------------------\n");
@@ -122,8 +121,8 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 
-	signal(SIGINT, signal_treatment);
-	signal(SIGQUIT, signal_treatment);
+	//signal(SIGINT, signal_treatment);
+	//signal(SIGQUIT, signal_treatment);
 	envv = ft_strdup_env(envp);
 	var = NULL;
 	while (42)
@@ -143,7 +142,7 @@ int main(int argc, char **argv, char **envp)
 				exit(1);
 			}
 			add_history(rule);
-			request = parsing(rule, var, &err);
+			request = parsing(rule, &var, &err);
 			if (!request)
 				print_parsing_error(err);
 			else

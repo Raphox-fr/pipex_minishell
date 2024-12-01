@@ -22,7 +22,6 @@ static int	add_input_request(t_data_rule *request, t_split *split)
 
 static int	add_out_request(t_data_rule *request, t_split *split, int itr_oper)
 {
-	printf("in add out split : %s\n", split[0].word);
 	if (split->word != NULL)
 	{
 		request->out[itr_oper] = split->word;

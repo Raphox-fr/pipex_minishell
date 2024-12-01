@@ -49,7 +49,7 @@ static int	is_r_oper(char *command, int i, t_token *token)
 	int k;
 
 	k = i;
-	while (command[i] && ft_isend(command[i]))
+	while (command[i] && is_oper(command[i]))
 		i++;
 	if (token->len_word == 0)
 		token->len_word = i - k;
