@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 bonjour
+=======
+>>>>>>> umbra
 includes
 lib
 libft.a
