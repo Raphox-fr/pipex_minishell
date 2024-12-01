@@ -21,6 +21,7 @@ DIRLIBFT = ./lib/libft
 SRCDIR = src/
 SRC =		main.c \
 			error.c \
+			utils.c \
 			execute.c \
 			builtins/builtins.c \
 			pipex_bonus/pipex_bonus.c \

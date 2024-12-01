@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:52:34 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/29 00:31:15 by raphox           ###   ########.fr       */
+/*   Updated: 2024/11/29 20:23:21 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,22 +73,6 @@ static void print_request(t_data_rule *request)
 	printf("------------------------------------------\n");
 
 }
-	// t_data_rule ls;
-	// char *tab_ls[0];
-	// char tab_oper_ls[4] = {'r', '>', 'r', 0};
-	// char *tab_out_ls[4] = {"x.txt", "y.txt", "z.txt", NULL};
-    // ls.command = "ls";
-    // ls.options = NULL;
-    // ls.arguments = NULL;
-	// ls.input = NULL;
-	// ls.out = NULL ;
-	// // ls.out = tab_out_ls;
-	// ls.oper = NULL;
-	// // ls.oper = tab_oper_ls;
-	// ls.nbr_args = 0;
-    // ls.dir_path = NULL;
-    // ls.pipe = false;
-    // t_data_rule cmd_ls[1] = {ls};
 
 static void signal_treatment(int sig)
 {
