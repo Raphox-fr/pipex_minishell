@@ -13,20 +13,22 @@
 #include "../../includes/minishell.h"
 #include "../../includes/Parsing.h"
 
-static int	find_var_in_quote(const char *buff, int len)
+static int	find_size(char *buff, const int len, t_var **var)
 {
-	int				i;
-	unsigned int	var_count;
+	int i;
+	int size;
 
+	size = 0;
 	i = 0;
-	var_count = 0;
 	while (i < len)
 	{
-		if (buff[i] == '$')
-			var_count++;
+		if (buff[i] == '$' && var_exist(buff + i + 1, var))
+		{
+			printf("ca exist\n");
+		}
 		i++;
 	}
-	return (var_count);
+	return (0);
 }
 
 static void	is_double_quote(t_split *split, char *command)
@@ -37,15 +39,12 @@ static void	is_double_quote(t_split *split, char *command)
 	ft_strlcpy(split->word, command, split->len_word);
 }
 
-static void	is_simple_quote(t_split *split, char *command)
+static void	is_simple_quote(t_split *split, char *command, t_var **var)
 {
-	split->word = ft_calloc(sizeof(char), split->len_word);
-	if (!split->word)
-		return ;
-	ft_strlcpy(split->word, command, split->len_word);
+	printf("size : %d\n", find_size(command, split->len_word, var));
 }
 
-void	add_quote(t_split *split, char *command, int *index)
+void	add_quote(t_split *split, char *command, int *index, t_var **var)
 {
 	if (!command)
 		return ;
@@ -55,7 +54,7 @@ void	add_quote(t_split *split, char *command, int *index)
 		return ;
 	}
 	if (command[0] == '\'')
-		is_simple_quote(split, command);
+		is_simple_quote(split, command, var);
 	else if (command[0] == '\"')
 		is_double_quote(split, command);
 	(*index)++;

@@ -35,8 +35,9 @@ int	add_word(t_split *word, char *command, int *index, t_var *var)
 		return (0);
 	if (command[0] == '$')
 	{
-		if (fill_var(word, command, &var) == 1)
+		if (fill_var(&(word->word), &word->len_word, command, &var) == 1)
 			(*index)++;
+		printf("word : %s\n", word->word);
 	}
 	else
 	{
@@ -64,12 +65,15 @@ static int	fill_info(char *command, int *word, t_var **var, t_split *split)
 			i++;
 		len_word = len_of_word(command, i);
 		split[k].len_word = len_word;
-		if (find_var(command + i) == 1) {
+		if (find_var(command + i) == 1)
+		{
 			add_var(var, command, split[k].len_word);
 			i = len_word + i;
-		} else {
+		}
+		else
+		{
 			if (command[i] == '\"' || command[i] == '\'')
-				add_quote(&split[k], command + i, &k);
+				add_quote(&split[k], command + i, &k, var);
 			else
 				add_word(&split[k], command + i, &k, *var);
 			i = len_word + i;
@@ -77,12 +81,12 @@ static int	fill_info(char *command, int *word, t_var **var, t_split *split)
 		itr_word++;
 	}
 	*word = k;
-	i = 0;
+	/*i = 0;
 	while (i < k)
 	{
 		printf("word : /%s/ | len : %d\n", split[i].word, split[i].len_word);
 		i++;
-	}
+	}*/
 	return (0);
 }
 
@@ -104,7 +108,6 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 		return (NULL);
 	err->error_code = STX_ALLOC;
 	split = ft_calloc(sizeof(t_split), ((word_count) + 1));
-	printf("oui\n");
 	if (!split || (fill_info(command, &word_count , var, split) < 0))
 		return (NULL);
 	err->error_code = STX_NL;

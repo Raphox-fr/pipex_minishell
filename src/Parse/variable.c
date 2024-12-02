@@ -12,34 +12,15 @@
 
 #include "../../includes/Parsing.h"
 
-int	var_count(char *command)
+int var_exist(char *command, t_var **var)
 {
-	int nb_var;
-	int itr;
-	bool	quote;
-
-	nb_var = 0;
-	itr = 0;
-	quote = false;
-	while (command[itr])
-	{
-		while (command[itr] && (ft_isalpha(command[itr]) || command[itr] == '='))
-		{
-				if (command[itr] == '=' && quote == false)
-					nb_var++;
-				itr++;
-		}
-		if (command[itr] == '\"')
-		{
-			if (quote == false)
-				quote = true;
-			else
-				quote = false;
-		}
-		itr++;
-	}
-	printf("%d\n", nb_var);
-	return (nb_var);
+	if (command[0] == '$')
+		return (0);
+	while ((*var) != NULL && ft_strncmp(command, (*var)->name, ft_strlen((*var)->name)) != 0)
+		*var = (*var)->next;
+	if ((*var) != NULL)
+		return (1);
+	return (0);
 }
 
 void	add_back(t_var **var, t_var *elem)
@@ -96,6 +77,31 @@ static void print_var(t_var *var)
 	printf("---------------\n");
 }
 
+static void	change_value(char *elem, t_var **var)
+{
+	int i;
+
+	i = 0;
+	if ((*var) == NULL)
+		return ;
+	free((*var)->value);
+	while (elem[i] && elem[i] != ft_isspace(elem[i]))
+		i++;
+	(*var)->value = ft_calloc(sizeof (char), i + 1);
+	ft_strlcpy((*var)->value, elem, i + 1);
+}
+
+static	t_var **give_var(char *command, t_var **var)
+{
+	if ((*var) == NULL)
+		return (NULL);
+	while ((*var) != NULL && ft_strncmp(command, (*var)->name, ft_strlen((*var)->name)) != 0)
+		(*var) = (*var)->next;
+	if ((*var) == NULL)
+		return (NULL);
+	return (&(*var));
+}
+
 int	add_var(t_var **var, char *command, int len)
 {
 	int	i;
@@ -104,6 +110,11 @@ int	add_var(t_var **var, char *command, int len)
 
 	i = 0;
 	k = 0;
+	if (var_exist(command, var))
+	{
+		change_value(command, give_var(command, var));
+		return (0);
+	}
 	temp_var = ft_calloc(sizeof(t_var), 1);
 	if (!temp_var)
 		return (-1);
@@ -124,15 +135,19 @@ int	add_var(t_var **var, char *command, int len)
 		return (-1);
 	ft_strlcpy(temp_var->value, command + k, (i - k) + 1);
 	add_back(var, temp_var);
+	while (ft_isspace(command[i]))
+		i++;
+	if (ft_strncmp(command + i, ";", 1) == 0)
+		command[i] = ' ';
 	return (1);
 }
 
-int	fill_var(t_split *split, char *command, t_var **var)
+int	fill_var(char **out, int *len_word, char *command, t_var **var)
 {
 	int	i;
 
 	i = 0;
-	while (i < split->len_word && command[i] != '$')
+	while (i < *len_word && command[i] != '$')
 		i++;
 	if (command[i] == '$')
 		i++;
@@ -140,16 +155,17 @@ int	fill_var(t_split *split, char *command, t_var **var)
 		return (0);
 	while ((*var) != NULL)
 	{
-		if (ft_strncmp(command + i, (*var)->name, split->len_word) == 0)
+		if (ft_strncmp(command + i, (*var)->name, *len_word) == 0)
 			break ;
 		(*var) = (*var)->next;
 	}
 	if (*var == NULL)
 		return (0);
-	split->word = ft_calloc(sizeof(char), ft_strlen((*var)->value) + 1);
-	if (!split->word)
+	*out = ft_calloc(sizeof(char), ft_strlen((*var)->value) + 1);
+	if (!(*out))
 		return (-1);
-	ft_strlcpy(split->word, (*var)->value, ft_strlen((*var)->value) + 1);
-	split->len_word = ft_strlen((*var)->value);
+	*out = ft_strjoin(*out, (*var)->value, ft_strlen((*var)->value) + 1);
+	printf("word %s\n", *out);
+	*len_word = ft_strlen((*var)->value);
 	return (1);
 }

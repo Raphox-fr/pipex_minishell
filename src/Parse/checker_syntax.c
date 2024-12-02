@@ -103,6 +103,8 @@ int	syntax_check(t_split *split, const int nb_word, t_erreur *err)
 
 	i = 0;
 	err->sw = 0;
+	if (split->word == NULL)
+		return (-1);
 	while (i < nb_word)
 	{
 		sep = split[i].word[0];
