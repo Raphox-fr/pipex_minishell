@@ -48,7 +48,7 @@ void display_error(char *cmd, char *mess, int errno_code, char **args)
 		write(2, "\n", 1);
 	}
 
-	else if (errno_code == ENOTDIR) // no such file or directory
+	else if (errno_code == ENOTDIR) // Not a directory
 	{
 		write(2, cmd, ft_strlen(cmd));
 		write(2, ": ", 2);
@@ -61,7 +61,7 @@ void display_error(char *cmd, char *mess, int errno_code, char **args)
 		write(2, return_sterror, ft_strlen(return_sterror));
 		write(2, "\n", 1);
 	}
-	else if (errno_code == EACCES) // no such file or directory
+	else if (errno_code == EACCES) // Permission denied
 	{
 		write(2, cmd, ft_strlen(cmd));
 		write(2, ": ", 2);
@@ -74,7 +74,7 @@ void display_error(char *cmd, char *mess, int errno_code, char **args)
 		write(2, return_sterror, ft_strlen(return_sterror));
 		write(2, "\n", 1);
 	}
-	else if (errno_code == ELOOP) // no such file or directory
+	else if (errno_code == ELOOP) // Too many symbolic links
 	{
 		write(2, cmd, ft_strlen(cmd));
 		write(2, ": ", 2);
@@ -87,7 +87,7 @@ void display_error(char *cmd, char *mess, int errno_code, char **args)
 		write(2, return_sterror, ft_strlen(return_sterror));
 		write(2, "\n", 1);
 	}
-	else if (errno_code == ENAMETOOLONG) // no such file or directory
+	else if (errno_code == ENAMETOOLONG) // File name too long
 	{
 		write(2, cmd, ft_strlen(cmd));
 		write(2, ": ", 2);

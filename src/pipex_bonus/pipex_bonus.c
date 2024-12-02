@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/29 19:30:40 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/02 15:44:38 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		exit(EXIT_FAILURE);
     }
 
-	
 	if (pathname == NULL && check_if_in_builtins(data, envp) == 0)
 	{
 		// display_error(cmd[0], "cmd not found", NULL);
@@ -43,8 +42,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		envp = NULL;
 		exit(EXIT_FAILURE);
 	}
-	
-	
+		
     if (data.oper != NULL)
     {
         handle_redirection(data);

@@ -2,15 +2,15 @@ ENV A COPIER DES LE DEBUT
 
 TOUS TESTER EN BASH
 
-//cd good + free good
+//cd good + free good + gestion erreur
 
-//env good + free good
+//echo good + free goodd + gestion d'erreur
 
-//pwd good + free good
+//env good + free good + gestion d erreur
 
-//echo good + free goodd
+//export good + free good + gestion d erreur
 
-//export good + free good
+//pwd good + free good + gestion d erreur
 
 // unset good + free good
 
