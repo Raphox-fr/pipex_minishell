@@ -1,0 +1,13 @@
+coucou
+includes
+lib
+libft.a
+makefile
+minishell
+notes.txt
+obj
+readline.supp
+src
+z.txt
+zzzz.txt
+zzzzz.txt

@@ -12,7 +12,7 @@ TOUS TESTER EN BASH
 
 //pwd good + free good + gestion d erreur
 
-// unset good + free good
+// unset good + free good + gestion d erreur
 
 tous les display env, et l affichage de l env
 ne sont pas  a faire car ce sera a pipex

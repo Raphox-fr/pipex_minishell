@@ -27,6 +27,7 @@ SRC =		main.c \
 			pipex_bonus/pipex_bonus.c \
 			pipex_bonus/my_split.c \
 			pipex_bonus/tools.c \
+			pipex_bonus/check_redirections.c \
 			pipex_bonus/tools_built.c \
 			pipex_bonus/build_command.c \
 			builtins/error.c \

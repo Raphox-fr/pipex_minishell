@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/02 15:44:38 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/02 19:57:50 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,27 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		envp = NULL;
 		exit(EXIT_FAILURE);
     }
+    
+	if (data.oper != NULL && (handle_redirection(data) == -1))
+	{
+		free_env(cmd);
+		free_env(envp);
+		free(pathname);
+		envp = NULL;
+		exit(EXIT_FAILURE);
+	}
 
 	if (pathname == NULL && check_if_in_builtins(data, envp) == 0)
 	{
-		// display_error(cmd[0], "cmd not found", NULL);
-		
+		display_error(cmd[0], "cmd not found", 0, NULL);
 		free_env(cmd);
 		free(pathname);
 		free_env(envp);
 		envp = NULL;
 		exit(EXIT_FAILURE);
 	}
-		
-    if (data.oper != NULL)
-    {
-        handle_redirection(data);
-    }
+
+	
 
 	if (check_if_in_builtins(data, envp) == 1)
 	{
@@ -163,7 +168,10 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
 
 		if (check_if_in_builtins(data[i], envv) == -1)
 		{
-			envv = exec_builtins(data[i], envv);
+			if (check_redirections(data[i]) == 0)
+			{
+				envv = exec_builtins(data[i], envv);
+			}
 		}
         do_pipe(data[i], envv, &input_fd, is_last_command);
         i++;
@@ -172,9 +180,5 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
     return (envv);
 }
 
-
-
-
-
-
-
+// cd dfsgfdsg > zzzzz.txt
+// cat za.txt > zzzzz.txt 

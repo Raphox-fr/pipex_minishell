@@ -6,13 +6,13 @@
 #    By: raphox <raphox@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/16 15:01:28 by raphox            #+#    #+#              #
-#    Updated: 2024/11/25 17:42:25 by raphox           ###   ########.fr        #
+#    Updated: 2024/12/02 17:48:35 by raphox           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME			=	pipex
 
-SRCS			=	pipex_bonus.c my_split.c build_command.c tools.c  builtins.c tools_built.c \
+SRCS			=	pipex_bonus.c my_split.c build_command.c tools.c  builtins.c tools_built.c check_redirections.c \
 
 OBJS			=	${SRCS:.c=.o}
 

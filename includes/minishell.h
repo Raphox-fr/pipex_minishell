@@ -70,11 +70,21 @@ char    **build_command(t_data_rule data);
 
 // TOOLS . C ---------------------------------------------------------------------------------------------
 
-void wait_for_children(void);
-void handle_heredoc(char *delimiter);
-void handle_redirection(t_data_rule data);
-void handle_exit_redirections(char oper, char *output);
+int handle_redirection(t_data_rule data);
+int		handle_entry_redirections(t_data_rule data, char oper, char *input);
+int handle_exit_redirections(t_data_rule data, char oper, char *output);
+int handle_heredoc(char *delimiter);
+
 char	*find_path(char *cmd, char **envv);
+void wait_for_children(void);
+
+// CHECK REDIRECTIONS --------------------------------------------------------------------------------------------
+
+int check_redirections(t_data_rule data);
+int		check_handle_entry_redirections(t_data_rule data, char oper, char *input);
+int check_handle_exit_redirections(t_data_rule data, char oper, char *output);
+
+
 
 
 // SPLIT . C ---------------------------------------------------------------------------------------------
