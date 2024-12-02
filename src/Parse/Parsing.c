@@ -80,7 +80,7 @@ static int	fill_info(char *command, int *word, t_var **var, t_split *split)
 	i = 0;
 	while (i < k)
 	{
-		printf("word : %s | len : %d\n", split[i].word, split[i].len_word);
+		printf("word : /%s/ | len : %d\n", split[i].word, split[i].len_word);
 		i++;
 	}
 	return (0);
@@ -104,6 +104,7 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 		return (NULL);
 	err->error_code = STX_ALLOC;
 	split = ft_calloc(sizeof(t_split), ((word_count) + 1));
+	printf("oui\n");
 	if (!split || (fill_info(command, &word_count , var, split) < 0))
 		return (NULL);
 	err->error_code = STX_NL;

@@ -54,16 +54,21 @@ int	state_finish(t_token *token)
 char 	*delete_inutile_quote(char *command)
 {
 	int i;
+	int prev_i;
 
 	i = 0;
 	while (command[i])
 	{
-		if ((command[i] == '\'' || command [i] == '\"') && command[i + 1])
+		if (command[i] == '\'' || command[i] == '\"')
 		{
-			if (command[i] == command[i + 1])
+			prev_i = i;
+			i++;
+			while (command[i] && (command[prev_i] != command[i]))
+				i++;
+			if (i - prev_i < 2 && command[prev_i + 1])
 			{
-				command[i] = ' ';
-				command[i + 1] = ' ';
+				command[prev_i] = ' ';
+				command[prev_i + 1] = ' ';
 			}
 		}
 		i++;

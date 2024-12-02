@@ -41,7 +41,7 @@ static void print_request(t_data_rule *request)
 			i = 0;
 			while(i < request[k].nbr_args)
 			{
-				printf("arg[%d] : %s\n", i, request[k].arguments[i]);
+				printf("arg[%d] : |%s|\n", i, request[k].arguments[i]);
 				i++;
 			}
 		}
@@ -141,7 +141,7 @@ int main(int argc, char **argv, char **envp)
 				print_parsing_error(err);
 			else
 			{
-				//print_request(request);
+				print_request(request);
 				envv = pipex(request, request->nb_command, envv);
 			}
 			free(rule);
