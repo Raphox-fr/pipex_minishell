@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:09:05 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/12/04 12:15:48 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:11:09 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	free_var(t_var *var)
 		return ;
 	while (var != NULL)
 	{
-		printf("passer\n");
 		temp = var;
 		var = var->next;
 		free(temp->name);
@@ -31,14 +30,14 @@ void	free_var(t_var *var)
 	}
 }
 
-void	killer_split(t_split *split, int nb_split)
+void	killer_split(t_split *split)
 {
 	int	itr;
 
 	itr = 0;
 	if (!split)
 		return ;
-	while (itr < nb_split)
+	while (1)
 	{
 		free(split[itr].word);
 		itr++;

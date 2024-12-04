@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 11:04:30 by umbra             #+#    #+#             */
-/*   Updated: 2024/12/04 12:25:52 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:11:24 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,10 @@ t_data_rule	*parsing_tree(t_split *split, const int count_word)
 	t_data_rule	*out;
 
 	if (count_word == 0)
+	{
+		//killer_split(split);
 		return (NULL);
+	}
 	out = ft_calloc(sizeof(t_data_rule), nb_command(split, count_word));
 	if (!out)
 		return (NULL);

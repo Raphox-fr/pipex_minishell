@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:13:38 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/12/04 12:26:50 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:48:28 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,28 +66,14 @@ static int	fill_info(char *command, int *word, t_var **var, t_split *split)
 			i++;
 		len_word = len_of_word(command, i);
 		split[k].len_word = len_word;
-		if (find_var(command + i) == 1)
-		{
-			add_var(var, command, split[k].len_word);
-			i = len_word + i;
-		}
+		if (command[i] == '\"' || command[i] == '\'')
+			add_quote(&split[k], command + i, &k, var);
 		else
-		{
-			if (command[i] == '\"' || command[i] == '\'')
-				add_quote(&split[k], command + i, &k, var);
-			else
-				add_word(&split[k], command + i, &k, *var);
-			i = len_word + i;
-		}
+			add_word(&split[k], command + i, &k, *var);
+		i = len_word + i;
 		itr_word++;
 	}
 	*word = k;
-	i = 0;
-	while (i < k)
-	{
-		printf("word : /%s/ | len : %d\n", split[i].word, split[i].len_word);
-		i++;
-	}
 	return (0);
 }
 
@@ -103,11 +89,14 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 	command = delete_space(command);
 	if (ft_strlen(command) == 0)
 		return (NULL);
+	command = var_adder(command, var);
+	printf("command : %s\n", command);
 	word_count = nb_words(command);
 	err->error_code = STX_NL;
 	if (word_count < 0 || braquet_check(command, err) == -1)
 		return (NULL);
 	err->error_code = STX_ALLOC;
+	printf("word_count : %d\n", word_count);
 	split = ft_calloc(sizeof(t_split), ((word_count) + 1));
 	if (!split || (fill_info(command, &word_count , var, split) < 0))
 		return (NULL);

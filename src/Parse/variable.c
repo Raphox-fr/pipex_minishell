@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:39:14 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/12/04 12:09:13 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 14:47:32 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,37 +81,40 @@ void print_var(t_var *var)
 	printf("---------------\n");
 }
 
-static void	change_value(char *elem, t_var **var)
+static void	change_value(char *elem, t_var *var)
 {
 	int i;
 	int	size;
 
 	i = 0;
 	size = 0;
-	if ((*var) == NULL)
+	if (var == NULL)
 		return ;
-	free((*var)->value);
+	free(var->value);
 	while (elem[i] && elem[i] != '=')
 		i++;
 	if (elem[i] == '=')
 		i++;
 	else
 		return ;
-	while (elem[i + size] && elem[i + size] != ft_isspace(elem[i + size]))
+	while (elem[i + size] && !ft_isspace(elem[i + size]))
 		size++;
-	(*var)->value = ft_calloc(sizeof(char), size + 1);
-	ft_strlcpy((*var)->value, elem + i, size + 1);
+	var->value = ft_calloc(sizeof(char), size + 1);
+	ft_strlcpy(var->value, elem + i, size + 1);
 }
 
-static	t_var **give_var_adrr(char *command, t_var **var)
+static	t_var *give_var_adrr(char *command, t_var **var)
 {
-	if ((*var) == NULL)
+	t_var *temp;
+
+	temp = *var;
+	if ((temp) == NULL)
 		return (NULL);
-	while ((*var) != NULL && ft_strncmp(command, (*var)->name, ft_strlen((*var)->name)) != 0)
-		(*var) = (*var)->next;
-	if ((*var) == NULL)
+	while ((temp) != NULL && ft_strncmp(command, (temp)->name, ft_strlen((*var)->name)) != 0)
+		(temp) = (temp)->next;
+	if ((temp) == NULL)
 		return (NULL);
-	return (&(*var));
+	return (temp);
 }
 
 int	add_var(t_var **var, char *command, int len)
@@ -181,4 +184,25 @@ int	fill_var(char **out, int *len_word, char *command, t_var **var)
 	printf("out : %s\n", *out);
 	*len_word = ft_strlen((*var)->value);
 	return (1);
+}
+
+char	*var_adder(char *buff, t_var **var)
+{
+	int	i;
+	int	len;
+
+	i = 0;
+	while (buff[i] && ft_isspace(buff[i]))
+		i++;
+	while (buff[i] && find_var(buff + i) == 1)
+	{
+		printf("before rank : %d | car : %c\n", i, buff[i]);
+		len = len_of_word(buff, i);
+		add_var(var, buff + i, len);
+		i += len;
+		printf("rank : %d | car : %c\n", i, buff[i]);
+		while (ft_isspace(buff[i]) || ft_strncmp(buff + i, "; ", 2) == 0)
+			i++;
+	}
+	return (buff + i);
 }
