@@ -45,6 +45,7 @@ void		fill_conv_rdir(t_data_rule *request, const int rdir, const int itr_oper);
 int			fill_var(char **out, int *len_word, char *command, t_var **var);
 void		fill_rdir(t_data_rule *request, t_split *split, int itr, int itr_oper);
 int			find_var(char *command);
+t_var	*give_var(char *command, t_var **var);
 int			is_oper(char c);
 int			nb_words(char *command);
 int			state_finish(t_token *token);
@@ -61,6 +62,8 @@ int var_exist(char *command, t_var **var);
 int			syntax_check(t_split *split, const int nb_word, struct s_erreur *err);
 void		killer_request(struct s_data_rule *request);
 void	killer_split(t_split *split, int nb_split);
+
+void print_var(t_var *var);
 
 enum {RESET, SPACES, OPER, QUOTE, D_QUOTE};
 enum {OTHER, VARIABLE, INPUT, D_INPUT, RDIR, D_RDIR, N_OPER, PIPE};

@@ -14,11 +14,17 @@
 
 int var_exist(char *command, t_var **var)
 {
-	if (command[0] == '$')
+	t_var *temp_var;
+
+	temp_var = NULL;
+	if ((*var) == NULL)
 		return (0);
-	while ((*var) != NULL && ft_strncmp(command, (*var)->name, ft_strlen((*var)->name)) != 0)
-		*var = (*var)->next;
-	if ((*var) != NULL)
+	temp_var = *var;
+	if (command[0] != '$')
+		return (0);
+	while (temp_var != NULL && ft_strncmp(command + 1, temp_var->name, ft_strlen(temp_var->name)) != 0)
+		temp_var = temp_var->next;
+	if (temp_var != NULL)
 		return (1);
 	return (0);
 }
@@ -36,7 +42,7 @@ void	add_back(t_var **var, t_var *elem)
 	temp = (*var);
 	while (temp->next != NULL)
 		temp = temp->next;
-	temp = elem;
+	temp->next = elem;
 }
 
 int	find_var(char *command)
@@ -61,7 +67,7 @@ int	find_var(char *command)
 	return (0);
 }
 
-static void print_var(t_var *var)
+void print_var(t_var *var)
 {
 	t_var	*temp;
 
@@ -91,7 +97,7 @@ static void	change_value(char *elem, t_var **var)
 	ft_strlcpy((*var)->value, elem, i + 1);
 }
 
-static	t_var **give_var(char *command, t_var **var)
+static	t_var **give_var_adrr(char *command, t_var **var)
 {
 	if ((*var) == NULL)
 		return (NULL);
@@ -112,7 +118,8 @@ int	add_var(t_var **var, char *command, int len)
 	k = 0;
 	if (var_exist(command, var))
 	{
-		change_value(command, give_var(command, var));
+		printf("exist deja");
+		change_value(command, give_var_adrr(command, var));
 		return (0);
 	}
 	temp_var = ft_calloc(sizeof(t_var), 1);
@@ -145,27 +152,27 @@ int	add_var(t_var **var, char *command, int len)
 int	fill_var(char **out, int *len_word, char *command, t_var **var)
 {
 	int	i;
+	t_var *temp;
 
+	temp = NULL;
 	i = 0;
-	while (i < *len_word && command[i] != '$')
-		i++;
-	if (command[i] == '$')
-		i++;
+	if (command[i] != '$')
+		return (0);
 	if ((*var) == NULL)
 		return (0);
-	while ((*var) != NULL)
+	if (var_exist(command, var) == 1)
 	{
-		if (ft_strncmp(command + i, (*var)->name, *len_word) == 0)
-			break ;
-		(*var) = (*var)->next;
+		temp = give_var(command + 1, var);
+		if (temp == NULL)
+			return (0);
+		printf("temp : %s\n", temp->value);
+		*out = ft_calloc(sizeof(char), ft_strlen(temp->value) + 1);
+		ft_strlcpy(*out, temp->value, ft_strlen(temp->value) + 1);
+		printf("out : %s\n", *out);
 	}
-	if (*var == NULL)
+	else
 		return (0);
-	*out = ft_calloc(sizeof(char), ft_strlen((*var)->value) + 1);
-	if (!(*out))
-		return (-1);
-	*out = ft_strjoin(*out, (*var)->value, ft_strlen((*var)->value) + 1);
-	printf("word %s\n", *out);
+	printf("out : %s\n", *out);
 	*len_word = ft_strlen((*var)->value);
 	return (1);
 }

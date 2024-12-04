@@ -135,6 +135,8 @@ int main(int argc, char **argv, char **envp)
 				signal(SIGQUIT, signal_treatment);
 				exit(1);
 			}
+			if (ft_strncmp(rule, "var", 3) == 0)
+				print_var(var);
 			add_history(rule);
 			request = parsing(rule, &var, &err);
 			if (!request)

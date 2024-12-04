@@ -13,10 +13,26 @@
 #include "../../includes/minishell.h"
 #include "../../includes/Parsing.h"
 
+t_var	*give_var(char *command, t_var **var)
+{
+	t_var *temp_var;
+
+	temp_var = NULL;
+	if (!command || !(*var))
+		return (NULL);
+	temp_var = *var;
+	while (temp_var != NULL && ft_strncmp(command, temp_var->name, ft_strlen(temp_var->name)) != 0)
+		temp_var = temp_var->next;
+	if (temp_var != NULL)
+		return (temp_var);
+	return (NULL);
+}
+
 static int	find_size(char *buff, const int len, t_var **var)
 {
 	int i;
 	int size;
+	t_var *temp;
 
 	size = 0;
 	i = 0;
@@ -24,14 +40,20 @@ static int	find_size(char *buff, const int len, t_var **var)
 	{
 		if (buff[i] == '$' && var_exist(buff + i + 1, var))
 		{
-			printf("ca exist\n");
+			temp = give_var(buff + i + 1, var);
+			if (temp != NULL)
+			{
+				size += ft_strlen(temp->value);
+				i += ft_strlen(temp->name) + 1;
+			}
 		}
+		size++;
 		i++;
 	}
 	return (0);
 }
 
-static void	is_double_quote(t_split *split, char *command)
+static void	is_simple_quote(t_split *split, char *command)
 {
 	split->word = ft_calloc(sizeof(char), split->len_word);
 	if (!split->word)
@@ -39,9 +61,32 @@ static void	is_double_quote(t_split *split, char *command)
 	ft_strlcpy(split->word, command, split->len_word);
 }
 
-static void	is_simple_quote(t_split *split, char *command, t_var **var)
+static void	is_double_quote(t_split *split, char *command, t_var **var)
 {
-	printf("size : %d\n", find_size(command, split->len_word, var));
+	int i;
+	t_var *temp_var;
+
+	i = 0;
+	temp_var = NULL;
+	if (command == NULL)
+		return ;
+	split->word = ft_calloc(sizeof(char), find_size(command, split->len_word, var) + 1);
+	if (!split->word)
+		return ;
+	while (i < split->len_word)
+	{
+		if (command[i] == '$' && var_exist(command + i, var))
+		{
+			temp_var = give_var(command + i + 1, var);
+			split->word = ft_strjoin(split->word, temp_var->value, ft_strlen(temp_var->value));
+			i += ft_strlen(temp_var->name) + 1;
+		}
+		else
+		{
+			split->word[i] = command[i];
+			i++;
+		}
+	}
 }
 
 void	add_quote(t_split *split, char *command, int *index, t_var **var)
@@ -54,8 +99,8 @@ void	add_quote(t_split *split, char *command, int *index, t_var **var)
 		return ;
 	}
 	if (command[0] == '\'')
-		is_simple_quote(split, command, var);
+		is_simple_quote(split, command);
 	else if (command[0] == '\"')
-		is_double_quote(split, command);
+		is_double_quote(split, command, var);
 	(*index)++;
 }
