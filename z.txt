@@ -1,0 +1,40 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+bonjour
+=======
+>>>>>>> umbra
+=======
+includes
+lib
+libft.a
+makefile
+minishell
+obj
+readline.supp
+src
+z_error_parsing
+z.txt
+includes
+lib
+libft.a
+makefile
+minishell
+obj
+readline.supp
+src
+z_error_parsing
+z.txt
+>>>>>>> 8cf8b41bf15c7d8cd35c0adb23237c62c3dcfa98
+includes
+lib
+libft.a
+makefile
+minishell
+obj
+readline.supp
+src
+z_error_parsing
+z.txt
+>>>>>>> 93013e6160b29ce8b7c4500b0ec3350dcc2375c9

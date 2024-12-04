@@ -54,7 +54,7 @@ int	r_node(t_split *split, int nb_node)
 		nb_node++;
 		return (r_node(split, nb_node));
 	}
-	else if (node_type == RDIR || node_type == D_INPUT)
+	else if (node_type == RDIR || node_type == D_INPUT || node_type == PIPE)
 		return (r_node(split, nb_node));
 }
 

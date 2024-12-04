@@ -5,10 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/21 16:52:34 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/03 16:31:00 by raphox           ###   ########.fr       */
+/*   Created: 2024/12/04 18:17:46 by raphox            #+#    #+#             */
+/*   Updated: 2024/12/04 18:17:47 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+
 
 #include "minishell.h"
 
@@ -41,23 +43,22 @@ static void print_request(t_data_rule *request)
 			i = 0;
 			while(i < request[k].nbr_args)
 			{
-				printf("arg[%d] : %s\n", i, request[k].arguments[i]);
+				printf("arg[%d] : |%s|\n", i, request[k].arguments[i]);
 				i++;
 			}
 		}
-
 		if (request[k].out)
 		{
 			i = 0;
 			while(request[k].out[i] && i < request[k].nb_rdir)
 			{
-				printf("out : %s\n", request[k].out[i]);
+				printf("nb_dir : %d\n", request[k].nb_rdir);
+				printf("output : %s\n", request[k].out[i]);
 				i++;
 			}
 		}
 		printf("input : %s\n", request[k].input);
 		printf("nb_rdir : %d\n", request[k].nb_rdir);
-		
 		if (request[k].oper && i <= request[k].nb_rdir)
 		{
 			i = 0;
@@ -69,10 +70,8 @@ static void print_request(t_data_rule *request)
 		}
 		printf("pipe : %B\n", request[k].pipe);
 		printf("nb_command : %d\n", request[k].nb_command);
-
 		k++;
 	}
-	printf("------------------------------------------\n");
 	printf("------------------------------------------\n");
 
 }
@@ -102,20 +101,21 @@ static void signal_treatment(int sig)
 
 int main(int argc, char **argv, char **envp)
 {
-	int count_cmd;
 	char	*rule;
 	t_erreur	err;
 	t_data_rule *request;
 	char **envv;
+	t_var	*var;
 	(void)argc;
 	(void)argv;
 
 	signal(SIGINT, signal_treatment);
+	signal(SIGQUIT, signal_treatment);
 	envv = ft_strdup_env(envp);
+	var = NULL;
 	while (42)
 	{
 		err.error_code = -1;
-		request = NULL;
 		rule = NULL;
 		rule = readline(PROMPT);
 		if (rule == NULL)
@@ -135,20 +135,24 @@ int main(int argc, char **argv, char **envp)
 				free_env(envv);
 				free(rule);
 				signal(SIGQUIT, signal_treatment);
-				exit(1);
+				break ;
 			}
+			if (ft_strncmp(rule, "var", 3) == 0)
+				print_var(var);
 			add_history(rule);
-			request = parsing(rule, &err);
+			request = parsing(rule, &var, &err);
 			if (!request)
 				print_parsing_error(err);
 			else
 			{
 				print_request(request);
 				envv = pipex(request, request->nb_command, envv);
+				killer_request(request);
 			}
 			free(rule);
 		}
 	}
+	free_var(var);
 	free_env(envv);
 	return 0;
 }

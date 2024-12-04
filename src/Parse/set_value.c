@@ -46,11 +46,14 @@ static int	is_quote(char *command, int i, t_token *token)
 
 static int	is_r_oper(char *command, int i, t_token *token)
 {
+	int k;
+
+	k = i;
+	while (command[i] && is_oper(command[i]))
+		i++;
 	if (token->len_word == 0)
-	{
-		token->len_word = 1;
-	}
-	return (r_value(command, i + 1, token));
+		token->len_word = i - k;
+	return (r_value(command, i, token));
 }
 
 static int	is_space(char *command, int i, t_token *token)

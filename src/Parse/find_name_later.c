@@ -28,7 +28,7 @@ int	is_oper(char c)
 
 int	ft_isend(const char c)
 {
-	if (ft_isspace(c) || c == '\'' || c == '\"')
+	if (ft_isspace(c) || c == '\'' || c == '\"' || c == '|' || c == ';')
 		return (1);
 	return (0);
 }
@@ -50,3 +50,29 @@ int	state_finish(t_token *token)
 {
 	return (token->nb_word);
 }
+
+char 	*delete_inutile_quote(char *command)
+{
+	int i;
+	int prev_i;
+
+	i = 0;
+	while (command[i])
+	{
+		if (command[i] == '\'' || command[i] == '\"')
+		{
+			prev_i = i;
+			i++;
+			while (command[i] && (command[prev_i] != command[i]))
+				i++;
+			if (i - prev_i < 2 && command[prev_i + 1])
+			{
+				command[prev_i] = ' ';
+				command[prev_i + 1] = ' ';
+			}
+		}
+		i++;
+	}
+	return (command);
+}
+

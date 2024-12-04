@@ -3,29 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thodos-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:09:05 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/20 13:13:24 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:38:44 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../../includes/Parsing.h"
 
-void	killer_split(t_split *split, int nb_split)
+void	free_var(t_var *var)
 {
-	int	itr;
+	t_var	*temp;
 
-	itr = 0;
-	if (!split)
+	temp = NULL;
+	if (var == NULL)
 		return ;
-	while (itr < nb_split)
+	while (var != NULL)
 	{
-		free(split[itr].word);
-		itr++;
+		temp = var;
+		var = var->next;
+		free(temp->name);
+		free(temp->value);
+		free(temp);
 	}
-	free(split);
 }
 
 static void	killer_array(char **buff, const int len)

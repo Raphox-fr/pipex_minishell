@@ -33,7 +33,10 @@ int	add_arg_request(t_data_rule *request, t_split *split, const int nb_opt, cons
 	request->arguments = ft_calloc(sizeof(char *), (nb_node - nb_opt) + 1);
 	while (itr_arg < (nb_node - nb_opt - 1))
 	{
-		request->arguments[itr_arg] = split[itr_arg].word;
+		if (split[itr_arg].word[0] == '\'' || split[itr_arg].word[0] == '\"')
+			request->arguments[itr_arg] = split[itr_arg].word + 1;
+		else
+			request->arguments[itr_arg] = split[itr_arg].word;
 		itr_arg++;
 	}
 	return (itr_arg);

@@ -147,4 +147,7 @@ int compare_strings(char *str1, char *str2);
 char **ft_strdup_env(char **envp);
 char **copy_the_env(char **envp);
 
+//FREE . C
+void	free_var(t_var *var);
+
 #endif
