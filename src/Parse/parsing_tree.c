@@ -26,7 +26,8 @@ static	int	converte_rdir(t_data_rule *request, t_split *split)
 	if (!request->oper)
 		return (-1);
 	while (split[itr].word != NULL
-		&& node_finish(split[itr].word, split[itr].len_word))
+		&& (ft_strncmp(split[itr].word, "|", split[itr].len_word) != 0
+			|| ft_strncmp(split[itr].word, ";", split[itr].len_word) != 0))
 	{
 		rdir = check_rdir(split[itr].word, split->len_word);
 		if (rdir != OTHER && rdir != PIPE)

@@ -94,7 +94,6 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 	if (word_count < 0 || braquet_check(command, err) == -1)
 		return (NULL);
 	err->error_code = STX_ALLOC;
-	printf("word_count : %d\n", word_count);
 	split = ft_calloc(sizeof(t_split), ((word_count) + 1));
 	if (!split || (fill_info(command, &word_count , var, split) < 0))
 		return (NULL);

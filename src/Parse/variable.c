@@ -174,14 +174,11 @@ int	fill_var(char **out, int *len_word, char *command, t_var **var)
 		temp = give_var(command + 1, var);
 		if (temp == NULL)
 			return (0);
-		printf("temp : %s\n", temp->value);
 		*out = ft_calloc(sizeof(char), ft_strlen(temp->value) + 1);
 		ft_strlcpy(*out, temp->value, ft_strlen(temp->value) + 1);
-		printf("out : %s\n", *out);
 	}
 	else
 		return (0);
-	printf("out : %s\n", *out);
 	*len_word = ft_strlen((*var)->value);
 	return (1);
 }
@@ -196,11 +193,9 @@ char	*var_adder(char *buff, t_var **var)
 		i++;
 	while (buff[i] && find_var(buff + i) == 1)
 	{
-		printf("before rank : %d | car : %c\n", i, buff[i]);
 		len = len_of_word(buff, i);
 		add_var(var, buff + i, len);
 		i += len;
-		printf("rank : %d | car : %c\n", i, buff[i]);
 		while (ft_isspace(buff[i]) || ft_strncmp(buff + i, "; ", 2) == 0)
 			i++;
 	}

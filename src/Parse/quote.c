@@ -50,7 +50,6 @@ static int	find_size(char *buff, const int len, t_var **var)
 		size++;
 		i++;
 	}
-	printf("size : %d\n", size);
 	return (0);
 }
 
@@ -76,7 +75,6 @@ static void	is_double_quote(t_split *split, char *command, t_var **var)
 	split->word = ft_calloc(sizeof(char), find_size(command, split->len_word, var) + 1);
 	if (!split->word)
 		return ;
-	printf("len_word : %d\n", split->len_word);
 	while (itr_cmd < split->len_word - 1)
 	{
 		if (command[itr_cmd] == '$' && var_exist(command + itr_cmd + 1, var))
@@ -84,9 +82,7 @@ static void	is_double_quote(t_split *split, char *command, t_var **var)
 			temp_var = give_var(command + itr_cmd + 1, var);
 			ft_strlcpy(split->word + itr_word, temp_var->value, ft_strlen(temp_var->value) + 1);
 			itr_cmd += ft_strlen(temp_var->name) + 1;
-			printf("size name : %d\n", ft_strlen(temp_var->name));
 			itr_word += ft_strlen(temp_var->value);
-			printf("size value : %d\n", ft_strlen(temp_var->value));
 		}
 		else
 		{
