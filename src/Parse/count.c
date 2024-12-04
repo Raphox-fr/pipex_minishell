@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   count.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 12:24:07 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/21 17:51:41 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/04 12:24:30 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	nb_command(t_split *split, int count_word)
 
 	count = 1;
 	k = 0;
+	if (!split || count_word == 0)
+		return (0);
 	while (k < count_word)
 	{
 		if ((ft_strncmp(split[k].word, "|", 1) == 0)

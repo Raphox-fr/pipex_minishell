@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 16:52:34 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/29 20:23:21 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/04 12:21:56 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ int main(int argc, char **argv, char **envp)
 				free_env(envv);
 				free(rule);
 				signal(SIGQUIT, signal_treatment);
-				exit(1);
+				break ;
 			}
 			if (ft_strncmp(rule, "var", 3) == 0)
 				print_var(var);
@@ -145,10 +145,12 @@ int main(int argc, char **argv, char **envp)
 			{
 				print_request(request);
 				envv = pipex(request, request->nb_command, envv);
+				killer_request(request);
 			}
 			free(rule);
 		}
 	}
+	free_var(var);
 	free_env(envv);
 	return 0;
 }

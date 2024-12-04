@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:33:22 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/20 15:37:19 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 11:33:31 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static int	find_size(char *buff, const int len, t_var **var)
 		size++;
 		i++;
 	}
+	printf("size : %d\n", size);
 	return (0);
 }
 
@@ -63,28 +64,35 @@ static void	is_simple_quote(t_split *split, char *command)
 
 static void	is_double_quote(t_split *split, char *command, t_var **var)
 {
-	int i;
+	int itr_word;
+	int	itr_cmd;
 	t_var *temp_var;
 
-	i = 0;
+	itr_word = 0;
+	itr_cmd = 0;
 	temp_var = NULL;
 	if (command == NULL)
 		return ;
 	split->word = ft_calloc(sizeof(char), find_size(command, split->len_word, var) + 1);
 	if (!split->word)
 		return ;
-	while (i < split->len_word)
+	printf("len_word : %d\n", split->len_word);
+	while (itr_cmd < split->len_word - 1)
 	{
-		if (command[i] == '$' && var_exist(command + i, var))
+		if (command[itr_cmd] == '$' && var_exist(command + itr_cmd + 1, var))
 		{
-			temp_var = give_var(command + i + 1, var);
-			split->word = ft_strjoin(split->word, temp_var->value, ft_strlen(temp_var->value));
-			i += ft_strlen(temp_var->name) + 1;
+			temp_var = give_var(command + itr_cmd + 1, var);
+			ft_strlcpy(split->word + itr_word, temp_var->value, ft_strlen(temp_var->value) + 1);
+			itr_cmd += ft_strlen(temp_var->name) + 1;
+			printf("size name : %d\n", ft_strlen(temp_var->name));
+			itr_word += ft_strlen(temp_var->value);
+			printf("size value : %d\n", ft_strlen(temp_var->value));
 		}
 		else
 		{
-			split->word[i] = command[i];
-			i++;
+			split->word[itr_word] = command[itr_cmd];
+			itr_word++;
+			itr_cmd++;
 		}
 	}
 }

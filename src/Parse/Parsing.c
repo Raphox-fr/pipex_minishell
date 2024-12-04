@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:13:38 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/20 14:15:40 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:26:50 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 	err->error_code = STX_NL;
 	if (syntax_check(split, word_count, err))
 		return (NULL);
+	err->error_code = -1;
 	request = parsing_tree(split, word_count);
 	return (request);
 }

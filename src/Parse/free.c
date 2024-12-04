@@ -3,15 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: thodos-s <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:09:05 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/20 13:13:24 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 12:15:48 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "../../includes/Parsing.h"
+
+void	free_var(t_var *var)
+{
+	t_var	*temp;
+
+	temp = NULL;
+	if (var == NULL)
+		return ;
+	while (var != NULL)
+	{
+		printf("passer\n");
+		temp = var;
+		var = var->next;
+		free(temp->name);
+		free(temp->value);
+		free(temp);
+	}
+}
 
 void	killer_split(t_split *split, int nb_split)
 {
