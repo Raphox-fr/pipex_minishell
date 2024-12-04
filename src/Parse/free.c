@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:09:05 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/12/04 14:11:09 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:38:44 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,6 @@ void	free_var(t_var *var)
 		free(temp->value);
 		free(temp);
 	}
-}
-
-void	killer_split(t_split *split)
-{
-	int	itr;
-
-	itr = 0;
-	if (!split)
-		return ;
-	while (1)
-	{
-		free(split[itr].word);
-		itr++;
-	}
-	free(split);
 }
 
 static void	killer_array(char **buff, const int len)

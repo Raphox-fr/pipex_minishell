@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:13:38 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/12/04 14:48:28 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/04 15:35:44 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ int	add_word(t_split *word, char *command, int *index, t_var *var)
 	{
 		if (fill_var(&(word->word), &word->len_word, command, &var) == 1)
 			(*index)++;
-		printf("word int add_word : %s\n", word->word);
 	}
 	else
 	{
@@ -90,7 +89,6 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 	if (ft_strlen(command) == 0)
 		return (NULL);
 	command = var_adder(command, var);
-	printf("command : %s\n", command);
 	word_count = nb_words(command);
 	err->error_code = STX_NL;
 	if (word_count < 0 || braquet_check(command, err) == -1)
