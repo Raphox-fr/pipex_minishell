@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 15:25:22 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/11/20 15:32:47 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:46:21 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	r_node(t_split *split, int nb_node)
 	}
 	else if (node_type == RDIR || node_type == D_INPUT || node_type == PIPE)
 		return (r_node(split, nb_node));
+	return (-1);
 }
 
 int	ft_nbr_option(const t_split *split, const int nb_node)

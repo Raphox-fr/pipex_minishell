@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:09:05 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/12/04 15:38:44 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:47:57 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,20 @@ void	killer_request(t_data_rule *request)
 	if (!(request))
 		return ;
 	nb_command = request[0].nb_command;
-	if (request[k].pipe)
+	while (k < nb_command)
 	{
-		while (k < nb_command)
+		free((request[k]).command);
+		if (request[k].nbr_args > 0)
 		{
-			free((request[k]).command);
-			if (request[k].nbr_args > 0)
-			{
-				killer_array(request[k].arguments, request[k].nbr_args);
-				free(request[k].arguments);
-			}
-			if (request[k].nb_rdir > 0)
-			{
-				killer_array(request[k].out, request[k].nb_rdir);
-				free(request[k].oper);
-			}
-			k++;
+			killer_array(request[k].arguments, request[k].nbr_args);
+			free(request[k].arguments);
 		}
+		if (request[k].nb_rdir > 0)
+		{
+			killer_array(request[k].out, request[k].nb_rdir);
+			free(request[k].oper);
+		}
+		k++;
 	}
 	free(request);
 }
