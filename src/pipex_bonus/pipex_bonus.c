@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/04 18:38:23 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/05 16:47:21 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 
     if (cmd[0] == NULL)
     {
+		write(2, "-1\n", 2);
 		free_env(cmd);
 		free(pathname);
 		free_env(envp);
@@ -43,6 +44,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 
 	if (pathname == NULL && check_if_in_builtins(data, envp) == 0)
 	{
+		write(2, "1\n", 2);
 		display_error(cmd[0], "cmd not found", 0, NULL);
 		free_env(cmd);
 		free(pathname);
@@ -50,11 +52,10 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		envp = NULL;
 		exit(EXIT_FAILURE);
 	}
-
 	
-
 	if (check_if_in_builtins(data, envp) == 1)
 	{
+		write(2, "2\n", 2);
 		// write(1, "coucou", 6); 
 		exec_builtins(data, envp);
 		free_env(cmd);
@@ -65,6 +66,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 	}
 	else if (check_if_in_builtins(data, envp) == -1)
 	{
+		write(2, "3\n", 2);
 		// write(2,"dans enfant\n", 12);
 		free_env(cmd);
 		free(pathname);
@@ -172,7 +174,6 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
 			{
 				envv = exec_builtins(data[i], envv);
 			}
-			else 
 		}
         do_pipe(data[i], envv, &input_fd, is_last_command);
         i++;

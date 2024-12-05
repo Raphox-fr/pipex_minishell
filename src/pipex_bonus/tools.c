@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:38:34 by rafaria           #+#    #+#             */
-/*   Updated: 2024/12/02 19:26:19 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/05 16:51:41 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,24 +55,6 @@ int handle_redirection(t_data_rule data)
 	return (0);
 }
 	
-
-int		handle_entry_redirections(t_data_rule data, char oper, char *input)
-{
-	int fd;
-	
-	if (oper ==  '<')
-    	{
-        	fd = open(input, O_RDONLY);
-        	if (fd == -1)
-        	{
-				display_error(data.command, NULL, errno, data.arguments);
-				return (-1);
-        	}
-        	dup2(fd, STDIN_FILENO);
-        	close(fd);
-    	}
-		return (0);
-}
 int handle_exit_redirections(t_data_rule data, char oper, char *output)
 {
     int fd;
@@ -93,6 +75,7 @@ int handle_exit_redirections(t_data_rule data, char oper, char *output)
     }
     else if (oper ==  'r')
     {
+		write(2, "coucou", 6);
         fd = open(output, O_WRONLY | O_CREAT | O_APPEND, 0777);
         if (fd == -1)
         {
@@ -106,6 +89,24 @@ int handle_exit_redirections(t_data_rule data, char oper, char *output)
     }
 	return (0);
 	
+}
+
+int		handle_entry_redirections(t_data_rule data, char oper, char *input)
+{
+	int fd;
+	
+	if (oper ==  '<')
+    	{
+        	fd = open(input, O_RDONLY);
+        	if (fd == -1)
+        	{
+				display_error(data.command, NULL, errno, data.arguments);
+				return (-1);
+        	}
+        	dup2(fd, STDIN_FILENO);
+        	close(fd);
+    	}
+		return (0);
 }
 
 int handle_heredoc(char *delimiter)
