@@ -48,9 +48,9 @@ static void print_request(t_data_rule *request)
 		if (request[k].out)
 		{
 			i = 0;
+			printf("nb_dir : %d\n", request[k].nb_rdir);
 			while(request[k].out[i] && i < request[k].nb_rdir)
 			{
-				printf("nb_dir : %d\n", request[k].nb_rdir);
 				printf("output : %s\n", request[k].out[i]);
 				i++;
 			}
