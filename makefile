@@ -91,11 +91,11 @@ val: all
 
 clean:
 	@rm -rf $(OBJDIR)
-	@rm libft.a
+	@rm -f libft.a
 	@echo "$(RED)objet of $(NAME) is removed$(END)"
 
 fclean: clean
-	@rm $(NAME)
+	@rm -f $(NAME)
 	@make -C $(LIBFTDIR) clean
 	@echo "$(RED)objet and exec of $(NAME) is removed$(END)"
 

@@ -6,7 +6,7 @@
 /*   By: thodos-s <thodos-s@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 13:13:38 by thodos-s          #+#    #+#             */
-/*   Updated: 2024/12/04 15:35:44 by thodos-s         ###   ########.fr       */
+/*   Updated: 2024/12/05 12:47:24 by thodos-s         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 	if (word_count < 0 || braquet_check(command, err) == -1)
 		return (NULL);
 	err->error_code = STX_ALLOC;
-	printf("word_count : %d\n", word_count);
-	split = ft_calloc(sizeof(t_split), ((word_count) + 1));
+	split = ft_calloc(sizeof(t_split), ((word_count)) + 1);
 	if (!split || (fill_info(command, &word_count , var, split) < 0))
 		return (NULL);
 	err->error_code = STX_NL;

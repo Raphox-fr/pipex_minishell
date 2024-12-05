@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/04 00:33:13 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/04 18:38:23 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
 			{
 				envv = exec_builtins(data[i], envv);
 			}
+			else 
 		}
         do_pipe(data[i], envv, &input_fd, is_last_command);
         i++;

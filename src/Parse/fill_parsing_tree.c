@@ -56,8 +56,10 @@ int	add_rdir(t_data_rule *request, t_split *split)
 	if (!request->out)
 		return (0);
 	while (split[itr].word != NULL
-		&& node_finish(split[itr].word, split[itr].len_word))
+		&& (ft_strncmp(split[itr].word, "|", split[itr].len_word) != 0
+		|| ft_strncmp(split[itr].word, ";", split[itr].len_word) != 0))
 	{
+		printf("word : %s\n", split[itr].word);
 		rdir = check_rdir(split[itr].word, split[itr].len_word);
 		if (rdir != PIPE && rdir != OTHER)
 		{
