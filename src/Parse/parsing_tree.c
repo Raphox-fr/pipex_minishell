@@ -54,6 +54,7 @@ static int	fill_request(t_split *split, t_data_rule *request, \
 		return (-1);
 	add_command(&request[k], split);
 	nb_opt = ft_nbr_option(split + 1, nb_node);
+	request[k].nb_opt = nb_opt;
 	if (nb_opt)
 		add_opt_request(&request[k], split + 1, nb_opt);
 	request[k].pipe = false;

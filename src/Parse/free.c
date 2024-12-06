@@ -40,6 +40,7 @@ static void	killer_array(char **buff, const int len)
 		free(buff[itr]);
 		itr++;
 	}
+	free(buff);
 }
 
 void	killer_request(t_data_rule *request)
@@ -51,19 +52,19 @@ void	killer_request(t_data_rule *request)
 	if (!(request))
 		return ;
 	nb_command = request[0].nb_command;
+	printf("nb_opt : %d\n", request[k].nb_opt);
 	while (k < nb_command)
 	{
 		free((request[k]).command);
 		if (request[k].nbr_args > 0)
-		{
 			killer_array(request[k].arguments, request[k].nbr_args);
-			free(request[k].arguments);
-		}
 		if (request[k].nb_rdir > 0)
 		{
 			killer_array(request[k].out, request[k].nb_rdir);
 			free(request[k].oper);
 		}
+		if (request[k].nb_opt > 0)
+			killer_array(request[k].options, request[k].nb_opt);
 		k++;
 	}
 	free(request);

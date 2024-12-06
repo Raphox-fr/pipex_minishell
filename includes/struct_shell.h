@@ -24,6 +24,7 @@ typedef struct	s_data_rule
 	char	**out;
 	char	*input;
 	int		nb_rdir;
+	int 	nb_opt;
 	char 	*oper;
 	bool 	pipe;
 	int 	nb_command;
