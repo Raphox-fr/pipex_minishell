@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 18:17:46 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/05 16:16:17 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/09 21:28:45 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ int main(int argc, char **argv, char **envp)
 			{
 				rl_clear_history();
 				free_env(envv);
+				envv = NULL;
 				free(rule);
 				signal(SIGQUIT, signal_treatment);
 				break ;
@@ -153,7 +154,11 @@ int main(int argc, char **argv, char **envp)
 		}
 	}
 	free_var(var);
-	free_env(envv);
+	if (envv != NULL)
+	{
+		free_env(envv);
+		envv = NULL;
+	}
 	return 0;
 }
 

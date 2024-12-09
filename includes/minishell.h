@@ -98,8 +98,13 @@ char	**ft_my_split(char *s, char c);
 char **exec_builtins(t_data_rule struc, char **envv);
 int check_if_in_builtins(t_data_rule struc, char **envp);
 
-//Echo
+//cd
 char **cd(char *command, char **arguments, char **envp);
+char	*resolve_path(const char *cwd, const char *relative_path);
+void	parse_segments(const char *path, char **segments, int *segment_count);
+char	*build_resolved_path(char **segments, int segment_count);
+char *custom_realpath(const char *path);
+
 
 //Echo
 void echo(char *command, char **option, char **arguments);

@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:38:34 by rafaria           #+#    #+#             */
-/*   Updated: 2024/12/05 16:51:41 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/05 19:13:04 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,10 +120,12 @@ int handle_heredoc(char *delimiter)
     }
     while (1)
     {
-        line = readline("> ");
+        line = readline("heredoc> ");
         if (!line)
         {
             printf("CTRL D PRESSED \n");
+			close(pipe_fds[1]);
+			close(pipe_fds[0]);
 			return (-1);
         }
         if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
