@@ -51,6 +51,7 @@ SRC =		main.c \
 			Parse/set_value.c \
 			Parse/variable.c \
 			Parse/free.c \
+			utils/free_all.c \
 			# builtins/tools.c \
 
 SRCS = $(addprefix $(SRCDIR), $(SRC))

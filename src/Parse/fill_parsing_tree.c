@@ -34,9 +34,9 @@ int	add_arg_request(t_data_rule *request, t_split *split, const int nb_opt, cons
 	while (itr_arg < (nb_node - nb_opt - 1))
 	{
 		if (split[itr_arg].word[0] == '\'' || split[itr_arg].word[0] == '\"')
-			request->arguments[itr_arg] = split[itr_arg].word + 1;
+			request->arguments[itr_arg] = ft_strdup(split[itr_arg].word + 1);
 		else
-			request->arguments[itr_arg] = split[itr_arg].word;
+			request->arguments[itr_arg] = ft_strdup(split[itr_arg].word);
 		itr_arg++;
 	}
 	return (itr_arg);
@@ -59,7 +59,6 @@ int	add_rdir(t_data_rule *request, t_split *split)
 		&& (ft_strncmp(split[itr].word, "|", split[itr].len_word) != 0
 		|| ft_strncmp(split[itr].word, ";", split[itr].len_word) != 0))
 	{
-		printf("word : %s\n", split[itr].word);
 		rdir = check_rdir(split[itr].word, split[itr].len_word);
 		if (rdir != PIPE && rdir != OTHER)
 		{

@@ -87,6 +87,6 @@ t_data_rule	*parsing_tree(t_split *split, const int count_word)
 		free(out);
 		return (NULL);
 	}
-	free(split);
+	killer_split(split, count_word);
 	return (out);
 }

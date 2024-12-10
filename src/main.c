@@ -81,7 +81,6 @@ static void signal_treatment(int sig)
 		printf("\n");
 		rl_on_new_line();
 		rl_replace_line("", 0);
-		write(2, "A", 1);
 		rl_redisplay();
 	}
 	else if (sig == SIGQUIT)
@@ -113,45 +112,31 @@ int main(int argc, char **argv, char **envp)
 	var = NULL;
 	while (42)
 	{
+
 		err.error_code = -1;
 		rule = NULL;
 		rule = readline(PROMPT);
 		if (rule == NULL)
-		{
-			rl_clear_history();
-			free_env(envv);
-			free(rule);
-			signal(SIGQUIT, signal_treatment);
-			exit(3);
-		}
+			free_all(var, envv, rule, 3);
 		if (rule != NULL)
 		{
-			
-			if (ft_strncmp(rule, "exit", 4) == 0)
-			{
-				rl_clear_history();
-				free_env(envv);
-				free(rule);
-				signal(SIGQUIT, signal_treatment);
-				break ;
-			}
+			/*if (ft_strncmp(rule, "exit", 4) == 0)
+				break ;*/
 			if (ft_strncmp(rule, "var", 3) == 0)
 				print_var(var);
 			add_history(rule);
 			request = parsing(rule, &var, &err);
 			if (!request)
 				print_parsing_error(err);
-			else
-			{
-				print_request(request);
+			else {
+				//print_request(request);
 				envv = pipex(request, request->nb_command, envv);
-				killer_request(request);
 			}
+			killer_request(request);
 			free(rule);
 		}
 	}
-	free_var(var);
-	free_env(envv);
+	free_all(var, envv, rule, 0);
 	return 0;
 }
 

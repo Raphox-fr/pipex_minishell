@@ -10,4 +10,6 @@ out.txt
 readline.supp
 src
 truc.txt
+valgrind.log
+xx.txt
 z.txt

@@ -139,5 +139,6 @@ char **copy_the_env(char **envp);
 
 //FREE . C
 void	free_var(t_var *var);
+void	free_all(t_var *var, char **env, char *rule, int ext);
 
 #endif
