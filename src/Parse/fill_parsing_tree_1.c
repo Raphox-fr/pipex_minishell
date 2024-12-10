@@ -16,7 +16,7 @@ static int	add_input_request(t_data_rule *request, t_split *split)
 {
 	if (!split)
 		return (0);
-	request->input = split->word;
+	request->input = ft_strdup(split->word);
 	return (1);
 }
 
@@ -24,7 +24,7 @@ static int	add_out_request(t_data_rule *request, t_split *split, int itr_oper)
 {
 	if (split->word != NULL)
 	{
-		request->out[itr_oper] = split->word;
+		request->out[itr_oper] = ft_strdup(split->word);
 		return (2);
 	}
 	return (0);

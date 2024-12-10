@@ -50,7 +50,7 @@ static int	find_size(char *buff, const int len, t_var **var)
 		size++;
 		i++;
 	}
-	return (0);
+	return (size);
 }
 
 static void	is_simple_quote(t_split *split, char *command)
@@ -72,7 +72,7 @@ static void	is_double_quote(t_split *split, char *command, t_var **var)
 	temp_var = NULL;
 	if (command == NULL)
 		return ;
-	split->word = ft_calloc(sizeof(char), find_size(command, split->len_word, var) + 1);
+	split->word = ft_calloc(sizeof(char), find_size(command, split->len_word, var));
 	if (!split->word)
 		return ;
 	while (itr_cmd < split->len_word - 1)
@@ -91,6 +91,7 @@ static void	is_double_quote(t_split *split, char *command, t_var **var)
 			itr_cmd++;
 		}
 	}
+	split->word[itr_word] = '\0';
 }
 
 void	add_quote(t_split *split, char *command, int *index, t_var **var)

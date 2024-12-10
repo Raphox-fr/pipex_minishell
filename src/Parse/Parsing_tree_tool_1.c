@@ -16,7 +16,7 @@ int	add_command(t_data_rule *request, t_split *split)
 {
 	if (!split)
 		return (-1);
-	request->command = split[0].word;
+	request->command = ft_strdup(split[0].word);
 	return (0);
 }
 
@@ -43,8 +43,9 @@ int	add_opt_request(t_data_rule *request,
 		return (-1);
 	while (i < nb_opt)
 	{
-		request->options[i] = split[i].word;
+		request->options[i] = ft_strdup(split->word);
 		i++;
 	}
+	request->nb_opt = nb_opt;
 	return (1);
 }

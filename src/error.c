@@ -29,9 +29,6 @@ void	print_parsing_error(t_erreur err)
 
 void display_error(char *cmd, char *mess, int errno_code, char **args)
 {
-	int x;
-	x = 0;
-
 	char *return_sterror;
 
 	if (errno_code == ENOENT) // no such file or directory

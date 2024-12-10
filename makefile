@@ -21,7 +21,6 @@ DIRLIBFT = ./lib/libft
 SRCDIR = src/
 SRC =		main.c \
 			error.c \
-			utils.c \
 			execute.c \
 			builtins/builtins.c \
 			pipex_bonus/pipex_bonus.c \
@@ -52,13 +51,13 @@ SRC =		main.c \
 			Parse/set_value.c \
 			Parse/variable.c \
 			Parse/free.c \
+			utils/free_all.c \
 			# builtins/tools.c \
 
 SRCS = $(addprefix $(SRCDIR), $(SRC))
 
 ### OBJ ###
 OBJDIR = obj/
-PARS_OBJDIR = $(OBJDIR)/Parse
 OBJ = $(SRC:.c=.o)
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
 
