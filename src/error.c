@@ -29,9 +29,6 @@ void	print_parsing_error(t_erreur err)
 
 void display_error(char *cmd, char *mess, int errno_code, char **args)
 {
-	int x;
-	x = 0;
-
 	char *return_sterror;
 
 	if (errno_code == ENOENT) // no such file or directory
@@ -48,7 +45,52 @@ void display_error(char *cmd, char *mess, int errno_code, char **args)
 		write(2, "\n", 1);
 	}
 
-	else if (errno_code == ENOTDIR) // no such file or directory
+	else if (errno_code == ENOTDIR) // Not a directory
+	{
+		write(2, cmd, ft_strlen(cmd));
+		write(2, ": ", 2);
+		if (mess != NULL)
+		{
+			write(2, mess, ft_strlen(mess));
+		}
+		else if (args != NULL)
+		{
+			display_args(args);
+			write(2, ": ", 2);
+		}
+		return_sterror = strerror(errno_code);
+		write(2, return_sterror, ft_strlen(return_sterror));
+		write(2, "\n", 1);
+	}
+	
+	
+	else if (errno_code == EACCES) // Permission denied
+	{
+		write(2, cmd, ft_strlen(cmd));
+		write(2, ": ", 2);
+		if (mess != NULL)
+		{
+			write(2, mess, ft_strlen(mess));
+			write(2, ": ", 2);
+		}
+		else if (args != NULL)
+		{
+			display_args(args);
+			write(2, ": ", 2);
+		}
+		return_sterror = strerror(errno_code);
+		write(2, return_sterror, ft_strlen(return_sterror));
+		write(2, "\n", 1);
+	}
+
+	else if (ft_strncmp(mess, "cmd not found", ft_strlen(mess)) == 0)
+	{	write(2, cmd, ft_strlen(cmd));
+		write(2, ":", 1);
+		write(2, " command not found\n", 19);
+	}
+
+
+	else if (errno_code == ELOOP) // Too many symbolic links
 	{
 		write(2, cmd, ft_strlen(cmd));
 		write(2, ": ", 2);
@@ -61,33 +103,7 @@ void display_error(char *cmd, char *mess, int errno_code, char **args)
 		write(2, return_sterror, ft_strlen(return_sterror));
 		write(2, "\n", 1);
 	}
-	else if (errno_code == EACCES) // no such file or directory
-	{
-		write(2, cmd, ft_strlen(cmd));
-		write(2, ": ", 2);
-		if (args != NULL)
-		{
-			display_args(args);
-			write(2, ": ", 2);
-		}
-		return_sterror = strerror(errno_code);
-		write(2, return_sterror, ft_strlen(return_sterror));
-		write(2, "\n", 1);
-	}
-	else if (errno_code == ELOOP) // no such file or directory
-	{
-		write(2, cmd, ft_strlen(cmd));
-		write(2, ": ", 2);
-		if (args != NULL)
-		{
-			display_args(args);
-			write(2, ": ", 2);
-		}
-		return_sterror = strerror(errno_code);
-		write(2, return_sterror, ft_strlen(return_sterror));
-		write(2, "\n", 1);
-	}
-	else if (errno_code == ENAMETOOLONG) // no such file or directory
+	else if (errno_code == ENAMETOOLONG) // File name too long
 	{
 		write(2, cmd, ft_strlen(cmd));
 		write(2, ": ", 2);

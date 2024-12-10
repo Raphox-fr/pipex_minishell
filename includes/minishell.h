@@ -70,11 +70,21 @@ char    **build_command(t_data_rule data);
 
 // TOOLS . C ---------------------------------------------------------------------------------------------
 
-void wait_for_children(void);
-void handle_heredoc(char *delimiter);
-void handle_redirection(t_data_rule data);
-void handle_exit_redirections(char oper, char *output);
+int handle_redirection(t_data_rule data);
+int		handle_entry_redirections(t_data_rule data, char oper, char *input);
+int handle_exit_redirections(t_data_rule data, char oper, char *output);
+int handle_heredoc(char *delimiter);
+
 char	*find_path(char *cmd, char **envv);
+void wait_for_children(void);
+
+// CHECK REDIRECTIONS --------------------------------------------------------------------------------------------
+
+int check_redirections(t_data_rule data);
+int		check_handle_entry_redirections(t_data_rule data, char oper, char *input);
+int check_handle_exit_redirections(t_data_rule data, char oper, char *output);
+
+
 
 
 // SPLIT . C ---------------------------------------------------------------------------------------------
@@ -88,8 +98,13 @@ char	**ft_my_split(char *s, char c);
 char **exec_builtins(t_data_rule struc, char **envv);
 int check_if_in_builtins(t_data_rule struc, char **envp);
 
-//Echo
+//cd
 char **cd(char *command, char **arguments, char **envp);
+char	*resolve_path(const char *cwd, const char *relative_path);
+void	parse_segments(const char *path, char **segments, int *segment_count);
+char	*build_resolved_path(char **segments, int segment_count);
+char *custom_realpath(const char *path);
+
 
 //Echo
 void echo(char *command, char **option, char **arguments);
