@@ -42,7 +42,7 @@ int			ft_nb_rdir(t_split *split);
 int			ft_isspace(char c);
 int			ft_isend(const char c);
 void		fill_conv_rdir(t_data_rule *request, const int rdir, const int itr_oper);
-int			fill_var(char **out, int *len_word, char *command, t_var **var);
+//int			fill_var(char **out, int *len_word, char *command, t_var **var);
 void		fill_rdir(t_data_rule *request, t_split *split, int itr, int itr_oper);
 int			find_var(char *command);
 t_var	*give_var(char *command, t_var **var);

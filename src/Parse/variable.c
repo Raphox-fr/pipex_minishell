@@ -126,7 +126,6 @@ static void	add_val(t_var *temp, char *cmd, int *i)
 
 	k = *i;
 	quote = false;
-	printf("cmd : %c\n", cmd[k]);
 	while (cmd[*i])
 	{
 		if (cmd[*i] == '\"' && quote == false)
@@ -137,11 +136,13 @@ static void	add_val(t_var *temp, char *cmd, int *i)
 			break ;
 		*i += 1;
 	}
-	printf("k : %d i : %d\n", k, *i);
 	temp->value = ft_calloc(sizeof(char), *i - k + 1);
 	if (!temp->value)
 		return ;
-	ft_strlcpy(temp->value, cmd + k, (*i - k) + 1);
+	if (cmd[*i] == '\"')
+		ft_strlcpy(temp->value, cmd + k, (*i - k) + 1);
+	else
+		ft_strlcpy(temp->value, cmd + k + 1, (*i - k) - 1);
 }
 
 static void	add_name(t_var *temp, char *cmd, int *i)
@@ -185,7 +186,7 @@ int	add_var(t_var **var, char *command, int len)
 	return (i);
 }
 
-int	fill_var(char **out, int *len_word, char *command, t_var **var)
+/*static int	fill_var(char **out, int *len_word, char *command, t_var **var)
 {
 	int	i;
 	t_var *temp;
@@ -208,14 +209,41 @@ int	fill_var(char **out, int *len_word, char *command, t_var **var)
 		return (0);
 	*len_word = ft_strlen((*var)->value);
 	return (1);
+}*/
+
+static char	*fill_var(char *buff, int i, t_var **var)
+{
+	char	*out;
+	t_var *temp;
+
+	temp = NULL;
+	out = NULL;
+	if (buff[i] != '$')
+		return (0);
+	if (var_exist(buff + i + 1, var) == 1)
+	{
+		temp = give_var(buff + i + 1, var);
+		if (temp == NULL)
+			return (ft_memset(buff + i, ' ', ft_strcspn(buff, " ")));
+		out = ft_calloc(sizeof(char), i);
+		ft_strlcpy(out, buff, i + 1);
+		out = ft_strjoin(out, temp->value, 0);
+		i += ft_strlen(temp->name) + 1;
+		if (i < ft_strlen(buff))
+			out = ft_strjoin(out, buff + i, 0);
+		free(buff);
+	}
+	return (out);
 }
 
 char	*var_adder(char *buff, t_var **var)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
+	char	*cmd;
 
 	i = 0;
+	cmd = NULL;
 	while (buff[i] && ft_isspace(buff[i]))
 		i++;
 	while (buff[i] && find_var(buff + i) == 1)
@@ -225,6 +253,12 @@ char	*var_adder(char *buff, t_var **var)
 		while (ft_isspace(buff[i]) || ft_strncmp(buff + i, "; ", 2) == 0)
 			i++;
 	}
-
+	while (buff[i])
+	{
+		if (buff[i] == '$')
+			buff = fill_var(buff, i, var);
+		printf("after : %s\n", buff);
+		i++;
+	}
 	return (buff + i);
 }

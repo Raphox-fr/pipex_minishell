@@ -33,19 +33,19 @@ int	add_word(t_split *word, char *command, int *index, t_var *var)
 {
 	if (!command)
 		return (0);
-	if (command[0] == '$')
+	/*if (command[0] == '$')
 	{
 		if (fill_var(&(word->word), &word->len_word, command, &var) == 1)
 			(*index)++;
 	}
 	else
-	{
+	{*/
 		word->word = ft_calloc(sizeof(char), word->len_word + 1);
 		if (!word->word)
 			return (-1);
 		ft_strlcpy((word->word), command, word->len_word + 1);
 		(*index)++;
-	}
+	//}
 	return (1);
 }
 
