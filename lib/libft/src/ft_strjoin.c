@@ -20,8 +20,8 @@ char	*ft_strjoin(char const *s1, char const *s2, int space)
 
 	i = 0;
 	k = 0;
-	/*if (!s1 || !s2)
-		return (NULL);*/
+	if (!s1 || !s2)
+		return (NULL);
 	dest = malloc(sizeof(char) * (ft_strlen((char *)s1 + 1) + \
 				ft_strlen((char *)s2) + 2 + space));
 	if (!dest)

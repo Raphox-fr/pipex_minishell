@@ -179,10 +179,10 @@ int	add_var(t_var **var, char *command, int len)
 		return (-1);
 	add_val(temp_var, command, &i);
 	add_back(var, temp_var);
-	while (ft_isspace(command[i]))
+	/*while (ft_isspace(command[i]))
 		i++;
 	if (ft_strncmp(command + i, ";", 1) == 0)
-		command[i] = ' ';
+		command[i] = ' ';*/
 	return (i);
 }
 
@@ -223,10 +223,12 @@ static char	*fill_var(char *buff, int i, t_var **var)
 	if (var_exist(buff + i + 1, var) == 1)
 	{
 		temp = give_var(buff + i + 1, var);
-		if (temp == NULL)
-			return (ft_memset(buff + i, ' ', ft_strcspn(buff, " ")));
+		//if (temp == NULL)
+		//	return (ft_memset(buff + i, ' ', ft_strcspn(buff, " ")));
 		out = ft_calloc(sizeof(char), i);
 		ft_strlcpy(out, buff, i + 1);
+		if (temp == NULL)
+
 		out = ft_strjoin(out, temp->value, 0);
 		i += ft_strlen(temp->name) + 1;
 		if (i < ft_strlen(buff))
