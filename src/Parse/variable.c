@@ -21,6 +21,8 @@ int var_exist(char *command, t_var **var)
 	temp_var = NULL;
 	if ((*var) == NULL)
 		return (0);
+	if (command[0] == '\"')
+		command++;
 	temp_var = *var;
 	while (temp_var != NULL && ft_strncmp(command , temp_var->name, ft_strlen(temp_var->name)) != 0)
 		temp_var = temp_var->next;
@@ -136,13 +138,11 @@ static void	add_val(t_var *temp, char *cmd, int *i)
 			break ;
 		*i += 1;
 	}
+	printf("%c %d\n", cmd[k], *i);
 	temp->value = ft_calloc(sizeof(char), *i - k + 1);
 	if (!temp->value)
 		return ;
-	if (cmd[*i] == '\"')
-		ft_strlcpy(temp->value, cmd + k, (*i - k) + 1);
-	else
-		ft_strlcpy(temp->value, cmd + k + 1, (*i - k) - 1);
+	ft_strlcpy(temp->value, cmd + k, (*i - k) + 1);
 }
 
 static void	add_name(t_var *temp, char *cmd, int *i)
@@ -255,12 +255,22 @@ char	*var_adder(char *buff, t_var **var)
 		while (ft_isspace(buff[i]) || ft_strncmp(buff + i, "; ", 2) == 0)
 			i++;
 	}
-	while (buff[i])
-	{
+	return (buff + i);
+}
+
+char	*var_traitment(char *buff, t_var **var)
+{
+	int	i;
+
+	i = 0;
+	buff = var_adder(buff, var);
+	//while (buff[i])
+	/*{
 		if (buff[i] == '$')
 			buff = fill_var(buff, i, var);
-		printf("after : %s\n", buff);
 		i++;
 	}
-	return (buff + i);
+	printf("buff : %s\n", buff);
+	exit(0);*/
+	return (buff);
 }

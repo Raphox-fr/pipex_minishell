@@ -60,6 +60,7 @@ int 		r_node(t_split *split, int i);
 int			r_value(char *command, int i, t_token *token);
 char		*var_adder(char *buff, t_var **var);
 int var_exist(char *command, t_var **var);
+char	*var_traitment(char *buff, t_var **var);
 int			syntax_check(t_split *split, const int nb_word, struct s_erreur *err);
 void		killer_request(struct s_data_rule *request);
 void killer_split(t_split *split, const int nb_word);

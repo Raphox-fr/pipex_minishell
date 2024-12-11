@@ -88,7 +88,7 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 	command = delete_space(command);
 	if (ft_strlen(command) == 0)
 		return (NULL);
-	command = var_adder(command, var);
+	command = var_traitment(command, var);
 	word_count = nb_words(command);
 	err->error_code = STX_NL;
 	if (word_count < 0 || braquet_check(command, err) == -1)
