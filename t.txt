@@ -1,1 +1,0 @@
-command[0] : ls 
