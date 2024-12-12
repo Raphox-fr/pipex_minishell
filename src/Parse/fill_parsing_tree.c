@@ -59,7 +59,6 @@ int	add_rdir(t_data_rule *request, t_split *split)
 		&& (ft_strncmp(split[itr].word, "|", split[itr].len_word) != 0
 		|| ft_strncmp(split[itr].word, ";", split[itr].len_word) != 0))
 	{
-		printf("bah non\n");
 		rdir = check_rdir(split[itr].word, split[itr].len_word);
 		if (rdir != PIPE && rdir != OTHER)
 		{

@@ -31,7 +31,6 @@ static	int	converte_rdir(t_data_rule *request, t_split *split)
 		&& (ft_strncmp(split[itr].word, "|", split[itr].len_word) != 0
 			|| ft_strncmp(split[itr].word, ";", split[itr].len_word) != 0))
 	{
-		printf("split : %s | %d\n", split[itr].word, split[itr].len_word);
 		rdir = check_rdir(split[itr].word, split->len_word);
 		if (rdir != OTHER && rdir != PIPE)
 		{
