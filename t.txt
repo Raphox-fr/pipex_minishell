@@ -1,0 +1,4 @@
+command[0] : ls 
+notes.txt
+obj
+valgrind.log
