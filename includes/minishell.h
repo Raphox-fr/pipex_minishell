@@ -58,14 +58,18 @@ void exit_with_error(char *msg);
 
 // BUILD COMMAND . C ---------------------------------------------------------------------------------------------
 
-char *join_options(char **options);
-char    **split_options(char *options, int *option_count);
-char    **allocate_command(int option_count, int nbr_args);
-int     copy_command(char **cmd, char *command);
-int     copy_options(char **cmd, char **split_command, int i, int option_count);
-int     copy_arguments(char **cmd, char **arguments, int i, int nbr_args);
-char    **initialize_command(char *command, char **split_command, int option_count, int nbr_args);
-char    **build_command(t_data_rule data);
+// char *join_options(char **options);
+// char    **split_options(char *options, int *option_count);
+// char    **allocate_command(int option_count, int nbr_args);
+// int     copy_command(char **cmd, char *command);
+// int     copy_options(char **cmd, char **split_command, int i, int option_count);
+// int     copy_arguments(char **cmd, char **arguments, int i, int nbr_args);
+// char    **initialize_command(char *command, char **split_command, int option_count, int nbr_args);
+// char    **build_command(t_data_rule data);
+
+char **build_command(t_data_rule data);
+char **allocate_command(char *command, char **split_command, int option_count, int nbr_args);
+int count_options(char **options, int *option_count);
 
 
 // TOOLS . C ---------------------------------------------------------------------------------------------

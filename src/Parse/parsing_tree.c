@@ -21,6 +21,7 @@ static	int	converte_rdir(t_data_rule *request, t_split *split)
 
 	itr = 0;
 	itr_oper = 0;
+	printf("word : %s %d\n", split->word, split->len_word);
 	request->nb_rdir = ft_nb_rdir(split);
 	request->oper = ft_calloc(sizeof(char *), request->nb_rdir + 1);
 	if (!request->oper)
@@ -50,6 +51,7 @@ static int	fill_request(t_split *split, t_data_rule *request, \
 	if (count_word <= 0)
 		return (0);
 	nb_node = r_node(split, 0);
+	printf("nb_node : %d\n", nb_node);
 	if (nb_node == -1)
 		return (-1);
 	add_command(&request[k], split);

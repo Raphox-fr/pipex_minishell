@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:02:21 by raphox            #+#    #+#             */
-/*   Updated: 2024/11/26 19:36:37 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/10 16:37:16 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,32 @@ char **allocate_command(int option_count, int nbr_args)
  */
 int copy_command(char **cmd, char *command)
 {
-    cmd[0] = ft_strdup(command);
+	int i;
+	int found;
+	i = 0;
+
+	found = 0;
+
+	while (command[i] != '\0') // chemin en commande
+	{
+		if (command[i] == '/')
+		{
+			found = i + 1;
+		}
+		i++;
+	}
+	
+	
+	if (found != 0)
+	{
+		if (access(command, F_OK | X_OK) == -1)
+		{
+			return (0);
+		}
+		cmd[0] = ft_strdup(command + found);
+	}
+	else 
+		cmd[0] = ft_strdup(command);
     if (!cmd[0])
         return (0);
     return (1);
@@ -136,7 +161,8 @@ char **initialize_command(char *command, char **split_command, int option_count,
     char **cmd;
 
     cmd = allocate_command(option_count, nbr_args);
-    if (!cmd)
+    
+	if (!cmd)
     {
         if (split_command)
             free_command(split_command);

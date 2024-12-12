@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/05 16:47:21 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/10 22:25:41 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,36 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 {
 	char *pathname;
     char **cmd = build_command(data);
+	
+	int i;
+	i = 0;
 
-	pathname = find_path(cmd[0], envp);
+	while (cmd[i])
+	{
+		printf("command[%d] : %s \n",i, cmd[i]);
+		i++;
+	}
+
 	close(p_fd[0]);
     close(p_fd[1]);
 
 
-    if (cmd[0] == NULL)
+    if (cmd == NULL || cmd[0] == NULL)
+    {
+		write(2, "-2\n", 2);
+		free_env(envp);
+		envp = NULL;
+		exit(EXIT_FAILURE);
+    }
+	
+	
+	pathname = find_path(cmd[0], envp);
+
+    if (pathname == NULL)
     {
 		write(2, "-1\n", 2);
-		free_env(cmd);
 		free(pathname);
+		free_env(cmd);
 		free_env(envp);
 		envp = NULL;
 		exit(EXIT_FAILURE);
@@ -53,9 +72,9 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		exit(EXIT_FAILURE);
 	}
 	
-	if (check_if_in_builtins(data, envp) == 1)
+	if (check_if_in_builtins(data, envp) == 1) // Execution builtins echo env pwd
 	{
-		write(2, "2\n", 2);
+		// write(2, "2\n", 2);
 		// write(1, "coucou", 6); 
 		exec_builtins(data, envp);
 		free_env(cmd);
@@ -77,7 +96,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 	
 	else if (execve(pathname, cmd, envp) == -1)
 	{
-
+		write(2, "5\n", 2);
 		free_env(cmd);
 		free(pathname);
 
@@ -113,7 +132,7 @@ void second_process(int *input_fd, int *p_fd, int is_last_cmd)
     {
         close(*input_fd);
     }
-    if (!is_last_cmd) // pas la derniere commande // est different de 0 je crois
+    if (!is_last_cmd) // == 0// pas la derniere commande // est different de 0 je crois
     {
         close(p_fd[1]);
         *input_fd = p_fd[0];
@@ -168,9 +187,9 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
         else
             is_last_command = 0;
 
-		if (check_if_in_builtins(data[i], envv) == -1)
+		if (check_if_in_builtins(data[i], envv) == -1) // Execution builtins cd export unset
 		{
-			if (check_redirections(data[i]) == 0)
+			if (check_redirections(data[i]) == 0) // Verification redirections de ces builtins
 			{
 				envv = exec_builtins(data[i], envv);
 			}
