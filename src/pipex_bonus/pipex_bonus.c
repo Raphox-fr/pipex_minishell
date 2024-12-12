@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/10 22:25:41 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/11 19:27:57 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,35 +16,28 @@
 void execute(t_data_rule data, char **envp, int *p_fd)
 {
 	char *pathname;
-    char **cmd = build_command(data);
-	
-	int i;
-	i = 0;
-
-	while (cmd[i])
-	{
-		printf("command[%d] : %s \n",i, cmd[i]);
-		i++;
-	}
+    char **cmd;
+	cmd = build_execution(data);
 
 	close(p_fd[0]);
     close(p_fd[1]);
 
 
-    if (cmd == NULL || cmd[0] == NULL)
+    if (cmd == NULL) // Verification "command chemin" bon quand donnee
     {
-		write(2, "-2\n", 2);
+		// write(2, "-3\n", 2);
+		display_error(data.command, NULL, errno, data.arguments);
 		free_env(envp);
 		envp = NULL;
 		exit(EXIT_FAILURE);
     }
-	
-	
+
 	pathname = find_path(cmd[0], envp);
 
-    if (pathname == NULL)
+    if (pathname == NULL) // Verification commande existante
     {
-		write(2, "-1\n", 2);
+		// write(2, "-1\n", 2);
+		display_error(cmd[0], "cmd not found", 0, NULL);
 		free(pathname);
 		free_env(cmd);
 		free_env(envp);
@@ -52,22 +45,11 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		exit(EXIT_FAILURE);
     }
     
-	if (data.oper != NULL && (handle_redirection(data) == -1))
+	if (data.oper != NULL && (handle_redirection(data) == -1)) // Execution redirections
 	{
 		free_env(cmd);
 		free_env(envp);
 		free(pathname);
-		envp = NULL;
-		exit(EXIT_FAILURE);
-	}
-
-	if (pathname == NULL && check_if_in_builtins(data, envp) == 0)
-	{
-		write(2, "1\n", 2);
-		display_error(cmd[0], "cmd not found", 0, NULL);
-		free_env(cmd);
-		free(pathname);
-		free_env(envp);
 		envp = NULL;
 		exit(EXIT_FAILURE);
 	}
@@ -75,7 +57,6 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 	if (check_if_in_builtins(data, envp) == 1) // Execution builtins echo env pwd
 	{
 		// write(2, "2\n", 2);
-		// write(1, "coucou", 6); 
 		exec_builtins(data, envp);
 		free_env(cmd);
 		free(pathname);
@@ -83,9 +64,9 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		envp = NULL;
 		exit(EXIT_SUCCESS);
 	}
-	else if (check_if_in_builtins(data, envp) == -1)
+	else if (check_if_in_builtins(data, envp) == -1) // Exit d'execution builtins cd export unset
 	{
-		write(2, "3\n", 2);
+		// write(2, "3\n", 2);
 		// write(2,"dans enfant\n", 12);
 		free_env(cmd);
 		free(pathname);
@@ -96,7 +77,7 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 	
 	else if (execve(pathname, cmd, envp) == -1)
 	{
-		write(2, "5\n", 2);
+		// write(2, "5\n", 2);
 		free_env(cmd);
 		free(pathname);
 

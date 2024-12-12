@@ -67,7 +67,18 @@ void exit_with_error(char *msg);
 // char    **initialize_command(char *command, char **split_command, int option_count, int nbr_args);
 // char    **build_command(t_data_rule data);
 
-char **build_command(t_data_rule data);
+// MINE
+// char **build_execution(t_data_rule data);
+// char *build_command(char *command);
+
+// CHAT GPT
+int count_options(char **options, int *option_count);
+char *build_command(char *command);
+void free_command_array(char **cmd);
+char **build_execution(t_data_rule data);
+
+
+
 char **allocate_command(char *command, char **split_command, int option_count, int nbr_args);
 int count_options(char **options, int *option_count);
 

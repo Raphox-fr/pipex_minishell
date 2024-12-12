@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:38:34 by rafaria           #+#    #+#             */
-/*   Updated: 2024/12/10 15:36:12 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:50:54 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,6 @@ char *find_path(char *cmd, char **envv)
     char *path;
 
     i = 0;
-	
     while (envv[i] && ft_strnstr(envv[i], "PATH", 4) == 0)
         i++;
     if (!envv[i])
