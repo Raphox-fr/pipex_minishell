@@ -114,7 +114,6 @@ int main(int argc, char **argv, char **envp)
 	var = NULL;
 	while (42)
 	{
-
 		err.error_code = -1;
 		rule = NULL;
 		rule = readline(PROMPT);
@@ -122,8 +121,9 @@ int main(int argc, char **argv, char **envp)
 			free_all(var, envv, rule, 3);
 		if (rule != NULL)
 		{
-			/*if (ft_strncmp(rule, "exit", 4) == 0)
-				break ;*/
+
+			if (ft_strncmp(rule, "exit", 4) == 0)
+				break ;
 			if (ft_strncmp(rule, "var", 3) == 0)
 				print_var(var);
 			add_history(rule);
@@ -131,7 +131,7 @@ int main(int argc, char **argv, char **envp)
 			if (!request)
 				print_parsing_error(err);
 			else {
-				print_request(request);
+				//print_request(request);
 				envv = pipex(request, request->nb_command, envv);
 			}
 			killer_request(request);

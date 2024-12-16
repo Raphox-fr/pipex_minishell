@@ -16,7 +16,6 @@ int	add_command(t_data_rule *request, t_split *split)
 {
 	if (!split)
 		return (-1);
-	printf("%s\n", split[0].word);
 	request->command = ft_strdup(split[0].word);
 	return (0);
 }

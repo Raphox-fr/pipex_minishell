@@ -73,6 +73,12 @@ static int	fill_info(char *command, int *word, t_var **var, t_split *split)
 		itr_word++;
 	}
 	*word = k;
+	i = 0;
+	while (i < k)
+	{
+		printf("split : %s\n", split[i].word);
+		i++;
+	}
 	return (0);
 }
 
@@ -84,7 +90,7 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 
 	split = NULL;
 	request = NULL;
-	//command = delete_inutile_quote(command);
+	command = delete_inutile_quote(command);
 	command = delete_space(command);
 	command = var_traitment(command, var);
 	if (ft_strlen(command) == 0)

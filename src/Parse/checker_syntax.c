@@ -35,7 +35,7 @@ static int	quote_check(char *word, t_erreur *err, int i, const int nb_word)
 				err->error_code = D_SYNTAX;
 			return (-1);
 		}
-		else if ((i == 0) || (i + 1) == nb_word)
+		else if ((i == 0 && nb_word == 1) || (i + 1) == nb_word)
 		{
 			err->error_code = STX_NL;
 			return (-1);
@@ -108,8 +108,10 @@ int	syntax_check(t_split *split, const int nb_word, t_erreur *err)
 	while (i < nb_word)
 	{
 		sep = split[i].word[0];
-		if (sep == '|' || sep == ';' || sep == '<' || sep == '>' || sep == '&') {
-			if (sep == '|' || sep == ';' || sep == '&') {
+		if (sep == '|' || sep == ';' || sep == '<' || sep == '>' || sep == '&')
+		{
+			if (sep == '|' || sep == ';' || sep == '&')
+			{
 				if (oper_check(err, split[i].word, i, nb_word) == -1)
 					return (-1);
 			}

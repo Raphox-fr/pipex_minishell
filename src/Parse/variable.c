@@ -218,7 +218,7 @@ static char	*fill_var(char *buff, int i, t_var **var)
 	out = NULL;
 	size = 1;
 	if (buff[i] != '$')
-		return (0);
+		return (buff);
 	while (buff[i + 1] && buff[i + 1] == '\"')
 		i++;
 	while (buff[size + i] && (ft_isalpha(buff[size + i]) || buff[size + i] == '\"'))
@@ -239,6 +239,8 @@ static char	*fill_var(char *buff, int i, t_var **var)
 		if (i < ft_strlen(buff))
 				out = ft_strjoin(out, buff + i, 0);
 	}
+	else
+		return (buff);
 	return (out);
 }
 
@@ -276,7 +278,7 @@ char	*var_traitment(char *buff, t_var **var)
 			sq = 1;
 		else if (buff[i] == '\'' && sq)
 			sq = 0;
-		if (buff[i] == '$' && buff[i + 1] && buff[i + 1] != ' ' && !sq)
+		if (buff[i] == '$' && buff[i + 1] && (ft_isalpha(buff[i + 1]) || buff[i + 1] == '\"') && !sq)
 			buff = fill_var(buff, i, var);
 		i++;
 	}
