@@ -26,7 +26,6 @@ typedef struct	s_split
 int 		add_arg_request(t_data_rule *request, t_split  *split, const int nb_opt, const int nb_node);
 int			add_command(t_data_rule *request, t_split *split);
 int 		add_rdir(t_data_rule *request, t_split *split);
-int 		add_var(t_var **var, char *command, int len);
 int			add_pipe(t_data_rule *request, t_split *split, const int count_word);
 void		add_quote(t_split *split, char *command, int *index, t_var ** var);
 int			add_opt_request(t_data_rule *request, t_split *split, const int nb_opt);

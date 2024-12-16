@@ -29,7 +29,7 @@ int	ft_strnchr(char *str, char to_find, const int len)
 	return (-1);
 }
 
-int	add_word(t_split *word, char *command, int *index, t_var *var)
+int	add_word(t_split *word, char *command, int *index)
 {
 	if (!command)
 		return (0);
@@ -68,7 +68,7 @@ static int	fill_info(char *command, int *word, t_var **var, t_split *split)
 		if (command[i] == '\"' || command[i] == '\'')
 			add_quote(&split[k], command + i, &k, var);
 		else
-			add_word(&split[k], command + i, &k, *var);
+			add_word(&split[k], command + i, &k);
 		i = len_word + i;
 		itr_word++;
 	}
@@ -84,11 +84,11 @@ t_data_rule	*parsing(char *command, t_var **var, t_erreur *err)
 
 	split = NULL;
 	request = NULL;
-	command = delete_inutile_quote(command);
+	//command = delete_inutile_quote(command);
 	command = delete_space(command);
+	command = var_traitment(command, var);
 	if (ft_strlen(command) == 0)
 		return (NULL);
-	command = var_traitment(command, var);
 	word_count = nb_words(command);
 	err->error_code = STX_NL;
 	if (word_count < 0 || braquet_check(command, err) == -1)
