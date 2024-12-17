@@ -22,6 +22,8 @@ static	int	converte_rdir(t_data_rule *request, t_split *split)
 	itr = 0;
 	itr_oper = 0;
 	request->nb_rdir = ft_nb_rdir(split);
+	if (request->nb_rdir <= 0)
+		return (0);
 	request->oper = ft_calloc(sizeof(char *), request->nb_rdir + 1);
 	if (!request->oper)
 		return (-1);

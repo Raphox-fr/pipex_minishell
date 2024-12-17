@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 18:17:46 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/10 22:24:56 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/16 16:53:41 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ static void print_request(t_data_rule *request)
 			printf("nb_dir : %d\n", request[k].nb_rdir);
 			while(request[k].out[i] && i < request[k].nb_rdir)
 			{
-				printf("output : %s\n", request[k].out[i]);
+				printf("out : %s\n", request[k].out[i]);
 				i++;
 			}
 		}
@@ -122,8 +122,8 @@ int main(int argc, char **argv, char **envp)
 			free_all(var, envv, rule, 3);
 		if (rule != NULL)
 		{
-			/*if (ft_strncmp(rule, "exit", 4) == 0)
-				break ;*/
+			if (ft_strncmp(rule, "exit", 4) == 0)
+				break ;
 			if (ft_strncmp(rule, "var", 3) == 0)
 				print_var(var);
 			add_history(rule);

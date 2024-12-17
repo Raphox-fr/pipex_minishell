@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:38:34 by rafaria           #+#    #+#             */
-/*   Updated: 2024/12/11 18:50:54 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/17 21:02:46 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,22 +31,25 @@ int handle_redirection(t_data_rule data)
 
 	i = 0;
 	
-	if (data.oper[i] != 0)
+	if (data.oper != NULL)
 		i = 0;
 	else
+	{
+		write(2, "handle redirections oper== NULL ", 32);
 		return (0);
+	}
 
 	while (data.out[i] != NULL)
 	{
+    	if (data.oper[i] == 'h')
+    	{
+			i++;
+    	}
 		if (data.oper[i] == '<' && handle_entry_redirections(data, data.oper[i], data.input) == -1)
 		{
 			return (-1);
 		}
-    	else if (data.oper[i] == 'h' && handle_heredoc(data.input) == -1)
-    	{
-			return (-1);
-    	}
-		else if ((data.oper[i] ==  '>' || data.oper[i] ==  'r') &&  handle_exit_redirections(data, data.oper[i], data.out[i]) == -1)
+		if ((data.oper[i] ==  '>' || data.oper[i] ==  'r') &&  handle_exit_redirections(data, data.oper[i], data.out[i]) == -1)
 		{
 			return (-1);
 		}
@@ -55,10 +58,64 @@ int handle_redirection(t_data_rule data)
 	return (0);
 }
 	
+int handle_heredoc(char *delimiter)
+{
+    char *line;
+    int   pipe_fds[2];
+    pid_t pid;
+
+    if (pipe(pipe_fds) == -1)
+    {
+        perror("Erreur lors de la création du pipe");
+        return (-1);
+    }
+
+    pid = fork();
+    if (pid == -1)
+    {
+        perror("Erreur lors du fork");
+        return (-1);
+    }
+
+    if (pid == 0) // Processus enfant : lecture du heredoc
+    {
+
+        while (1)
+        {
+            line = readline("HEREDOC> ");
+            if (!line)
+            {
+                write(1, "CTRL D PRESSED\n", 15);
+                exit(EXIT_SUCCESS);
+            }
+            if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0 && line[ft_strlen(delimiter)] == '\0')
+            {
+                free(line);
+                break;
+            }
+            write(pipe_fds[1], line, ft_strlen(line));
+            write(pipe_fds[1], "\n", 1);
+            free(line);
+        }
+
+        close(pipe_fds[0]); // Fermer la lecture dans l'enfant
+        close(pipe_fds[1]);
+        exit(EXIT_SUCCESS);
+    }
+    else // Processus parent
+    {
+        close(pipe_fds[1]); // Fermer l'écriture dans le parent
+        waitpid(pid, NULL, 0); // Attendre que le heredoc soit terminé
+    }
+	close(pipe_fds[0]);
+    return (pipe_fds[0]); // Retourner l'extrémité de lecture du pipe
+}
+
+
+
 int handle_exit_redirections(t_data_rule data, char oper, char *output)
 {
     int fd;
-	
 	
     if (oper ==  '>')
     {
@@ -71,11 +128,9 @@ int handle_exit_redirections(t_data_rule data, char oper, char *output)
         }
         dup2(fd, STDOUT_FILENO);
         close(fd);
-		return(0);
     }
     else if (oper ==  'r')
     {
-		write(2, "coucou", 6);
         fd = open(output, O_WRONLY | O_CREAT | O_APPEND, 0777);
         if (fd == -1)
         {
@@ -84,8 +139,6 @@ int handle_exit_redirections(t_data_rule data, char oper, char *output)
         }
         dup2(fd, STDOUT_FILENO);
         close(fd);
-		return (0);
-
     }
 	return (0);
 	
@@ -108,42 +161,6 @@ int		handle_entry_redirections(t_data_rule data, char oper, char *input)
     	}
 		return (0);
 }
-
-int handle_heredoc(char *delimiter)
-{
-    char *line;
-    int   pipe_fds[2];
-
-    if (pipe(pipe_fds) == -1)
-    {
-        perror("Erreur lors de la création du pipe");
-    }
-    while (1)
-    {
-        line = readline("heredoc> ");
-        if (!line)
-        {
-            printf("CTRL D PRESSED \n");
-			close(pipe_fds[1]);
-			close(pipe_fds[0]);
-			return (-1);
-        }
-        if (ft_strncmp(line, delimiter, ft_strlen(delimiter)) == 0)
-        {
-            free(line);
-            break;
-        }
-        write(pipe_fds[1], line, ft_strlen(line));
-        write(pipe_fds[1], "\n", 1);
-        free(line);
-    }
-    close(pipe_fds[1]);
-    dup2(pipe_fds[0], STDIN_FILENO);
-    close(pipe_fds[0]);
-	return (0);
-}
-
-	
 
 
 

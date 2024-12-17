@@ -21,6 +21,8 @@ int var_exist(char *command, t_var **var)
 	temp_var = NULL;
 	if ((*var) == NULL)
 		return (0);
+	if (command[0] == '\"')
+		command++;
 	temp_var = *var;
 	while (temp_var != NULL && ft_strncmp(command , temp_var->name, ft_strlen(temp_var->name)) != 0)
 		temp_var = temp_var->next;
@@ -126,7 +128,6 @@ static void	add_val(t_var *temp, char *cmd, int *i)
 
 	k = *i;
 	quote = false;
-	printf("cmd : %c\n", cmd[k]);
 	while (cmd[*i])
 	{
 		if (cmd[*i] == '\"' && quote == false)
@@ -137,7 +138,7 @@ static void	add_val(t_var *temp, char *cmd, int *i)
 			break ;
 		*i += 1;
 	}
-	printf("k : %d i : %d\n", k, *i);
+	printf("%c %d\n", cmd[k], *i);
 	temp->value = ft_calloc(sizeof(char), *i - k + 1);
 	if (!temp->value)
 		return ;
@@ -178,14 +179,14 @@ int	add_var(t_var **var, char *command, int len)
 		return (-1);
 	add_val(temp_var, command, &i);
 	add_back(var, temp_var);
-	while (ft_isspace(command[i]))
+	/*while (ft_isspace(command[i]))
 		i++;
 	if (ft_strncmp(command + i, ";", 1) == 0)
-		command[i] = ' ';
+		command[i] = ' ';*/
 	return (i);
 }
 
-int	fill_var(char **out, int *len_word, char *command, t_var **var)
+/*static int	fill_var(char **out, int *len_word, char *command, t_var **var)
 {
 	int	i;
 	t_var *temp;
@@ -208,14 +209,43 @@ int	fill_var(char **out, int *len_word, char *command, t_var **var)
 		return (0);
 	*len_word = ft_strlen((*var)->value);
 	return (1);
+}*/
+
+static char	*fill_var(char *buff, int i, t_var **var)
+{
+	char	*out;
+	t_var *temp;
+
+	temp = NULL;
+	out = NULL;
+	if (buff[i] != '$')
+		return (0);
+	if (var_exist(buff + i + 1, var) == 1)
+	{
+		temp = give_var(buff + i + 1, var);
+		//if (temp == NULL)
+		//	return (ft_memset(buff + i, ' ', ft_strcspn(buff, " ")));
+		out = ft_calloc(sizeof(char), i);
+		ft_strlcpy(out, buff, i + 1);
+		if (temp == NULL)
+
+		out = ft_strjoin(out, temp->value, 0);
+		i += ft_strlen(temp->name) + 1;
+		if (i < ft_strlen(buff))
+			out = ft_strjoin(out, buff + i, 0);
+		free(buff);
+	}
+	return (out);
 }
 
 char	*var_adder(char *buff, t_var **var)
 {
-	int	i;
-	int	len;
+	int		i;
+	int		len;
+	char	*cmd;
 
 	i = 0;
+	cmd = NULL;
 	while (buff[i] && ft_isspace(buff[i]))
 		i++;
 	while (buff[i] && find_var(buff + i) == 1)
@@ -225,6 +255,22 @@ char	*var_adder(char *buff, t_var **var)
 		while (ft_isspace(buff[i]) || ft_strncmp(buff + i, "; ", 2) == 0)
 			i++;
 	}
-
 	return (buff + i);
+}
+
+char	*var_traitment(char *buff, t_var **var)
+{
+	int	i;
+
+	i = 0;
+	buff = var_adder(buff, var);
+	//while (buff[i])
+	/*{
+		if (buff[i] == '$')
+			buff = fill_var(buff, i, var);
+		i++;
+	}
+	printf("buff : %s\n", buff);
+	exit(0);*/
+	return (buff);
 }

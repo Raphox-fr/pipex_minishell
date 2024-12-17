@@ -32,3 +32,23 @@ typedef struct	s_data_rule
 }				t_data_rule;
 
 #endif //MINISHELL_42_STRUCT_SHELL_H
+
+
+	// if (data.oper != NULL)// Execution redirections
+	// {
+	// 	if if (data.oper[0] == 'h')
+	// 	{
+	// 		if (handle_redirection(data) == -1)
+	// 	{
+	// 			free_env(cmd);
+	// 			free_env(envp);
+	// 			envp = NULL;
+	// 			exit(EXIT_FAILURE);
+	// 		}	
+	// 	}
+	// }
+
+			// 	if (data.oper != NULL && data.oper[0] == 'h')
+			// {
+			// 	handle_redirection(data);
+			// }

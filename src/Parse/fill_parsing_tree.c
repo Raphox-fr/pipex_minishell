@@ -60,6 +60,8 @@ int	add_rdir(t_data_rule *request, t_split *split)
 		|| ft_strncmp(split[itr].word, ";", split[itr].len_word) != 0))
 	{
 		rdir = check_rdir(split[itr].word, split[itr].len_word);
+		if (rdir == PIPE)
+			return (itr);
 		if (rdir != PIPE && rdir != OTHER)
 		{
 			fill_rdir(request, split, itr, itr_oper);

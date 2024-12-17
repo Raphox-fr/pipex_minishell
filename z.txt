@@ -1,17 +1,3 @@
-cc.txt
-coucou
-includes
-lib
-libft.a
-makefile
-minishell
-notes.txt
-obj
-out.txt
-readline.supp
-src
-valgrind.log
-xx.txt
-za.txt
-zb.txt
-z.txt
+bonjour
+co
+et toi

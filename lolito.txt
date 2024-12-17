@@ -1,12 +1,15 @@
+b
 cc.txt
 coucou
 includes
 lib
 libft.a
+lolito.txt
 makefile
 minishell
 notes.txt
 obj
+pipi
 readline.supp
 src
 t.txt
