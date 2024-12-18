@@ -75,7 +75,7 @@ void exit_with_error(char *msg);
 // char **build_execution(t_data_rule data);
 // char *build_command(char *command);
 
-// CHAT GPT
+// CHAT GPT PETIT MODIF, BONNE A CONSERVER
 int count_options(char **options, int *option_count);
 char *build_command(char *command);
 void free_command_array(char **cmd);

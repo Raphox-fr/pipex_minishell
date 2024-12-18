@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/29 15:38:34 by rafaria           #+#    #+#             */
-/*   Updated: 2024/12/17 21:02:46 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/18 14:53:50 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ int handle_heredoc(char *delimiter)
         close(pipe_fds[1]); // Fermer l'écriture dans le parent
         waitpid(pid, NULL, 0); // Attendre que le heredoc soit terminé
     }
-	close(pipe_fds[0]);
+	// close(pipe_fds[0]);
     return (pipe_fds[0]); // Retourner l'extrémité de lecture du pipe
 }
 
