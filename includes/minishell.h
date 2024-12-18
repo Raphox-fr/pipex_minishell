@@ -50,9 +50,13 @@ char **pipex(t_data_rule *data, int num_commands, char **envv);
 void wait_for_children(void);
 void free_command(char **cmd);
 void execute(t_data_rule data, char **envp, int *p_fd);
-void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd);
+
+// void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd);
+// void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd);
+void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd, int fd_heredocs);
+void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd, int fd_heredocs);
+
 void second_process(int *input_fd, int *p_fd, int is_last_cmd);
-void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd);
 void exit_with_error(char *msg);
 
 
@@ -67,17 +71,38 @@ void exit_with_error(char *msg);
 // char    **initialize_command(char *command, char **split_command, int option_count, int nbr_args);
 // char    **build_command(t_data_rule data);
 
-char **build_command(t_data_rule data);
+// MINE
+// char **build_execution(t_data_rule data);
+// char *build_command(char *command);
+
+// CHAT GPT
+int count_options(char **options, int *option_count);
+char *build_command(char *command);
+void free_command_array(char **cmd);
+char **build_execution(t_data_rule data);
+
+
+
 char **allocate_command(char *command, char **split_command, int option_count, int nbr_args);
 int count_options(char **options, int *option_count);
 
 
 // TOOLS . C ---------------------------------------------------------------------------------------------
 
+int *prepare_heredocs(t_data_rule *data, int num_commands);
+
+// void handle_heredoc(char *delimiter);
+// void handle_redirection(t_data_rule data);
+// void handle_exit_redirections(char oper, char *output);
+
+int handle_heredoc(char *delimiter);
 int handle_redirection(t_data_rule data);
+// int handle_redirection(t_data_rule data, int p_fd);
+// int handle_heredoc(char *delimiter, int (p_fd);
+
+
 int		handle_entry_redirections(t_data_rule data, char oper, char *input);
 int handle_exit_redirections(t_data_rule data, char oper, char *output);
-int handle_heredoc(char *delimiter);
 
 char	*find_path(char *cmd, char **envv);
 void wait_for_children(void);

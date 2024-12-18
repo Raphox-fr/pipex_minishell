@@ -1,0 +1,17 @@
+cc.txt
+coucou
+includes
+lib
+libft.a
+makefile
+minishell
+notes.txt
+obj
+readline.supp
+src
+t.txt
+valgrind.log
+y.txt
+z
+zb.txt
+z.txt
