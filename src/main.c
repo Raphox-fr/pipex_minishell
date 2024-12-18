@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 18:17:46 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/16 16:53:41 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/18 16:00:00 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int main(int argc, char **argv, char **envp)
 			if (!request)
 				print_parsing_error(err);
 			else {
-				//print_request(request);
+				print_request(request);
 				envv = pipex(request, request->nb_command, envv);
 			}
 			killer_request(request);

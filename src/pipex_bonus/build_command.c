@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:02:21 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/10 16:37:16 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/18 16:02:46 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ int copy_options(char **cmd, char **split_command, int i, int option_count)
         cmd[i] = ft_strdup(split_command[k]);
         if (!cmd[i])
         {
-            free_command(cmd); // Assurez-vous de libérer en cas d'échec.
+            free_command(cmd);
             return (0);
         }
         i++;
         k++;
     }
-    free_command(split_command); // Libération après utilisation.
+    free_command(split_command); 
     return (1);
 }
 
@@ -193,7 +193,7 @@ char **build_command(t_data_rule data)
         return (NULL);
 
     split_command = split_options(string_options, &option_count);
-    free(string_options); // Libération après utilisation.
+    free(string_options); 
 
     if (data.options && !split_command)
         return (NULL);

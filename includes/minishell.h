@@ -47,18 +47,16 @@ char **ft_strdup_env(char **envp);
 
 char **pipex(t_data_rule *data, int num_commands, char **envv);
 
+void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd, int fd_heredocs, int *tab_heredoc);
+
+void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd, int fd_heredocs, int *tab_hereodc);
+void second_process(int *input_fd, int *p_fd, int is_last_cmd);
+void execute(t_data_rule data, char **envp, int *p_fd, int *fd_heredocs);
+
+
+void exit_with_error(char *msg);
 void wait_for_children(void);
 void free_command(char **cmd);
-void execute(t_data_rule data, char **envp, int *p_fd);
-
-// void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd);
-// void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd);
-void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd, int fd_heredocs);
-void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd, int fd_heredocs);
-
-void second_process(int *input_fd, int *p_fd, int is_last_cmd);
-void exit_with_error(char *msg);
-
 
 // BUILD COMMAND . C ---------------------------------------------------------------------------------------------
 

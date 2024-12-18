@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 17:14:05 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/11 19:18:07 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/18 16:14:49 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,6 @@ char **build_execution(t_data_rule data)
             index++;
         }
     }
-
     i = 0;
     if (data.arguments != NULL)
     {

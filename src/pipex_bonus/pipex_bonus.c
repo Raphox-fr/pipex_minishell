@@ -6,7 +6,7 @@
 /*   By: raphox <raphox@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/24 15:22:44 by raphox            #+#    #+#             */
-/*   Updated: 2024/12/18 14:53:31 by raphox           ###   ########.fr       */
+/*   Updated: 2024/12/18 16:56:54 by raphox           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,22 @@
 
 
 
-void execute(t_data_rule data, char **envp, int *p_fd)
+void execute(t_data_rule data, char **envp, int *p_fd, int *tab_heredoc)
 {
 	char *pathname;
     char **cmd;
+
+	// exit(EXIT_FAILURE);
+	
 	cmd = build_execution(data);
 
 	close(p_fd[0]);
 	close(p_fd[1]);
+	
+	if (tab_heredoc != NULL)
+	{
+		free(tab_heredoc);
+	}
 	
     if (cmd == NULL) // Verification "command chemin" bon quand donnee
     {
@@ -32,16 +40,18 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 		exit(EXIT_FAILURE);
     }
 
+
 	if (data.oper != NULL && (handle_redirection(data) == -1)) // Execution redirections
 	{
 			free_env(cmd);
+
 			free_env(envp);
 			envp = NULL;
 			exit(EXIT_FAILURE);
 	}
 
 	pathname = find_path(cmd[0], envp);
-    if (pathname == NULL) // Verification commande existante
+    if (pathname == NULL && check_if_in_builtins(data, envp) == 0) // Verification commande existante
     {
 		write(2, "-1\n", 2);
 		display_error(cmd[0], "cmd not found", 0, NULL);
@@ -89,28 +99,28 @@ void execute(t_data_rule data, char **envp, int *p_fd)
 	exit(EXIT_SUCCESS);
 }
 
-void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd, int fd_heredocs)
+void execution_process(t_data_rule data, char **env, int *input_fd, int *p_fd, int is_last_cmd, int fd_heredocs, int *tab_heredoc)
 {
 	if (fd_heredocs != -1)
 	{
 		dup2(fd_heredocs, STDIN_FILENO);
         close(fd_heredocs);
+		close(*input_fd);
 	}
     
 	else if (input_fd != NULL && *input_fd != -1)
     {
 		dup2(*input_fd, STDIN_FILENO);
         close(*input_fd);
+		close(fd_heredocs);
     }
-
-	
-    if (!is_last_cmd) // pas la derniere commande // est different de 0 je crois
+    if (is_last_cmd != 1) // pas la derniere commande // est different de 0 je crois
     {
         close(p_fd[0]);
 		dup2(p_fd[1], STDOUT_FILENO);
         close(p_fd[1]);
 	}
-    execute(data, env, p_fd);
+    execute(data, env, p_fd, tab_heredoc);
 }
 
 void second_process(int *input_fd, int *p_fd, int is_last_cmd)
@@ -119,7 +129,7 @@ void second_process(int *input_fd, int *p_fd, int is_last_cmd)
     {
         close(*input_fd);
     }
-    if (!is_last_cmd) // == 0// pas la derniere commande // est different de 0 je crois
+    if (is_last_cmd != 1) 
     {
         close(p_fd[1]);
         *input_fd = p_fd[0];
@@ -131,7 +141,7 @@ void second_process(int *input_fd, int *p_fd, int is_last_cmd)
     }
 }
 
-void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd, int fd_heredocs)
+void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd, int fd_heredocs, int *tab_heredoc)
 {
     pid_t pid;
     int p_fd[2];
@@ -147,14 +157,12 @@ void do_pipe(t_data_rule data, char **env, int *input_fd, int is_last_cmd, int f
     }
     if (pid == 0)
     {
-		execution_process(data, env, input_fd, p_fd, is_last_cmd, fd_heredocs); // enfant
+		execution_process(data, env, input_fd, p_fd, is_last_cmd, fd_heredocs, tab_heredoc); // enfant
     }
     else // pid different de 0
     {
 		if (data.oper != NULL && data.oper[0] == 'h')
-		{
 			waitpid(pid, NULL, 0);
-		}
         second_process(input_fd, p_fd, is_last_cmd); // parents
     }
 	
@@ -165,10 +173,10 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
     int i = 0;
     int input_fd = -1;
 
-	int *fds_heredocs;
+	int *tab_heredoc;
 	
-	fds_heredocs = prepare_heredocs(data, num_commands);
-	if (fds_heredocs == NULL)
+	tab_heredoc = prepare_heredocs(data, num_commands);
+	if (tab_heredoc == NULL)
 		return (envv);
 
 	if (num_commands == 0)
@@ -190,22 +198,22 @@ char **pipex(t_data_rule *data, int num_commands, char **envv)
 				envv = exec_builtins(data[i], envv);
 			}
 		}
-        do_pipe(data[i], envv, &input_fd, is_last_command, fds_heredocs[i]);
+        do_pipe(data[i], envv, &input_fd, is_last_command, tab_heredoc[i], tab_heredoc);
         i++;
     }
     wait_for_children();
-	free(fds_heredocs);
+	free(tab_heredoc);
     return (envv);
 }
 
 
 int *prepare_heredocs(t_data_rule *data, int num_commands)
 {
-    int *fds_heredocs;
+    int *tab_heredoc;
     int i;
 
-    fds_heredocs = malloc(sizeof(int) * num_commands);
-    if (!fds_heredocs)
+    tab_heredoc = malloc(sizeof(int) * num_commands);
+    if (!tab_heredoc)
     {
         perror("malloc");
         return (NULL);
@@ -216,25 +224,25 @@ int *prepare_heredocs(t_data_rule *data, int num_commands)
     {
         if (data[i].oper != NULL && data[i].oper[0] == 'h') // Si heredoc détecté
         {
-            fds_heredocs[i] = handle_heredoc(data[i].input);
+            tab_heredoc[i] = handle_heredoc(data[i].input);
             
-			if (fds_heredocs[i] == -1) // Vérifier les erreurs de handle_heredoc
+			if (tab_heredoc[i] == -1) // Vérifier les erreurs de handle_heredoc
             {
                 write(2, "Erreur : Heredoc échoué\n", 24);
-                free(fds_heredocs);
+                free(tab_heredoc);
                 return (NULL);
             }
         }
         else
         {
-            fds_heredocs[i] = -1; // Pas de heredoc pour cette commande
+            tab_heredoc[i] = -1; // Pas de heredoc pour cette commande
         }
         i++;
     }
-    return (fds_heredocs);
+    return (tab_heredoc);
 }
 
-
+// env > z.txt | cat << l
 // cd dfsgfdsg > zzzzz.txt
 // cat za.txt > zzzzz.txt 
 // cat << z | grep "o
