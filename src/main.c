@@ -91,10 +91,6 @@ static void signal_treatment(int sig)
 		rl_redisplay();
 		printf("   \b\b");
 	}
-	else if (sig == EOF)
-	{
-		exit (3);
-	}
 }
 
 
@@ -124,8 +120,8 @@ int main(int argc, char **argv, char **envp)
 
 			if (ft_strncmp(rule, "exit", 4) == 0)
 				break ;
-			if (ft_strncmp(rule, "var", 3) == 0)
-				print_var(var);
+//			if (ft_strncmp(rule, "var", 3) == 0)
+//				print_var(var);
 			add_history(rule);
 			request = parsing(rule, &var, &err);
 			if (!request)

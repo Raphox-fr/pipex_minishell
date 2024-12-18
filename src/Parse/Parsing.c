@@ -33,19 +33,11 @@ int	add_word(t_split *word, char *command, int *index)
 {
 	if (!command)
 		return (0);
-	/*if (command[0] == '$')
-	{
-		if (fill_var(&(word->word), &word->len_word, command, &var) == 1)
-			(*index)++;
-	}
-	else
-	{*/
-		word->word = ft_calloc(sizeof(char), word->len_word + 1);
-		if (!word->word)
-			return (-1);
-		ft_strlcpy((word->word), command, word->len_word + 1);
-		(*index)++;
-	//}
+	word->word = ft_calloc(sizeof(char), word->len_word + 1);
+	if (!word->word)
+		return (-1);
+	ft_strlcpy((word->word), command, word->len_word + 1);
+	(*index)++;
 	return (1);
 }
 
@@ -73,12 +65,6 @@ static int	fill_info(char *command, int *word, t_var **var, t_split *split)
 		itr_word++;
 	}
 	*word = k;
-	i = 0;
-	while (i < k)
-	{
-		printf("split : %s\n", split[i].word);
-		i++;
-	}
 	return (0);
 }
 

@@ -105,6 +105,7 @@ static int	change_value(char *elem, t_var *var)
 	if (size == 0)
 		return (i);
 	free(var->value);
+	var->value = NULL;
 	var->value = ft_calloc(sizeof(char), size + 1);
 	ft_strlcpy(var->value, elem + i, size + 1);
 	return (i + size);
@@ -183,31 +184,6 @@ int	add_var(t_var **var, char *command)
 	return (i);
 }
 
-/*static int	fill_var(char **out, int *len_word, char *command, t_var **var)
-{
-	int	i;
-	t_var *temp;
-
-	temp = NULL;
-	i = 0;
-	if (command[i] != '$')
-		return (0);
-	if ((*var) == NULL)
-		return (0);
-	if (var_exist(command + 1, var) == 1)
-	{
-		temp = give_var(command + 1, var);
-		if (temp == NULL)
-			return (0);
-		*out = ft_calloc(sizeof(char), ft_strlen(temp->value) + 1);
-		ft_strlcpy(*out, temp->value, ft_strlen(temp->value) + 1);
-	}
-	else
-		return (0);
-	*len_word = ft_strlen((*var)->value);
-	return (1);
-}*/
-
 static char	*fill_var(char *buff, int i, t_var **var)
 {
 	char	*out;
@@ -219,6 +195,7 @@ static char	*fill_var(char *buff, int i, t_var **var)
 	size = 1;
 	if (buff[i] != '$')
 		return (buff);
+	//buff[i] = ' ';
 	while (buff[i + 1] && buff[i + 1] == '\"')
 		i++;
 	while (buff[size + i] && (ft_isalpha(buff[size + i]) || buff[size + i] == '\"'))
